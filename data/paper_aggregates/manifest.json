@@ -1,0 +1,356 @@
+{
+  "excluded_reader_assets": [
+    "Figure 1 (station coordinates and radar footprint)",
+    "Supplementary Figure S2 (station time series)",
+    "Supplementary Figure S3 (stationwise map)"
+  ],
+  "records": [
+    {
+      "columns": 10,
+      "kind": "aggregate_sheet",
+      "name": "Table1_main",
+      "path": "Table1_main.csv",
+      "rows": 15,
+      "sha256": "26e8a0fb760df441271a7bf37a2bb5f0878644741001e82e03d95108a4ada6bf"
+    },
+    {
+      "columns": 5,
+      "kind": "aggregate_sheet",
+      "name": "TableS1a_training",
+      "path": "TableS1a_training.csv",
+      "rows": 7,
+      "sha256": "3268fbd74c1b2ee7ee075cbbe7c1f38b111a40d47d43750cfb525af8ee8e64b9"
+    },
+    {
+      "columns": 3,
+      "kind": "aggregate_sheet",
+      "name": "TableS1b_readout",
+      "path": "TableS1b_readout.csv",
+      "rows": 2,
+      "sha256": "0e9ea1a5e8f2472033429e096e856c3f4e5c22fd361f0487f77a936ffb5435cd"
+    },
+    {
+      "columns": 3,
+      "kind": "aggregate_sheet",
+      "name": "TableS2_cases",
+      "path": "TableS2_cases.csv",
+      "rows": 2,
+      "sha256": "1168a84d44ce5cfa76f94140905d94279bbf5f7a2f33e7758ced2d0007fad700"
+    },
+    {
+      "columns": 8,
+      "kind": "aggregate_sheet",
+      "name": "Case_definitions",
+      "path": "Case_definitions.csv",
+      "rows": 2,
+      "sha256": "3a55a450e01c952b1c9334a6e911e0c2fcd73bccdd8d882d61c51d21a2dde477"
+    },
+    {
+      "columns": 41,
+      "kind": "aggregate_sheet",
+      "name": "Table1_seed_numeric",
+      "path": "Table1_seed_numeric.csv",
+      "rows": 45,
+      "sha256": "4bf503bdc749f91f33e521ccae50123f73f7e2bc1d77f5e2b35d9a691b844831"
+    },
+    {
+      "columns": 6,
+      "kind": "aggregate_sheet",
+      "name": "Gauge_contract_matrix",
+      "path": "Gauge_contract_matrix.csv",
+      "rows": 8,
+      "sha256": "7609de0b777c235edb47dbcb02e1a7f69b99dcc8578b7bb5278ece20e5e59fe0"
+    },
+    {
+      "columns": 3,
+      "kind": "aggregate_sheet",
+      "name": "Fig2a_density",
+      "path": "Fig2a_density.csv",
+      "rows": 3098,
+      "sha256": "4e9ca68fc5bcfdd13d9b438c7f33fa8dd9a8b25551b2ffd9776cb35896b8f573"
+    },
+    {
+      "columns": 5,
+      "kind": "aggregate_sheet",
+      "name": "Fig2a_summary",
+      "path": "Fig2a_summary.csv",
+      "rows": 1,
+      "sha256": "b395d5be85a82c0107c25d216ebe4569bd4de19b35d70052e9deea67055ec50c"
+    },
+    {
+      "columns": 4,
+      "kind": "aggregate_sheet",
+      "name": "Fig2b_amount_bins",
+      "path": "Fig2b_amount_bins.csv",
+      "rows": 4,
+      "sha256": "4167f49170818d64eaa952c351b4a19bb85225186e04b655c8b901cdce11f203"
+    },
+    {
+      "columns": 7,
+      "kind": "aggregate_sheet",
+      "name": "Fig2c_fixed_metrics",
+      "path": "Fig2c_fixed_metrics.csv",
+      "rows": 4,
+      "sha256": "f0054eafc50158780fc2992c57060cf448fe29294bb8f9badfd9c55517380881"
+    },
+    {
+      "columns": 4,
+      "kind": "aggregate_sheet",
+      "name": "Fig2d_CSI_summary",
+      "path": "Fig2d_CSI_summary.csv",
+      "rows": 12,
+      "sha256": "1db18f53d7d3236b3bb51f9c6f433b0c978e80c0cd4f42d870eec08d6acc6670"
+    },
+    {
+      "columns": 5,
+      "kind": "aggregate_sheet",
+      "name": "Fig2d_FB_summary",
+      "path": "Fig2d_FB_summary.csv",
+      "rows": 12,
+      "sha256": "985694e60d5f4ef4e8c5037c8fd3ccc23e9bf0cbcb5a1a909d30a3db008ceb32"
+    },
+    {
+      "columns": 9,
+      "kind": "aggregate_sheet",
+      "name": "Fig2d_readout_members",
+      "path": "Fig2d_readout_members.csv",
+      "rows": 28,
+      "sha256": "a38ae41596e8d3d2e2bf5e7af53f4ca838c32c0334209581bbc1eb6231d569d3"
+    },
+    {
+      "columns": 9,
+      "kind": "aggregate_sheet",
+      "name": "Fig2d_delta_CI",
+      "path": "Fig2d_delta_CI.csv",
+      "rows": 8,
+      "sha256": "fab0947dd68fad8fee7d96649a2fe65fe5e25630efc18a7a8765c29e32764a8b"
+    },
+    {
+      "columns": 15,
+      "kind": "aggregate_sheet",
+      "name": "Categorical_per_rep",
+      "path": "Categorical_per_rep.csv",
+      "rows": 180,
+      "sha256": "8e95feeab3f1f1226a9518cb66d5cb2d8e84d3c902803be340dfaa6364f1df8e"
+    },
+    {
+      "columns": 23,
+      "kind": "aggregate_sheet",
+      "name": "Categorical_mean_sd",
+      "path": "Categorical_mean_sd.csv",
+      "rows": 60,
+      "sha256": "57fa5a7456bc63c466a7b1ebacde556a98c6654c4a0277b99bdc793963bdd4e3"
+    },
+    {
+      "columns": 16,
+      "kind": "aggregate_sheet",
+      "name": "Continuous_per_rep",
+      "path": "Continuous_per_rep.csv",
+      "rows": 45,
+      "sha256": "9597acb57f2504df06716f7d6b76333f95beba20c3c4f8df60af8c5f84306a46"
+    },
+    {
+      "columns": 10,
+      "kind": "aggregate_sheet",
+      "name": "Continuous_mean_sd",
+      "path": "Continuous_mean_sd.csv",
+      "rows": 15,
+      "sha256": "2f81f4490b4a8133897ae7824844cf8992c36ab1ccfc576682b1ac7f208d15bb"
+    },
+    {
+      "columns": 17,
+      "kind": "aggregate_sheet",
+      "name": "Paired_date_bootstrap",
+      "path": "Paired_date_bootstrap.csv",
+      "rows": 325,
+      "sha256": "321f12b1a77474b9888ed79c6acc06c856139861e39b5cd8624ad90e6dd2e4e9"
+    },
+    {
+      "columns": 13,
+      "kind": "aggregate_sheet",
+      "name": "Fig3ef_route_contrasts",
+      "path": "Fig3ef_route_contrasts.csv",
+      "rows": 40,
+      "sha256": "34cf2c3b33d739b7eed5aea0ee3c2fb185b2c0b803344cdb043035e7444470d7"
+    },
+    {
+      "columns": 11,
+      "kind": "aggregate_sheet",
+      "name": "FigS1_distance_cells",
+      "path": "FigS1_distance_cells.csv",
+      "rows": 80,
+      "sha256": "c6f32ff5bcc8caad03509745a6cd93b288653391de3552da1a2ca886fd33607d"
+    },
+    {
+      "columns": 9,
+      "kind": "aggregate_sheet",
+      "name": "FigS1_distance_summary",
+      "path": "FigS1_distance_summary.csv",
+      "rows": 40,
+      "sha256": "b630d06d9914bd7453dbb93fbd6f3b73a5907f7b749ea1f5dd6f7f0902db1036"
+    },
+    {
+      "columns": 14,
+      "kind": "aggregate_sheet",
+      "name": "Allstation_overall",
+      "path": "Allstation_overall.csv",
+      "rows": 20,
+      "sha256": "9448c864f3d56641b1febdc3685c1f9494d44590f0ea70c8e6924780fec3e2dc"
+    },
+    {
+      "columns": 14,
+      "kind": "aggregate_sheet",
+      "name": "Allstation_seedwise",
+      "path": "Allstation_seedwise.csv",
+      "rows": 60,
+      "sha256": "084c0034dfa23991d80d6d1c719e36266444dce309d290de2d48dc081c00f52c"
+    },
+    {
+      "columns": 11,
+      "kind": "aggregate_sheet",
+      "name": "Route_metric_CI",
+      "path": "Route_metric_CI.csv",
+      "rows": 285,
+      "sha256": "95bf4fe201b6d2f19bca9fd8e93ecd4f0ee67ea4899bb76c7f7df9c3610cecf8"
+    },
+    {
+      "columns": 19,
+      "kind": "aggregate_sheet",
+      "name": "Fig5_intensity_point_CI",
+      "path": "Fig5_intensity_point_CI.csv",
+      "rows": 96,
+      "sha256": "b62a8cd6ef4a19787042f73498c629cb3213e9645de1cca4e5d1763a23e216e7"
+    },
+    {
+      "columns": 11,
+      "kind": "aggregate_sheet",
+      "name": "TableS2b_diagnostics",
+      "path": "TableS2b_diagnostics.csv",
+      "rows": 60,
+      "sha256": "fc4d207a84baa6a0b426a90ec2789ca8a9985617df42e48abdd9ed8e85c0c380"
+    },
+    {
+      "columns": 15,
+      "kind": "aggregate_sheet",
+      "name": "Case_per_rep",
+      "path": "Case_per_rep.csv",
+      "rows": 360,
+      "sha256": "57a5199cc6ac1cf635ad412c56ed6ca6933b522c2c2d5eaf73cd50a8a02f4fca"
+    },
+    {
+      "columns": 13,
+      "kind": "aggregate_sheet",
+      "name": "Case_mean_sd",
+      "path": "Case_mean_sd.csv",
+      "rows": 120,
+      "sha256": "6bd5837a544b9a9c8ee99145b855148809aea29211d493adbb142f64d8d3af58"
+    },
+    {
+      "columns": 8,
+      "kind": "aggregate_sheet",
+      "name": "FigS3_pairwise_counts",
+      "path": "FigS3_pairwise_counts.csv",
+      "rows": 8,
+      "sha256": "d1499ec976b56b55334729ea9c0bead57ef94d75cd6423f93ebb561187a64888"
+    },
+    {
+      "columns": 3,
+      "kind": "aggregate_sheet",
+      "name": "Field_instant_CSIM",
+      "path": "Field_instant_CSIM.csv",
+      "rows": 42,
+      "sha256": "e7b85e48116af38a7587e0d8818968c537aab39b9a7765dca21762d05b119bc1"
+    },
+    {
+      "columns": 4,
+      "kind": "aggregate_sheet",
+      "name": "Field_instant_CSI",
+      "path": "Field_instant_CSI.csv",
+      "rows": 294,
+      "sha256": "6855611def55a5bc37619450b4c5124f5d519df922b94e82382cc121bc344a7a"
+    },
+    {
+      "columns": 3,
+      "kind": "aggregate_sheet",
+      "name": "Field_RN60_CSIM",
+      "path": "Field_RN60_CSIM.csv",
+      "rows": 10,
+      "sha256": "25da123e1d4de34992618d0f636da6b1ba95a3b94207250e08b1cca30b4200b3"
+    },
+    {
+      "columns": 4,
+      "kind": "aggregate_sheet",
+      "name": "Field_RN60_CSI",
+      "path": "Field_RN60_CSI.csv",
+      "rows": 40,
+      "sha256": "e20befac99619f868ab4f362370e3932a8ecd57a122c60d0adc4dd4a75187f54"
+    },
+    {
+      "columns": 10,
+      "kind": "aggregate_sheet",
+      "name": "Field_RN60_CSI_delta_CI",
+      "path": "Field_RN60_CSI_delta_CI.csv",
+      "rows": 20,
+      "sha256": "9f300586dc6423a1aceb3b14e0c5fd8b6b1ca4318e298966e8d83c94041da2f6"
+    },
+    {
+      "kind": "aggregate_workbook",
+      "name": "Supplementary Data 1 public aggregate subset",
+      "path": "Supplementary_Data_1_public_aggregate.xlsx",
+      "sha256": "52d41588e7f23b0da09aec459a31b1d5147aca22252ea947988942187650eb69",
+      "sheet_count": 36
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "figure2_valid_time_readout.png",
+      "path": "figures/reference/figure2_valid_time_readout.png",
+      "sha256": "38fdc9db22723a4ae06ba2198a3d2fbb3467930fe1518c7e12595a10931abd0e"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "figure3_route_skill_and_contrasts.png",
+      "path": "figures/reference/figure3_route_skill_and_contrasts.png",
+      "sha256": "1b2aaa912ab3d5d7a70c483298fb9d9560132f204238954b609aa418a243aa2c"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "figure4_r2p_ablations.png",
+      "path": "figures/reference/figure4_r2p_ablations.png",
+      "sha256": "0a7a7746dbcc299d6cac6c4f250a28def338b04a9f8b6b2680aef1434f9430b0"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "figure5_heavy_rain_attenuation.png",
+      "path": "figures/reference/figure5_heavy_rain_attenuation.png",
+      "sha256": "fec8537d6cf99fb7d34693d73afbb13e194cd59cd3d9fec41234b9fa107ffe93"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "figure6_route_architecture.png",
+      "path": "figures/reference/figure6_route_architecture.png",
+      "sha256": "9620a98f1fa940b59704bb994082ef4f2149bda7ebb78a07c02e160f6f32459d"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "figureS1_allstation_distance_diagnostic.png",
+      "path": "figures/reference/figureS1_allstation_distance_diagnostic.png",
+      "sha256": "96533ba444c06082b2832c73e1045f395fd7c24a09c9c49b21a4090f439bfb9a"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "figureS4_native_field_verification.png",
+      "path": "figures/reference/figureS4_native_field_verification.png",
+      "sha256": "c68c840028f652483fadb1c0f7fdcee12d8690dc7d52fbea57e491c19e3552ac"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "table1_heldout_point_skill.png",
+      "path": "figures/reference/table1_heldout_point_skill.png",
+      "sha256": "1980433e010d962577239d55166b9f2e8cebe2ca3aa8f97ea75814a87cd78456"
+    }
+  ],
+  "schema": "r2p-4km10min-public-paper-audit-layer-v1",
+  "source_reader_manifest_sha256": "99290a7604229ccc981d7e9b9c24e007e4c43d3333ce4121f7e41d9ae8637192",
+  "source_supplementary_data_sha256": "386fba7b829ed482825658b074cd23d66898215c56b87f8e1f39e296a460c8ec",
+  "station_resolved_content_included": false
+}

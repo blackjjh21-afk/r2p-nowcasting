@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "direct-r2p-4km10min"
+version = "1.0.0"
+description = "Reference implementations and audit workflows for 4-km/10-min gauge-referenced precipitation nowcasting"
+readme = "README.md"
+authors = [
+  { name = "Jaehee Jung" },
+  { name = "Joon-Woo Roh", email = "neolegacy@gmail.com" },
+]
+requires-python = ">=3.12"
+dependencies = [
+  "numpy==1.26.4",
+  "pandas==2.2.2",
+  "matplotlib==3.8.4",
+  "tabulate==0.9.0",
+  "tifffile==2024.5.22",
+  "h5py==3.11.0",
+  "xarray==2023.6.0",
+  "pyproj==3.6.1",
+  "netCDF4==1.7.4",
+  "torch==2.6.0",
+]
+
+[project.optional-dependencies]
+# pySTEPS does not declare OpenCV because several motion backends are
+# optional, but this repository's frozen Lucas–Kanade route requires it.
+pysteps = ["pysteps==1.21.1", "opencv-python-headless==4.10.0.84"]
+paper = ["openpyxl==3.1.5", "cartopy==0.23.0"]
+test = ["pytest==7.4.4"]
+
+[project.scripts]
+r2p-4km10min = "r2p_4km10min.run_vanilla_r2p:main"
+r2p-radar-only = "evaluation.radar_only_comparison:main"
+r2p-station-dropout = "evaluation.station_dropout_comparison:main"
+prepare-kma-hsr-4km10min = "preprocessing.prepare_kma_hsr_4km10min:main"
+pysteps-4km10min = "pysteps_adapter.cli:main"
+patch-mlp-4km10min = "patch_mlp.workflow:main"
+exprecast-export-adapter = "exprecast_adapter.adapter:main"
+r2p-paper-figures = "paper_outputs.render_publication:main"
+r2p-restricted-figures = "paper_outputs.render_restricted:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

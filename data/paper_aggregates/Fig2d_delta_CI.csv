@@ -1,0 +1,9 @@
+family,threshold_mm,delta_csi_mean,ci_low,ci_high,bootstrap_reps,block,n_dates,interval
+center_mlp,1,-0.0067454575591577,-0.0125483413781199,-0.0011231715216258,5000,valid_time_date_kst,244,pointwise percentile 95%
+center_mlp,5,0.0497811523192972,0.030180321547613,0.0698486887730849,5000,valid_time_date_kst,244,pointwise percentile 95%
+center_mlp,10,0.13033003603772,0.1006236671108055,0.1585585623250937,5000,valid_time_date_kst,244,pointwise percentile 95%
+center_mlp,20,0.20422484058176,0.1802657320492534,0.2293109894957405,5000,valid_time_date_kst,244,pointwise percentile 95%
+patch_mlp,1,0.046167115097514,0.0419711823496069,0.0502768492223778,5000,valid_time_date_kst,244,pointwise percentile 95%
+patch_mlp,5,0.1170562606686818,0.0990873981847281,0.1344758901232574,5000,valid_time_date_kst,244,pointwise percentile 95%
+patch_mlp,10,0.2028244950766612,0.1725964032004291,0.2302445435875564,5000,valid_time_date_kst,244,pointwise percentile 95%
+patch_mlp,20,0.2549970849009996,0.2217799499646949,0.288617732157871,5000,valid_time_date_kst,244,pointwise percentile 95%

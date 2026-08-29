@@ -1,0 +1,3 @@
+Field source,3 × 3 Patch MLP (macro CSI; epoch),3 × 3 Patch CNN (macro CSI; epoch)
+exPreCast,0.21249; 39,0.19312; 38
+pySTEPS,0.16054; 45,0.15896; 29

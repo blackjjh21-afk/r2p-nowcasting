@@ -1,0 +1,73 @@
+{
+  "schema": "r2p-4km10min-route-registry-v1",
+  "registry_id": "field_first_vs_direct_4km10min_v1",
+  "routes": [
+    {
+      "route_id": "pysteps_patch_mlp",
+      "display_name": "pySTEPS + Patch MLP",
+      "role": "field_first_comparator",
+      "field_source": "pySTEPS",
+      "point_readout": "Patch MLP",
+      "patch_shape": [3, 3],
+      "uses_permitted_issuance_time_gauge_context": true,
+      "evaluated_station_support": "heldout128",
+      "notes": "Lucas-Kanade is an internal pySTEPS configuration detail and is omitted from the reader-facing name."
+    },
+    {
+      "route_id": "exprecast_patch_mlp",
+      "display_name": "exPreCast + Patch MLP",
+      "role": "field_first_comparator",
+      "field_source": "project_adapted_exprecast_i7_o18",
+      "point_readout": "Patch MLP",
+      "patch_shape": [3, 3],
+      "uses_permitted_issuance_time_gauge_context": true,
+      "evaluated_station_support": "heldout128",
+      "notes": "The project adaptation is distinguished from the official public checkpoint."
+    },
+    {
+      "route_id": "direct_r2p",
+      "display_name": "Direct R2P",
+      "role": "primary_direct_route",
+      "field_source": null,
+      "point_readout": null,
+      "uses_permitted_issuance_time_gauge_context": true,
+      "evaluated_station_support": "heldout128",
+      "notes": "Internal stride-2 and vanilla labels are omitted from reader-facing text."
+    },
+    {
+      "route_id": "direct_r2p_radar_only",
+      "display_name": "Direct R2P (radar-only)",
+      "role": "matched_input_ablation",
+      "parent_route_id": "direct_r2p",
+      "training": "none",
+      "same_checkpoint_within_seed": true,
+      "same_truth": true,
+      "same_axes": ["issue_time", "station", "lead"],
+      "masked_inputs": ["all_issuance_time_context_gauges"],
+      "uses_permitted_issuance_time_gauge_context": false,
+      "evaluated_station_support": "heldout128",
+      "notes": "All context gauges are masked at evaluation using the same checkpoint as Direct R2P within each seed."
+    },
+    {
+      "route_id": "direct_r2p_no_station_dropout",
+      "display_name": "Direct R2P (no station dropout)",
+      "role": "matched_training_control",
+      "parent_route_id": "direct_r2p",
+      "training": "separate fit with station masking probabilities set to zero",
+      "same_architecture": true,
+      "same_fitting_stations": true,
+      "same_objective_and_optimizer": true,
+      "uses_permitted_issuance_time_gauge_context": true,
+      "evaluated_station_support": "heldout128",
+      "notes": "The sole intended change from Direct R2P is disabling training-time station dropout."
+    }
+  ],
+  "retired_reader_labels": {
+    "pySTEPS-LK": "pySTEPS",
+    "selected long exPreCast": "exPreCast",
+    "Long exPreCast": "exPreCast",
+    "Context Patch MLP": "Patch MLP",
+    "Direct R2P (stride 2)": "Direct R2P",
+    "No-station-dropout R2P": "Direct R2P (no station dropout)"
+  }
+}

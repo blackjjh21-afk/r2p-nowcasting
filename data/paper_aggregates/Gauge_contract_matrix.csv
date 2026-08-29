@@ -1,0 +1,9 @@
+Evaluation setting,Route / experiment,Fitting set (n=514)—targets for fitting or selection,Held-out set (n=128)—targets for fitting or selection,Fitting set (n=514)—inputs at issuance,Held-out set (n=128)—inputs at issuance
+Valid-time diagnostic,Observed HSR + Fixed M–P,—,—,—,—
+Valid-time diagnostic,Observed HSR + Center/Patch MLP,RN60 targets,—,—,—
+Forecast route,pySTEPS + Patch MLP,RN60 targets¹,—,Fitting-station gauge context,—
+Forecast route,exPreCast + Patch MLP,RN60 targets¹,—,Fitting-station gauge context,—
+Forecast route,Direct R2P,RN60 targets,—,Fitting-station gauge context,—
+Input control,Radar-only²,RN60 targets,—,—,—
+Training control,No-station-dropout control³,RN60 targets,—,Fitting-station gauge context,—
+Transfer diagnostic,All-station R2P comparator⁴,RN60 targets,RN60 targets,All-station gauge context,Target-site gauge context

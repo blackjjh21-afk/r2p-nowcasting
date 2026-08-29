@@ -1,0 +1,8 @@
+Route / control,Fitting data,Selection,Final members,Objective / defining change
+pySTEPS field source,None; deterministic seven-frame optical-flow extrapolation,Fixed algorithmic baseline,One deterministic field forecast,Not applicable
+exPreCast field source,2019–2022 warm-season 4-km/10-min HSR,2023 native-grid RN60 macro CSI; epoch 10,One field checkpoint,Stabilized FACL; short-to-long transfer
+Patch MLP (both field sources),"2023 fitting-514 RN60; 2,887 issuance times",4 months × 3 station folds; macro CSI,"Three refits/source; epochs 45 (pySTEPS), 39 (exPreCast)",log1p(RN60) Smooth-L1; exact importance correction; unit range weights
+Direct R2P,2019–2022 fitting-514 stations,2023 fitting-514; raw macro CSI over 60–180 min and 1/5/10/20 mm,Three independent training runs; epochs 27/14/26,Normalized RN60 MSE; station dropout
+Radar-only inference,Direct R2P checkpoints; no retraining,Same checkpoints as Direct R2P,Same three Direct R2P checkpoints,All issuance-time gauge context masked
+No-station-dropout control,2019–2022 fitting-514 stations,2023 fitting-514; same raw macro CSI criterion,Three independent training runs; epochs 28/11/20,Direct R2P objective; station dropout disabled
+All-station R2P comparator,2019–2022 all 642 stations,2023 all-642; same raw macro CSI criterion,Three independent training runs; epochs 17/25/7,Direct R2P objective; target-site context visible; no dropout

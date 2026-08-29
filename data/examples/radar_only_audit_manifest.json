@@ -1,0 +1,73 @@
+{
+  "schema": "r2p-radar-only-public-audit-v1",
+  "status": "complete",
+  "scientific_contract_id": "r2p_4km10min_release_v1",
+  "routes": {
+    "standard": {
+      "route_id": "direct_r2p",
+      "display_name": "Direct R2P"
+    },
+    "radar_only": {
+      "route_id": "direct_r2p_radar_only",
+      "display_name": "Direct R2P (radar-only)"
+    }
+  },
+  "checkpoint_selection": {
+    "metric": "unweighted RN60 macro CSI",
+    "lead_minutes": [60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180],
+    "thresholds_mm": [1, 5, 10, 20],
+    "validation_support": "all issues with any fitting-station RN60 target >=0.1 mm, plus dry issues within 180 min of such an issue",
+    "validation_input_condition": {
+      "query_site_gauge_history": "available through issuance",
+      "station_dropout": "disabled"
+    },
+    "excluded_epochs": [1, 2, 3],
+    "selected_epochs_by_seed": {
+      "0": 27,
+      "1": 14,
+      "2": 26
+    }
+  },
+  "comparison": {
+    "estimand": "CSI(radar-only inference) - CSI(standard Direct R2P)",
+    "input_change": "all fitting-station issuance-time gauge histories additionally masked",
+    "training_change": "none; the selected checkpoint is identical within each seed",
+    "issue_count": 35088,
+    "issuance_date_count": 244,
+    "heldout_station_count": 128,
+    "lead_minutes": [60, 90, 120, 150, 180],
+    "thresholds_mm": [1, 5, 10, 20],
+    "member_count": 3,
+    "seed_summary": "arithmetic mean of seed-level CSI",
+    "missing_rule": "paired finite prediction and truth values only",
+    "pooling_rule": "pool hits, misses and false alarms over common issue-time and station support within each seed"
+  },
+  "bootstrap": {
+    "unit": "issuance date",
+    "replicates": 50000,
+    "random_seed": 20260820,
+    "confidence_level": 0.95,
+    "interval": "pointwise percentile; not multiplicity adjusted",
+    "weights_sha256": "aa36a74cec38fa2ef6ec1c0eba774c2541b0be62221ab3fd9a20705173c68474"
+  },
+  "private_input_audit": {
+    "truth_exact_equal_across_modes_and_seeds": true,
+    "checkpoint_exact_match_within_seed": true,
+    "checkpoint_sha256_by_seed": {
+      "0": "88cb82c715dd1b03283d3e65453b3cf728152ba1414c708c6c9573f3367bb2a3",
+      "1": "5a31dadc3dc21a11d5c7fd6e4c22faea125ee716474751bfb0ab64d2039e17bd",
+      "2": "98bc43b7de9ebfa4e15fa3b4750d9ab8fe08eb0e8a30dd57fc3e78ddb78f5fbe"
+    },
+    "truth_sha256": "3dd2ca0428595b54b5acf8c4b29750b1198655e1b1210575023a4d590345edc4"
+  },
+  "outputs": {
+    "data/examples/radar_only_csi_by_lead_threshold.csv": "d739a7e9a54f1b79fe7a2be24ed1af1f96cc09dfecf8b68ff6279249ea066479",
+    "figures/fig4a_radar_only_same_checkpoint_4km10min.png": "3a9207b6ac76beefc6396e3d3e37af1d0354bd46ae85b013e51c429e32d6a97c",
+    "figures/fig4a_radar_only_same_checkpoint_4km10min.pdf": "69f7f79fd34bc9385187caa2feea00686a46cdafcdc65f32081b862e68069c82"
+  },
+  "summary": {
+    "cell_count": 20,
+    "cells_with_pointwise_interval_excluding_zero": 4,
+    "maximum_absolute_delta_csi": 0.0029488108685803427
+  }
+}

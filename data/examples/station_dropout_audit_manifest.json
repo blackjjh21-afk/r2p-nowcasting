@@ -1,0 +1,86 @@
+{
+  "schema": "r2p-station-dropout-public-audit-v1",
+  "status": "complete",
+  "scientific_contract_id": "r2p_4km10min_release_v1",
+  "routes": {
+    "station_dropout": {
+      "route_id": "direct_r2p",
+      "display_name": "Direct R2P"
+    },
+    "no_station_dropout": {
+      "route_id": "direct_r2p_no_station_dropout",
+      "display_name": "Direct R2P (no station dropout)"
+    }
+  },
+  "checkpoint_selection": {
+    "metric": "unweighted RN60 macro CSI",
+    "lead_minutes": [60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180],
+    "thresholds_mm": [1, 5, 10, 20],
+    "validation_support": "all issues with any fitting-station RN60 target >=0.1 mm, plus dry issues within 180 min of such an issue",
+    "excluded_epochs": [1, 2, 3],
+    "selected_epochs_by_route_and_seed": {
+      "direct_r2p": {
+        "0": 27,
+        "1": 14,
+        "2": 26
+      },
+      "direct_r2p_no_station_dropout": {
+        "0": 28,
+        "1": 11,
+        "2": 20
+      }
+    }
+  },
+  "comparison": {
+    "estimand": "CSI(Direct R2P) - CSI(Direct R2P without station dropout)",
+    "training_change": "station masking enabled versus disabled in separately trained three-member routes",
+    "other_intended_training_changes": "none",
+    "issue_count": 35088,
+    "issuance_date_count": 244,
+    "heldout_station_count": 128,
+    "lead_minutes": [60, 90, 120, 150, 180],
+    "thresholds_mm": [1, 5, 10, 20],
+    "member_count_per_route": 3,
+    "seed_summary": "arithmetic mean of seed-level CSI",
+    "missing_rule": "paired finite prediction and truth values only",
+    "pooling_rule": "pool hits, misses and false alarms over common issue-time and station support within each seed",
+    "prediction_numeric_contract": "float16 round-trip before thresholding"
+  },
+  "bootstrap": {
+    "unit": "issuance date",
+    "replicates": 50000,
+    "random_seed": 20260820,
+    "confidence_level": 0.95,
+    "interval": "pointwise percentile; not multiplicity adjusted",
+    "weights_sha256": "aa36a74cec38fa2ef6ec1c0eba774c2541b0be62221ab3fd9a20705173c68474"
+  },
+  "private_input_audit": {
+    "scientific_contracts_matched_except_station_dropout": true,
+    "truth_exact_equal_across_routes_and_seeds": true,
+    "truth_sha256": "3dd2ca0428595b54b5acf8c4b29750b1198655e1b1210575023a4d590345edc4",
+    "checkpoint_sha256_by_route_and_seed": {
+      "direct_r2p": {
+        "0": "88cb82c715dd1b03283d3e65453b3cf728152ba1414c708c6c9573f3367bb2a3",
+        "1": "5a31dadc3dc21a11d5c7fd6e4c22faea125ee716474751bfb0ab64d2039e17bd",
+        "2": "98bc43b7de9ebfa4e15fa3b4750d9ab8fe08eb0e8a30dd57fc3e78ddb78f5fbe"
+      },
+      "direct_r2p_no_station_dropout": {
+        "0": "7d8241857d7efab8567dfb58544b112f561b31ba719d7f4d5d072ad017a139aa",
+        "1": "46e632299de95eb2888e7528eda9f1d9c22ecab377b50d958389cd5a16a9f312",
+        "2": "2a1cebfe61a2115974a4360cb7795138fbe919ff51d487cebff7e7d338e6501a"
+      }
+    }
+  },
+  "outputs": {
+    "data/examples/station_dropout_csi_by_lead_threshold.csv": "4a4fbbc0eab02d69cc50777942841d68401f7301aebce65bb023669c4d8b81fe",
+    "figures/fig4b_station_dropout_training_ablation.png": "3adc2b599ef2cdc7f5ce34739793cc7890b6185f51cddece9f34b7a663896cf7",
+    "figures/fig4b_station_dropout_training_ablation.pdf": "9d571a9f909d5a29f68f1e0085cd69d463691c6a9a6ccd3147ac2beb1d1b6a23"
+  },
+  "summary": {
+    "cell_count": 20,
+    "cells_with_positive_point_estimate": 20,
+    "cells_with_pointwise_interval_excluding_zero": 18,
+    "minimum_delta_csi": 0.0003953737019278,
+    "maximum_delta_csi": 0.0702449733824515
+  }
+}

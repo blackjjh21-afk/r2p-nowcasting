@@ -1,0 +1,9 @@
+threshold_mm,comparison,stations_left_higher,stations_equal,stations_left_lower,stations_total,median_stationwise_csi_difference,mean_stationwise_csi_difference
+1,Direct R2P > exPreCast + Patch MLP,59,0,69,128,-0.0020235372881378,-0.0027350121822026
+1,exPreCast + Patch MLP > pySTEPS + Patch MLP,128,0,0,128,0.0446692906843245,0.0462685090001182
+5,Direct R2P > exPreCast + Patch MLP,125,0,3,128,0.0539869251918801,0.0551431350534324
+5,exPreCast + Patch MLP > pySTEPS + Patch MLP,127,0,1,128,0.0621203574945699,0.0695657882750342
+10,Direct R2P > exPreCast + Patch MLP,126,0,2,128,0.0834395424984888,0.0819623411780877
+10,exPreCast + Patch MLP > pySTEPS + Patch MLP,127,0,1,128,0.0482894519418519,0.0531302857669272
+20,Direct R2P > exPreCast + Patch MLP,118,1,9,128,0.0652925744909573,0.0635674825070852
+20,exPreCast + Patch MLP > pySTEPS + Patch MLP,109,4,15,128,0.0210103990825336,0.028658592862632
