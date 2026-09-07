@@ -1,17 +1,18 @@
 # Where historical gauge supervision enters radar-based precipitation nowcasting for gauge-referenced point accumulation
 
-Release-ready public code package for the 4-km/10-min experiments.
+Published public code package for the 4-km/10-min experiments.
 
-This directory is the non-destructive public-release root prepared for the
-4-km/10-min experiments. It is staged independently from the legacy analysis
-package and the private research workspace. The scientific contract is
+This directory is the source tree for the published 4-km/10-min public
+release. It is maintained independently from the legacy analysis package and
+the private research workspace. The scientific contract is
 frozen in [`configs/scientific_contract_4km10min.json`](configs/scientific_contract_4km10min.json),
 and the reader-facing route names are frozen in
 [`configs/route_registry.json`](configs/route_registry.json).
 
-> **Release status:** scientific artifacts, the BSD-3-Clause repository
-> license, the responsible-author KMA redistribution decision and final
-> citation metadata are complete. The software release DOI is
+> **Release status:** version 1.0.0 was published on GitHub and archived on
+> Zenodo on 2026-08-29. The scientific artifacts, BSD-3-Clause repository
+> license, responsible-author KMA redistribution decision and final citation
+> metadata are complete. The software release DOI is
 > [doi:10.5281/zenodo.22147192](https://doi.org/10.5281/zenodo.22147192).
 
 ## Scientific question
@@ -69,7 +70,7 @@ listed above.
 
 ## Current reproducibility scope
 
-This candidate is not a self-contained raw-data reproduction package. Its
+This release is not a self-contained raw-data reproduction package. Its
 current capabilities are:
 
 | Task | Current status |
@@ -91,11 +92,11 @@ components explicitly listed above; raw-to-paper reproduction also depends on
 the external upstream exPreCast export and private-input tuple construction
 identified in the status table. Raw KMA observations, prepared radar archives, gauge time series,
 pretrained exPreCast artifacts, project checkpoints, and full prediction
-arrays are not part of this candidate. See
+arrays are not part of this release. See
 [`docs/DATA_POLICY.md`](docs/DATA_POLICY.md) and
 [`RELEASE_STATUS.md`](RELEASE_STATUS.md).
 
-## Candidate layout
+## Release layout
 
 ```text
 release_4km10min/
@@ -112,8 +113,8 @@ release_4km10min/
 └── environment.yml
 ```
 
-The status file is authoritative: a file appearing in this candidate does not
-by itself mean that it has passed release review.
+[`RELEASE_STATUS.md`](RELEASE_STATUS.md) records the audited status and scope
+of the published release.
 
 ## Implemented public components
 
@@ -150,7 +151,7 @@ by itself mean that it has passed release review.
   Unknown columns are rejected rather than silently copied.
 - `scripts/finalize_fig6_architecture.py`: exact renderer for the included
   editable Figure 6 source; Office author metadata and volatile timestamps are
-  scrubbed before publication.
+  scrubbed when release assets are generated.
 - `src/preprocessing/prepare_kma_hsr_4km10min.py`: the exact provider-format
   500-m HSR to normalized 4-km exPreCast transform, including source decoding,
   coordinate audit, missing-frame accounting, and reproducibility manifests.
@@ -192,7 +193,7 @@ python scripts/audit_release.py
 ```
 
 Staging must finish with no errors, and generated caches must be removed before
-a clean audit. Before publishing, run the stricter gate:
+a clean audit. To verify a release, run the stricter gate:
 
 ```bash
 python scripts/audit_release.py --release-ready
@@ -205,7 +206,7 @@ repository and Supplementary Data 1 scopes are recorded in
 `DATA_REDISTRIBUTION_DECISION.md`. The audit also rejects machine-specific paths,
 credential-like content, caches, symlinks, model/data archives, oversized
 files, dirty notebook outputs, and drift in either frozen JSON contract. No
-notebooks are distributed in this candidate; the supported workflows are
+notebooks are distributed in this release; the supported workflows are
 command-line interfaces.
 
 ## Evaluation conventions
