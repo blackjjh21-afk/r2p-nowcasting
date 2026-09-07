@@ -1,16 +1,17 @@
 # 4-km/10-min release status
 
-Status: **local v1.0.0 package is release-ready; external publication remains an author action**.
+Status: **v1.0.0 was published on GitHub and archived on Zenodo on 2026-08-29**.
 
-This directory is the audited root intended for the public repository. The old
+This directory is the audited source root of the public release. The old
 2-km/5-min package is retained outside this release as legacy provenance.
 
 ## Release metadata
 
 `CITATION.cff` records version 1.0.0, the 29 August 2026 release date, both
-authors and ORCIDs, the public repository, and reserved software DOI
-10.5281/zenodo.22147192. Publishing the audited tree and `v1.0.0` tag and
-publishing the corresponding Zenodo draft are external author actions.
+authors and ORCIDs, the public repository, and published software DOI
+10.5281/zenodo.22147192. The audited tree and `v1.0.0` release were published
+on GitHub, and the corresponding software archive was published on Zenodo, on
+29 August 2026.
 
 The approved BSD-3-Clause `LICENSE` and dated responsible-author
 `DATA_REDISTRIBUTION_DECISION.md` are installed. Station-resolved material
@@ -43,7 +44,7 @@ self-contained raw-KMA-to-paper reproduction.
 - [x] Final no-dropout checkpoint set and dependent manuscript artifacts frozen.
 - [x] No-station-dropout result finalized and audited across all three seeds.
 
-## Required pre-publication checks
+## Completed publication checks
 
 The checks below were rerun after the final station-dropout aggregate, paper
 output synchronization, and author-approved release metadata were installed.
@@ -130,4 +131,4 @@ Verification date: **2026-08-29**.
 - Public exPreCast (+60-min checkpoint) is not part of the +180-min matched
   three-route comparison.
 - Private storage-mount, user-home and server-specific paths must never appear
-  in the public candidate.
+  in the public release.
