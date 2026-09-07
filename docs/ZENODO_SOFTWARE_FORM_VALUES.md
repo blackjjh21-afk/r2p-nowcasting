@@ -12,7 +12,7 @@
 - License: BSD-3-Clause for author-generated software; third-party and KMA materials remain under their own terms.
 - Related identifier: https://github.com/blackjjh21-afk/r2p-nowcasting (is version of)
 - Funding: Korea Meteorological Administration, RS-2023-00239653
-- Recommended first stable version: 1.0.0
+- Published version: 1.0.0
 
 The DOI above is installed in `CITATION.cff` and in the manuscript Code
 availability statement for release `v1.0.0`.

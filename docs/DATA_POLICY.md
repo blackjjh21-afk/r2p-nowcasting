@@ -17,7 +17,7 @@ observations and station-resolved derivatives.
 These files can be reconstructed or mounted by an authorized user, but they
 must remain ignored by version control.
 
-## Permitted public audit layer, subject to final author review
+## Public audit layer
 
 - Scientific contracts and array schemas containing no observations.
 - Aggregate categorical counts and metrics over the frozen evaluation support.
@@ -27,10 +27,10 @@ must remain ignored by version control.
   not expose a credential or confidential filename.
 - Truth-free lists of relative lead values and anonymous array dimensions.
 
-## Required author decisions: repository and Supplementary Data 1
+## Approved repository and Supplementary Data 1 scopes
 
-Do not copy the following into the candidate until the authors document both
-the source-product terms and the intended public representation:
+Under the recorded repository decision, the following station-resolved
+materials are excluded from this public source repository:
 
 - KMA station identifiers and names;
 - station latitude/longitude coordinates;
@@ -39,8 +39,7 @@ the source-product terms and the intended public representation:
 - stationwise metrics, maps, case totals or time series;
 - exact issue-time lists if joined to station-resolved outcomes.
 
-For the public GitHub repository, the decision record must approve one of two
-outcomes:
+The decision framework allowed either of two repository outcomes:
 
 1. **Minimal redistribution approved.** Publish only the fields needed for
    audit, record provenance and attribution, and remove operational or
@@ -48,20 +47,16 @@ outcomes:
 2. **Public redistribution excluded.** Publish schemas and synthetic examples
    only, and keep the exact contract in an authorized archive.
 
-Both are valid repository decisions. Separately, because the complete
-Supplementary Data 1 is intended to distribute selected-case time series,
-stationwise verification metrics, held-out-station identifiers/names/
-coordinates and distance groups through the journal and/or a permanent data
-archive, the same record must explicitly approve the named sheets and fields
-in that derived station-resolved scope. Repository exclusion does not imply
-archive exclusion, and archive approval does not authorize station-resolved
-files in GitHub. Until both scopes are signed, publication remains blocked.
+Both are valid repository decisions. The authors selected public repository
+exclusion for station-resolved material and separately approved the named
+derived sheets in Supplementary Data 1 for journal and permanent-archive
+distribution. Repository exclusion does not imply archive exclusion, and
+archive approval does not authorize station-resolved files in GitHub.
 
-Record the final choice in `DATA_REDISTRIBUTION_DECISION.md` at the repository
-root using these machine-auditable fields. An author-fillable conservative
-draft is available at
-`docs/templates/DATA_REDISTRIBUTION_DECISION.md.in`; the template is not an
-approval record and must remain outside the repository root until reviewed.
+The final choices and source-product terms are recorded in the machine-auditable
+`DATA_REDISTRIBUTION_DECISION.md` at the repository root. The non-operative
+template at `docs/templates/DATA_REDISTRIBUTION_DECISION.md.in` is retained for
+future revisions and does not supersede the signed root record.
 
 ```text
 repository_decision: minimal_redistribution_approved
@@ -76,15 +71,10 @@ accessed: YYYY-MM-DD
 terms_reference: TERMS TITLE OR URL REVIEWED BY THE AUTHORS
 ```
 
-The alternative repository decision value is
-`public_redistribution_excluded`. The Supplementary Data 1 decision must be
-`derived_station_resolved_archive_approved` unless the associated manuscript
-and data-availability promises are first changed. The final
-record must also identify the KMA source product, its official access URL, the
-date on which it was accessed, and the applicable access or redistribution
-terms (including a terms URL when available). Do not add this record until the
-responsible author has reviewed and approved both the choice and that
-provenance.
+The root record uses `public_redistribution_excluded` for the repository and
+`derived_station_resolved_archive_approved` for Supplementary Data 1. It also
+identifies the KMA source products, official access URLs, access date and terms
+reviewed by the responsible author.
 
 ## User-supplied prepared inputs
 

@@ -73,7 +73,7 @@ Year,Month,Day,Hour,Minute,RN60_100001,RN15_100001
 
 Omitting `--allow-unfrozen-contract` checks byte-level hashes for the exact
 paper mapping, metadata and split files; these files are not redistributed by
-this candidate. `--allow-unfrozen-contract` disables those three hash checks
+this release. `--allow-unfrozen-contract` disables those three hash checks
 but does not relax the 642-row, 514/128 split, grid-support or schema checks.
 Any such replacement is a new, explicitly documented station/data contract,
 not an exact reproduction of the paper split.

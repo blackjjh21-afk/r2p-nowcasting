@@ -94,9 +94,9 @@ The Cartopy directory must contain the Natural Earth 10m land, ocean,
 coastline and national-boundary shapefiles.  The command validates these files
 before rendering and never downloads them implicitly.
 
-This split is deliberate.  It exposes the final transformations while keeping
-station-resolved KMA-derived inputs outside the candidate until the author
-decision described in `docs/DATA_POLICY.md` is recorded.  It does not turn the
-release into a raw-KMA-to-paper reproduction package: upstream exPreCast
+This split is deliberate. It exposes the final transformations while keeping
+station-resolved KMA-derived inputs outside the public repository under the
+approved scope recorded in `DATA_REDISTRIBUTION_DECISION.md`. It does not turn
+the release into a raw-KMA-to-paper reproduction package: upstream exPreCast
 training/export and construction of the private Patch MLP tuple cache remain
 separate authorized-input workflows.

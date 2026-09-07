@@ -2,6 +2,10 @@
 
 Status: **v1.0.0 was published on GitHub and archived on Zenodo on 2026-08-29**.
 
+Documentation-only correction, 2026-09-07: release-state wording was updated
+after publication. The software version, DOI, executable behavior, scientific
+settings, numerical data and figures are unchanged.
+
 This directory is the audited source root of the public release. The old
 2-km/5-min package is retained outside this release as legacy provenance.
 
@@ -77,10 +81,9 @@ output synchronization, and author-approved release metadata were installed.
 - [x] Finalize and audit the no-station-dropout control.
 - [x] Refresh `configs/artifact_manifest.csv` for every current aggregate,
       reference figure and registered workflow artifact.
-- [x] Review README claims against the manuscript. The manuscript's current
-      promise of all figure-generation code must either be narrowed to the
-      documented release scope or satisfied by extracting the remaining
-      figure/table workflows before publication.
+- [x] Reconcile README and manuscript code-availability claims with the
+      documented release scope, including the distinction between public
+      aggregate rendering and authorized-input workflows.
 - [x] Add schema-bound public aggregate CSV/XLSX sources, reference renderings,
       public/authorized-input display code and the exact editable-source Fig. 6
       finalizer; document their distinct reproducibility levels.
@@ -91,7 +94,7 @@ output synchronization, and author-approved release metadata were installed.
 
 ## Latest verification
 
-Verification date: **2026-08-29**.
+Verification date: **2026-09-07**.
 
 - Synthetic, renderer and contract tests: **59 passed**.
 - Wheel: `direct_r2p_4km10min-1.0.0-py3-none-any.whl` was built and installed

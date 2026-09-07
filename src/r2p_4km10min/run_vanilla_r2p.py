@@ -185,7 +185,7 @@ def resolve_paths(args: argparse.Namespace) -> dict[str, Path]:
         "gauge": args.gauge_csv.resolve(),
         "split": args.split_csv.resolve(),
         # Real station identifiers and coordinates are not redistributed in
-        # this public source candidate.  Both contracts are therefore explicit
+        # this public source release.  Both contracts are therefore explicit
         # command-line inputs instead of silently resolving to an author path.
         "mapping": args.mapping_csv.resolve(),
         "stations": args.stations_csv.resolve(),

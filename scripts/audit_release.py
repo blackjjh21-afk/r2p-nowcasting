@@ -965,7 +965,7 @@ def audit_tree(root: Path, release_ready: bool = False) -> Report:
     for path in _iter_files(root):
         relative = _relative(path, root)
         if path.is_symlink():
-            report.error("symlink", relative, "release candidates must not contain symlinks")
+            report.error("symlink", relative, "release trees must not contain symlinks")
             continue
         if any(part in CACHE_DIR_NAMES for part in path.parts):
             report.error("cache", relative, "cache artifacts must not be released")

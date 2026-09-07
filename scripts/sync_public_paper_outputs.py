@@ -109,8 +109,8 @@ SAFE_SHEET_HEADERS = {
 }
 
 # These manuscript assets contain no station identifiers, coordinates or
-# station-time observations.  Fig. 1 and Supplementary Figs. S2/S3 are omitted
-# pending the separate station-artifact redistribution decision.
+# station-time observations. Fig. 1 and Supplementary Figs. S2/S3 are omitted
+# under the recorded repository redistribution decision.
 SAFE_REFERENCE_ASSETS = {
     "02_Figure_2_valid_time_readout.png": "figure2_valid_time_readout.png",
     "03_Figure_3_route_skill_and_contrasts.png": "figure3_route_skill_and_contrasts.png",

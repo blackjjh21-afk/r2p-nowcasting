@@ -1,7 +1,7 @@
 {
   "schema": "r2p-4km10min-scientific-contract-v1",
   "contract_id": "r2p_4km10min_release_v1",
-  "status": "frozen_release_candidate",
+  "status": "frozen_release",
   "time": {
     "project_timezone": "Asia/Seoul",
     "evaluation_months": [6, 7, 8, 9],

@@ -33,7 +33,7 @@ same-checkpoint radar-only sensitivity, not a newly trained model.
 
 The runner expects prepared 4-km TIFFs, the gauge CSV, the 514/128 split, the
 station metadata table, and the station-to-TIFF-grid mapping. Real station
-records are not included in this source candidate. See `contracts/README.md`.
+records are not included in this source release. See `contracts/README.md`.
 
 The commands below use the repository-relative private layout documented in
 `docs/DATA_POLICY.md` and pass every scientific input explicitly. Run them from

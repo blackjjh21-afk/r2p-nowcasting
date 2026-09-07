@@ -99,7 +99,7 @@ arrays are not part of this release. See
 ## Release layout
 
 ```text
-release_4km10min/
+r2p-nowcasting/
 ├── configs/                 # frozen scientific and route contracts
 ├── docs/                    # data and release policy
 ├── data/paper_aggregates/   # compact aggregate paper sources

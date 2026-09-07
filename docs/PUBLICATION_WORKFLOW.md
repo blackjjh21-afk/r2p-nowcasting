@@ -1,19 +1,18 @@
-# Publication workflow
+# Release verification and archive workflow
 
-The contents of `release_4km10min/` are the root of the new public
-repository. Do not publish the parent `github/` directory: it contains the
-legacy 2-km/5-min package and private-project history that are outside this
-paper's release contract.
+This repository is the audited source root of the public 4-km/10-min release.
+Legacy packages and private-project history remain outside its release
+contract.
 
-## 1. Complete release metadata
+## 1. Release metadata
 
 The approved BSD-3-Clause `LICENSE` and responsible-author
-`DATA_REDISTRIBUTION_DECISION.md` are installed. Reserve the archived software
-DOI, then create `CITATION.cff` from `docs/templates/CITATION.cff.in` with the
-final repository URL, version, release date and DOI. Omit `preferred-citation`
-until the paper citation is final.
+`DATA_REDISTRIBUTION_DECISION.md` are installed. `CITATION.cff` records the
+public repository URL, version 1.0.0, release date and published software DOI
+`10.5281/zenodo.22147192`. `preferred-citation` remains omitted until the
+associated paper citation is final.
 
-The conservative repository decision matches the staged tree: station identifiers,
+The conservative repository decision matches the published tree: station identifiers,
 coordinates, split tables, stationwise values and case time series are not
 redistributed through GitHub. The separate Supplementary Data 1 decision covers
 the exact named derived sheets intended for the journal/archive, including
@@ -48,33 +47,28 @@ paths) because manuscript data and editable Figure 6 assets are checkout
 artifacts rather than wheel package data. Do not commit `build/`, `dist/`,
 `*.egg-info`, caches or local environments.
 
-## 3. Create the public repository and archive
+## 3. Verify the published repository and archive
 
-1. Copy the *contents* of this directory into the existing public repository
-   at <https://github.com/blackjjh21-afk/r2p-nowcasting>; this directory, not
-   its parent `github/`, is the repository root.
-2. Keep the version in `pyproject.toml`, the CFF version and the intended tag
-   identical. Commit the audit-clean tree, create the annotated `v1.0.0` tag,
-   push the branch and tag, and create the GitHub release.
-3. Create an archive from that exact tag. Upload it manually to the existing
-   Zenodo software draft that reserved DOI `10.5281/zenodo.22147192`; do not
-   enable automatic GitHub--Zenodo archiving for this first release because it
-   could create a second record instead of using the reserved DOI.
-4. Publish the software and data Zenodo drafts and verify that both DOI links
-   resolve before submitting the manuscript.
+Version 1.0.0 is published at
+<https://github.com/blackjjh21-afk/r2p-nowcasting/releases/tag/v1.0.0> and
+archived at <https://doi.org/10.5281/zenodo.22147192>. The version in
+`pyproject.toml`, the CFF version, the Git tag and the Zenodo record must remain
+identical. The Zenodo software record was populated manually, so automatic
+GitHub--Zenodo archiving remains disabled to avoid creating a duplicate record.
 
-Illustrative commands after cloning the existing repository into a clean
-working directory and copying this release tree into its root:
+Generate the two Zenodo files from the exact audited tag in a clean working
+directory:
 
 ```bash
-git add .
-git commit -m "Release v1.0.0 reproducibility package"
-git push origin main
-git tag -a v1.0.0 -m "v1.0.0"
-git push origin v1.0.0
 git archive --format=zip --prefix=r2p-nowcasting-1.0.0/ \
   --output=r2p-nowcasting-v1.0.0.zip v1.0.0
+sha256sum r2p-nowcasting-v1.0.0.zip \
+  > r2p-nowcasting-v1.0.0.zip.sha256
 ```
 
-External publication is deliberately not automated by this repository because
-it changes public state and requires the authors' GitHub and Zenodo accounts.
+After an approved documentation-only correction, rerun every gate above,
+update the mutable `v1.0.0` tag to the audited commit, regenerate both files,
+replace them through Zenodo's published-file editing workflow, and republish
+the existing record without changing its DOI or version. GitHub and Zenodo
+publication actions require the authors' authenticated accounts and are not
+automated by this repository.

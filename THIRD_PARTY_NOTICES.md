@@ -26,7 +26,7 @@ software or conclusions. Users must obtain the exact source products through
 their own account or authorization and comply with the terms that apply to
 those products. API credentials are never distributed. Raw KMA observations,
 prepared 4-km TIFF archives, station-time gauge arrays and full-grid forecast
-archives are excluded from this candidate.
+archives are excluded from this release.
 
 Suggested Korean attribution for HSR:
 
@@ -62,7 +62,7 @@ Changhoon Song, Teng Yuan Chang and Youngjoon Hong:
 - audited upstream revision: `092922c126bdf6098fbda2e08b2f1f3b2873bd9a`
 
 No official exPreCast source files or pretrained checkpoints are redistributed
-in this candidate. At the audited revision, the upstream repository did not
+in this release. At the audited revision, the upstream repository did not
 provide an explicit software or model-artifact license; users must obtain the
 materials from the upstream authors and determine whether their intended use
 is permitted.
