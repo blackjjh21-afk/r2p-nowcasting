@@ -198,8 +198,8 @@ def render_figure2(data: Path, output: Path) -> tuple[Path, Path]:
     ax.set(xticks=np.arange(4), xticklabels=["1", "5", "10", "20"], ylim=(0, 1.3),
            xlabel="Threshold (mm)", ylabel="CSI (bars)")
     ax2.set(
-        ylim=(0, 1.8),
-        yticks=np.arange(0.0, 1.41, 0.2),
+        ylim=(0, 1.5),
+        yticks=np.arange(0.0, 1.21, 0.2),
         ylabel="Frequency bias (lines)",
     )
     ax2.legend(

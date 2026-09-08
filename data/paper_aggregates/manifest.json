@@ -320,7 +320,7 @@
       "kind": "reference_rendering",
       "name": "figure2_valid_time_readout.png",
       "path": "figures/reference/figure2_valid_time_readout.png",
-      "sha256": "e16404be7e11e1d4f86254973e4a5bdba6f147fa47336f2a517b7aa882ffcfc8"
+      "sha256": "d148870e63d53726e6a1ed7259786cb2c52526416809d6f69beb67a3e692a1db"
     },
     {
       "kind": "reference_rendering",
@@ -366,7 +366,7 @@
     }
   ],
   "schema": "r2p-4km10min-public-paper-audit-layer-v1",
-  "source_reader_manifest_sha256": "e2669fee24b18acbcf22360c55354f85b4fae9b91b718ad00abf64ac6e10aabe",
+  "source_reader_manifest_sha256": "9230427b069ea9c65c9d5fe50f4fb2651162daf2541a1c8936965767143d2135",
   "source_supplementary_data_sha256": "6b70c3215f9a95744c9b8d47a5974191f283b65f4b7e005fb605e962a06eeb2d",
   "station_resolved_content_included": false
 }

@@ -17,7 +17,7 @@ from paper_outputs.render_publication import (
     render_figure_s4,
     render_table1,
 )
-from paper_outputs import render_restricted
+from paper_outputs import render_publication, render_restricted
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -72,6 +72,25 @@ def test_all_public_aggregate_renderers(tmp_path: Path) -> None:
         png, pdf = renderer()
         assert png.is_file() and png.stat().st_size > 5_000
         assert pdf.is_file() and pdf.stat().st_size > 1_000
+
+
+def test_figure2_frequency_bias_axis_spacing(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def inspect_and_close(figure, _output):
+        axis = next(
+            axis for axis in figure.axes
+            if axis.get_ylabel() == "Frequency bias (lines)"
+        )
+        assert axis.get_ylim() == (0.0, 1.5)
+        np.testing.assert_allclose(axis.get_yticks(), np.arange(0.0, 1.21, 0.2))
+        # The unit-bias reference now occupies the former 1.2 / 1.8 height.
+        assert 1.0 / axis.get_ylim()[1] == pytest.approx(1.2 / 1.8)
+        render_publication.plt.close(figure)
+        return tmp_path / "figure2.png", tmp_path / "figure2.pdf"
+
+    monkeypatch.setattr(render_publication, "save", inspect_and_close)
+    render_figure2(ROOT / "data/paper_aggregates", tmp_path)
 
 
 def _station_split() -> pd.DataFrame:
