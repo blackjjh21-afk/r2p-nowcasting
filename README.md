@@ -1,30 +1,30 @@
 # Where historical gauge supervision enters radar-based precipitation nowcasting for gauge-referenced point accumulation
 
-Published public code package for the 4-km/10-min experiments.
+Public code package for the 4-km/10-min CNN readout experiments.
 
-This directory is the source tree for the published 4-km/10-min public
+This directory is the source tree for the CNN revision of the 4-km/10-min public
 release. It is maintained independently from the legacy analysis package and
 the private research workspace. The scientific contract is
 frozen in [`configs/scientific_contract_4km10min.json`](configs/scientific_contract_4km10min.json),
 and the reader-facing route names are frozen in
 [`configs/route_registry.json`](configs/route_registry.json).
 
-> **Release status:** version 1.0.0 was published on GitHub and archived on
-> Zenodo on 2026-08-29. The scientific artifacts, BSD-3-Clause repository
-> license, responsible-author KMA redistribution decision and final citation
-> metadata are complete. The software release DOI is
-> [doi:10.5281/zenodo.22147192](https://doi.org/10.5281/zenodo.22147192).
+> **Release status:** the current CNN revision is prepared as version 1.1.0.
+> Version 1.0.0, published on 2026-08-29, remains available at
+> [its historical software DOI](https://doi.org/10.5281/zenodo.22147192).
+> That archived version does not contain the current CNN results. A new
+> Zenodo version is required to archive this revision.
 
 ## Scientific question
 
 The paper first holds observed HSR fixed at the target valid time and asks how
 much of the fixed field-to-point readout deficit can be recovered by
-gauge-supervised Center and Patch MLP readouts. It then compares a direct
+gauge-supervised MLP and CNN readouts. It then compares a direct
 radar-to-point route with two complete field-first routes on exactly the same
 held-out stations, issue times, gauge truth and reported leads:
 
-- **pySTEPS + Patch MLP**
-- **exPreCast + Patch MLP**
+- **pySTEPS + CNN**
+- **exPreCast + CNN**
 - **Direct R2P**
 
 The forecast-route comparison asks whether Direct R2P can forecast
@@ -56,7 +56,7 @@ gauge-RN60 verification axes at the five paper-facing leads.
 ## Route definitions
 
 The two field-first routes pair different upstream field sources with
-separately fitted instances of the same Patch MLP architecture under a matched
+separately fitted instances of the same CNN architecture under a matched
 fitting and evaluation protocol. Each readout uses a local 3 x 3 forecast patch
 sequence and permitted issuance-time gauge context to predict station RN60.
 `Direct R2P` receives the common radar history and its permitted context
@@ -64,7 +64,7 @@ directly. The 128 evaluation stations are excluded from model fitting and
 checkpoint selection.
 
 Internal experiment names such as `pySTEPS-LK`, `selected long exPreCast`,
-`Context Patch MLP`, and `Direct R2P (stride 2)` are provenance details, not
+`Context CNN`, and `Direct R2P (stride 2)` are provenance details, not
 reader-facing route names. Public figures and tables use the simplified names
 listed above.
 
@@ -79,7 +79,7 @@ current capabilities are:
 | Inspect and hash-audit the bundled Direct R2P radar-only and station-dropout aggregates and reference renderings | Available; recomputation and re-rendering require private prediction stores |
 | Convert user-obtained provider-format KMA HSR to the frozen 4-km/10-min radar contract | Available |
 | Train and evaluate Direct R2P | Available only with the authorized gauge and station-contract inputs described below |
-| Validate prepared Patch MLP tuples, run out-of-fold epoch selection, refit and predict | Available from prepared inputs; construction from restricted inputs is an external authorized-input workflow and is not distributed |
+| Validate prepared CNN tuples, run out-of-fold epoch selection, refit and predict | Available from prepared inputs; construction from restricted inputs is an external authorized-input workflow and is not distributed |
 | Generate pySTEPS field forecasts and station patch windows | Available through `src/pysteps_adapter/` |
 | Audit project-adapted exPreCast field exports and extract station patches | Available through `src/exprecast_adapter/`; upstream exPreCast training/export remains external |
 | Re-render Figs. 2--6, S1/S4 and Table 1 from public aggregate sources | Available; Figure 6 uses the exact editable-source finalizer, while the others are aggregate numerical/display reconstructions with hash-bound manuscript reference images |
@@ -114,16 +114,16 @@ r2p-nowcasting/
 ```
 
 [`RELEASE_STATUS.md`](RELEASE_STATUS.md) records the audited status and scope
-of the published release.
+of the current CNN revision and its archived predecessor.
 
 ## Implemented public components
 
 - `src/r2p_4km10min/`: portable Direct R2P model, data contract, training,
   standard evaluation, and same-checkpoint radar-only evaluation. Real station
   contract files remain user-supplied.
-- `src/patch_mlp/`: standalone six-step 3×3 Patch MLP, deterministic
+- `src/cnn_readout/`: standalone six-step 3×3 CNN, deterministic
   target-stratified sampler, exact importance-corrected unweighted
-  log1p(RN60) Smooth-L1 objective, and prepared-data validation, OOF selection,
+  normalized-RN60 MSE objective, and prepared-data validation, OOF selection,
   refit and prediction workflow. The private-input-to-prepared-cache builder
   remains outside the public release scope.
 - `src/pysteps_adapter/`: explicit-file deterministic pySTEPS field generation
@@ -230,6 +230,6 @@ Author-generated software is distributed under the BSD-3-Clause license in
 KMA-derived station data, exPreCast materials or other third-party assets.
 The approved public-repository and Supplementary Data 1 scopes are recorded in
 [`DATA_REDISTRIBUTION_DECISION.md`](DATA_REDISTRIBUTION_DECISION.md). Final
-citation metadata are provided in [`CITATION.cff`](CITATION.cff), with the
-software release DOI
-[doi:10.5281/zenodo.22147192](https://doi.org/10.5281/zenodo.22147192).
+citation metadata for this source revision are provided in
+[`CITATION.cff`](CITATION.cff). The previously published software archive remains
+available at [its version DOI](https://doi.org/10.5281/zenodo.22147192).

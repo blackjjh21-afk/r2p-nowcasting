@@ -30,8 +30,8 @@ LEADS = (60, 90, 120, 150, 180)
 THRESHOLDS = (1.0, 5.0, 10.0, 20.0)
 ROUTES = ("pysteps", "exprecast", "r2p")
 ROUTE_LABELS = {
-    "pysteps": "pySTEPS + Patch MLP",
-    "exprecast": "exPreCast + Patch MLP",
+    "pysteps": "pySTEPS + CNN",
+    "exprecast": "exPreCast + CNN",
     "r2p": "Direct R2P",
 }
 ROUTE_COLORS = {"pysteps": "#2C7FB8", "exprecast": "#009E73", "r2p": "#D62728"}
@@ -68,7 +68,21 @@ def read(root: Path, name: str) -> pd.DataFrame:
     path = root / f"{name}.csv"
     if not path.is_file():
         raise FileNotFoundError(path)
-    return pd.read_csv(path)
+    frame = pd.read_csv(path)
+    aliases = {
+        "pysteps_patch_cnn": "pysteps", "pysteps_cnn": "pysteps",
+        "exprecast_patch_cnn": "exprecast", "exprecast_cnn": "exprecast",
+        "direct_r2p": "r2p",
+    }
+    for column in ("route_key", "route", "left_route", "right_route"):
+        if column in frame:
+            frame[column] = frame[column].replace(aliases)
+    if "route" in frame and "route_key" not in frame:
+        frame["route_key"] = frame["route"]
+    frame = frame.rename(columns={
+        "ci_low_pointwise_95": "ci_low", "ci_high_pointwise_95": "ci_high",
+    })
+    return frame
 
 
 def save(figure: plt.Figure, output: Path) -> tuple[Path, Path]:
@@ -162,13 +176,13 @@ def render_figure2(data: Path, output: Path) -> tuple[Path, Path]:
     ax.set_title("(c) Event-frequency attenuation", loc="left")
 
     ax = axes[1, 1]
-    route_order = ("fixed_mp", "center_mlp", "patch_mlp")
+    route_order = ("fixed_mp", "center_mlp", "patch_cnn")
     labels = {
-        "fixed_mp": "Observed HSR + Fixed M–P",
-        "center_mlp": "Observed HSR + Center MLP",
-        "patch_mlp": "Observed HSR + Patch MLP",
+        "fixed_mp": "Fixed M–P",
+        "center_mlp": "MLP",
+        "patch_cnn": "CNN",
     }
-    colors = {"fixed_mp": "#606A73", "center_mlp": "#DE7A60", "patch_mlp": "#2384A6"}
+    colors = {"fixed_mp": "#606A73", "center_mlp": "#DE7A60", "patch_cnn": "#2384A6"}
     offsets = (-0.24, 0, 0.24)
     for offset, route in zip(offsets, route_order, strict=True):
         block = csi[csi.route.eq(route)].sort_values("threshold_mm")
@@ -176,13 +190,8 @@ def render_figure2(data: Path, output: Path) -> tuple[Path, Path]:
                yerr=block.csi_sd, capsize=2)
     ax2 = ax.twinx()
     for route, marker in zip(route_order, ("o", "D", "s"), strict=True):
-        if route == "fixed_mp":
-            block = csi[csi.route.eq(route)].sort_values("threshold_mm")
-            values = block.merge(fixed[["threshold_mm", "frequency_bias"]], on="threshold_mm").frequency_bias
-            errors = np.zeros(4)
-        else:
-            block = fb[fb.route.eq(route)].sort_values("threshold_mm")
-            values, errors = block.frequency_bias_mean, block.frequency_bias_sd
+        block = fb[fb.route.eq(route)].sort_values("threshold_mm")
+        values, errors = block.frequency_bias_mean, block.frequency_bias_sd
         ax2.errorbar(np.arange(4), values, yerr=errors, color=colors[route], marker=marker, lw=1.8,
                      label=labels[route])
     ax2.axhline(1, color="0.25", ls="--", lw=1)
@@ -220,7 +229,7 @@ def render_figure3(data: Path, output: Path) -> tuple[Path, Path]:
         tick_labelsize=15.0,
     )
     absolute = read(data, "Categorical_mean_sd")
-    absolute = absolute[absolute.route_key.isin(ROUTES)].copy()
+    absolute = absolute[absolute.route_key.isin(ROUTES) & absolute.lead_min.isin(LEADS)].copy()
     audit_grid(absolute, routes=set(ROUTES))
     contrasts = read(data, "Fig3ef_route_contrasts")
     fixed = read(data, "Fig2d_CSI_summary")
@@ -244,8 +253,8 @@ def render_figure3(data: Path, output: Path) -> tuple[Path, Path]:
                 bbox={"facecolor": "white", "edgecolor": "0.65", "pad": 2})
         ax.grid(axis="y", alpha=0.2)
         ax.spines[["top", "right"]].set_visible(False)
-    contrast_names = ("exprecast_minus_pysteps", "r2p_minus_exprecast")
-    titles = ("exPreCast + Patch MLP\n− pySTEPS + Patch MLP", "Direct R2P\n− exPreCast + Patch MLP")
+    contrast_names = ("exprecast_minus_pysteps", "direct_minus_exprecast")
+    titles = ("exPreCast + CNN\n− pySTEPS + CNN", "Direct R2P\n− exPreCast + CNN")
     t_width = 0.18
     for panel, (ax, name, title) in enumerate(zip(contrast_axes, contrast_names, titles, strict=True), start=4):
         for idx, threshold in enumerate(THRESHOLDS):
@@ -261,7 +270,7 @@ def render_figure3(data: Path, output: Path) -> tuple[Path, Path]:
         ax.grid(axis="y", alpha=0.2)
         ax.spines[["top", "right"]].set_visible(False)
     route_handles = [Patch(facecolor=ROUTE_COLORS[r], label=ROUTE_LABELS[r]) for r in ROUTES]
-    route_handles.append(Line2D([], [], color="0.25", ls="--", label="Observed HSR + Fixed M–P (valid-time reference)"))
+    route_handles.append(Line2D([], [], color="0.25", ls="--", label="Fixed M–P (valid-time reference)"))
     figure.legend(
         handles=route_handles,
         loc="upper center",
@@ -340,12 +349,12 @@ def render_figure5(data: Path, output: Path) -> tuple[Path, Path]:
         legend_fontsize=14.0,
         tick_labelsize=13.5,
     )
-    frame = read(data, "Fig5_intensity_point_CI")
+    frame = read(data, "Fig5_plot_source")
     figure, axes = plt.subplots(2, 3, figsize=(14.2, 7.5), sharey="row", label="figure5_heavy_rain_attenuation")
-    route_order = ("observed_hsr", "pysteps_mlp", "exprecast_mlp", "direct_r2p")
+    route_order = ("observed_hsr", "pysteps", "exprecast", "r2p")
     labels = dict(frame[["route", "route_label"]].drop_duplicates().itertuples(index=False, name=None))
-    colors = {"observed_hsr": "#3C3C3C", "pysteps_mlp": "#2C7FB8", "exprecast_mlp": "#009E73", "direct_r2p": "#D62728"}
-    markers = {"observed_hsr": "D", "pysteps_mlp": "^", "exprecast_mlp": "s", "direct_r2p": "o"}
+    colors = {"observed_hsr": "#3C3C3C", "pysteps": "#2C7FB8", "exprecast": "#009E73", "r2p": "#D62728"}
+    markers = {"observed_hsr": "D", "pysteps": "^", "exprecast": "s", "r2p": "o"}
     for col, lead in enumerate((60, 120, 180)):
         for row, metric in enumerate(("conditional_mean_error", "frequency_bias")):
             ax = axes[row, col]

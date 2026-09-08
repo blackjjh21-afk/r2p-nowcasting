@@ -3,7 +3,7 @@
     {
       "artifact_id": "adapted_exprecast_field_checkpoint_epoch10",
       "distributed_in_repository": false,
-      "role": "selected upstream field source for the exPreCast + Patch MLP route",
+      "role": "selected upstream field source for the exPreCast + CNN route",
       "selected_epoch": 10,
       "selection_period": "June-September 2023 native-grid validation",
       "sha256": "d5da6228b79f00b9d0ec115e7be62bd46631067a184783b52ca7fd18cb7cce5d",

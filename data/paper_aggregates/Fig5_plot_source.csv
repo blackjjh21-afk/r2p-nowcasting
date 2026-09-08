@@ -1,0 +1,97 @@
+route,route_label,replicate,aggregation,lead_min,metric,x_index,x_label,bin_low_mm,bin_high_mm,threshold_mm,estimate,ci_low,ci_high,n_common_pairs,n_observed_events
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,60,conditional_mean_error,0,1–5,1,5,,-0.3601217013386039,-0.4358551512163219,-0.2874222857393051,156589,
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,60,conditional_mean_error,1,5–10,5,10,,-2.338282035152241,-2.499142606628009,-2.176642604031867,44623,
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,60,conditional_mean_error,2,10–20,10,20,,-5.81030100862076,-6.045924397237079,-5.590829460880601,24611,
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,60,conditional_mean_error,3,≥20,20,,,-15.12688254451066,-16.13685048642277,-14.20708494065766,9263,
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,120,conditional_mean_error,0,1–5,1,5,,-0.3601217013386039,-0.4358983299821026,-0.2877061095881597,156589,
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,120,conditional_mean_error,1,5–10,5,10,,-2.338282035152241,-2.49580446650006,-2.178251807776082,44623,
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,120,conditional_mean_error,2,10–20,10,20,,-5.81030100862076,-6.043636211873222,-5.591258362924691,24611,
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,120,conditional_mean_error,3,≥20,20,,,-15.12688254451066,-16.06248235502831,-14.28344963447846,9263,
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,180,conditional_mean_error,0,1–5,1,5,,-0.3601217013386039,-0.4366529029430436,-0.2870864499721281,156589,
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,180,conditional_mean_error,1,5–10,5,10,,-2.338282035152241,-2.497785853238477,-2.176947754266131,44623,
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,180,conditional_mean_error,2,10–20,10,20,,-5.81030100862076,-6.044205362992119,-5.588033305250352,24611,
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,180,conditional_mean_error,3,≥20,20,,,-15.12688254451066,-16.02942570047031,-14.3171123944877,9263,
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,60,frequency_bias,0,1,,,1,0.888857694630901,0.858852543749936,0.9187688890932376,4408654,235086
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,60,frequency_bias,1,5,,,5,0.6546747009439852,0.6195714879664855,0.6919536145112782,4408654,78497
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,60,frequency_bias,2,10,,,10,0.4314813721438271,0.3913532039524716,0.47378739895428,4408654,33874
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,60,frequency_bias,3,20,,,20,0.2651408830832343,0.223552307150405,0.3072530627877263,4408654,9263
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,120,frequency_bias,0,1,,,1,0.888857694630901,0.8587707256738175,0.9186327095462572,4408597,235086
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,120,frequency_bias,1,5,,,5,0.6546747009439852,0.6193511712232711,0.6916846125688956,4408597,78497
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,120,frequency_bias,2,10,,,10,0.4314813721438271,0.3913796869295466,0.4736880447245034,4408597,33874
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,120,frequency_bias,3,20,,,20,0.2651408830832343,0.2255126961087718,0.3065178028392522,4408597,9263
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,180,frequency_bias,0,1,,,1,0.888857694630901,0.85904285824179,0.9185058951706996,4408548,235086
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,180,frequency_bias,1,5,,,5,0.6546747009439852,0.6199853324785255,0.6913663406609273,4408548,78497
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,180,frequency_bias,2,10,,,10,0.4314813721438271,0.3924123674471034,0.4733956345657303,4408548,33874
+observed_hsr,Observed HSR + Fixed M–P (valid-time reference),not_applicable,single_run,180,frequency_bias,3,20,,,20,0.2651408830832343,0.2246520601750172,0.306310594511151,4408548,9263
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,60,conditional_mean_error,0,1–5,1,5,,0.3535849555194799,0.3535849555194799,0.3535849555194799,156589,
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,60,conditional_mean_error,1,5–10,5,10,,-1.720723069465984,-1.720723069465984,-1.720723069465984,44623,
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,60,conditional_mean_error,2,10–20,10,20,,-6.259774025685883,-6.259774025685883,-6.259774025685883,24611,
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,60,conditional_mean_error,3,≥20,20,,,-20.69273071532037,-20.69273071532037,-20.69273071532037,9263,
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,120,conditional_mean_error,0,1–5,1,5,,0.0666624189049189,0.0666624189049189,0.0666624189049189,156589,
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,120,conditional_mean_error,1,5–10,5,10,,-3.055046427146523,-3.055046427146523,-3.055046427146523,44623,
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,120,conditional_mean_error,2,10–20,10,20,,-8.766387826729604,-8.766387826729604,-8.766387826729604,24611,
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,120,conditional_mean_error,3,≥20,20,,,-25.43678342369025,-25.43678342369025,-25.43678342369025,9263,
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,180,conditional_mean_error,0,1–5,1,5,,-0.2065902524118921,-0.2065902524118921,-0.2065902524118921,156589,
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,180,conditional_mean_error,1,5–10,5,10,,-3.91804920210895,-3.91804920210895,-3.91804920210895,44623,
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,180,conditional_mean_error,2,10–20,10,20,,-10.21066123032972,-10.21066123032972,-10.21066123032972,24611,
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,180,conditional_mean_error,3,≥20,20,,,-27.73798867573326,-27.73798867573326,-27.73798867573326,9263,
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,60,conditional_mean_error,0,1–5,1,5,,1.043312299896037,1.043312299896037,1.043312299896037,156589,
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,60,conditional_mean_error,1,5–10,5,10,,-0.232751061704432,-0.232751061704432,-0.232751061704432,44623,
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,60,conditional_mean_error,2,10–20,10,20,,-4.26973848014942,-4.26973848014942,-4.26973848014942,24611,
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,60,conditional_mean_error,3,≥20,20,,,-17.65029887438567,-17.65029887438567,-17.65029887438567,9263,
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,120,conditional_mean_error,0,1–5,1,5,,0.3189617620209277,0.3189617620209277,0.3189617620209277,156589,
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,120,conditional_mean_error,1,5–10,5,10,,-2.357756126196701,-2.357756126196701,-2.357756126196701,44623,
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,120,conditional_mean_error,2,10–20,10,20,,-7.74822771634959,-7.74822771634959,-7.74822771634959,24611,
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,120,conditional_mean_error,3,≥20,20,,,-23.50361504188056,-23.50361504188056,-23.50361504188056,9263,
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,180,conditional_mean_error,0,1–5,1,5,,0.1634271339084139,0.1634271339084139,0.1634271339084139,156589,
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,180,conditional_mean_error,1,5–10,5,10,,-3.055410344746237,-3.055410344746237,-3.055410344746237,44623,
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,180,conditional_mean_error,2,10–20,10,20,,-8.951098662358023,-8.951098662358023,-8.951098662358023,24611,
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,180,conditional_mean_error,3,≥20,20,,,-25.68816194538077,-25.68816194538077,-25.68816194538077,9263,
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,60,conditional_mean_error,0,1–5,1,5,,0.5559319094418411,0.5559319094418411,0.5559319094418411,156589,
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,60,conditional_mean_error,1,5–10,5,10,,-0.1370978026281827,-0.1370978026281827,-0.1370978026281827,44623,
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,60,conditional_mean_error,2,10–20,10,20,,-2.47670644425565,-2.47670644425565,-2.47670644425565,24611,
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,60,conditional_mean_error,3,≥20,20,,,-11.77872592639535,-11.77872592639535,-11.77872592639535,9263,
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,120,conditional_mean_error,0,1–5,1,5,,0.5449583205531247,0.5449583205531247,0.5449583205531247,156589,
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,120,conditional_mean_error,1,5–10,5,10,,-1.538275618733006,-1.538275618733006,-1.538275618733006,44623,
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,120,conditional_mean_error,2,10–20,10,20,,-6.11540294652038,-6.11540294652038,-6.11540294652038,24611,
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,120,conditional_mean_error,3,≥20,20,,,-20.81847416862543,-20.81847416862543,-20.81847416862543,9263,
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,180,conditional_mean_error,0,1–5,1,5,,0.4115624436674563,0.4115624436674563,0.4115624436674563,156589,
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,180,conditional_mean_error,1,5–10,5,10,,-2.604101727974986,-2.604101727974986,-2.604101727974986,44623,
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,180,conditional_mean_error,2,10–20,10,20,,-8.16731551083094,-8.16731551083094,-8.16731551083094,24611,
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,180,conditional_mean_error,3,≥20,20,,,-24.62412355600674,-24.62412355600674,-24.62412355600674,9263,
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,60,frequency_bias,0,1,,,1,1.163633734037756,1.163633734037756,1.163633734037756,,235086
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,60,frequency_bias,1,5,,,5,0.8578459474035101,0.8578459474035101,0.8578459474035101,,78497
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,60,frequency_bias,2,10,,,10,0.4140245222491193,0.4140245222491193,0.4140245222491193,,33874
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,60,frequency_bias,3,20,,,20,0.0172730216992335,0.0172730216992335,0.0172730216992335,,9263
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,120,frequency_bias,0,1,,,1,1.102902767497852,1.102902767497852,1.102902767497852,,235086
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,120,frequency_bias,1,5,,,5,0.6780174189247147,0.6780174189247147,0.6780174189247147,,78497
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,120,frequency_bias,2,10,,,10,0.231721477632796,0.231721477632796,0.231721477632796,,33874
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,120,frequency_bias,3,20,,,20,0.0026989096405052,0.0026989096405052,0.0026989096405052,,9263
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,180,frequency_bias,0,1,,,1,1.049228792867291,1.049228792867291,1.049228792867291,,235086
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,180,frequency_bias,1,5,,,5,0.5613420470421375,0.5613420470421375,0.5613420470421375,,78497
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,180,frequency_bias,2,10,,,10,0.1538938418846313,0.1538938418846313,0.1538938418846313,,33874
+pysteps_patch_cnn,pySTEPS + CNN,0|1|2,mean_of_replicate_metrics,180,frequency_bias,3,20,,,20,0.0006837237755946,0.0006837237755946,0.0006837237755946,,9263
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,60,frequency_bias,0,1,,,1,1.193361861900184,1.193361861900184,1.193361861900184,,235086
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,60,frequency_bias,1,5,,,5,1.178826367037382,1.178826367037382,1.178826367037382,,78497
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,60,frequency_bias,2,10,,,10,0.9352502410895278,0.9352502410895278,0.9352502410895278,,33874
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,60,frequency_bias,3,20,,,20,0.1644535607614523,0.1644535607614523,0.1644535607614523,,9263
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,120,frequency_bias,0,1,,,1,1.066504740109293,1.066504740109293,1.066504740109293,,235086
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,120,frequency_bias,1,5,,,5,0.7930918803691012,0.7930918803691012,0.7930918803691012,,78497
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,120,frequency_bias,2,10,,,10,0.4150676034716892,0.4150676034716892,0.4150676034716892,,33874
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,120,frequency_bias,3,20,,,20,0.0216272625859152,0.0216272625859152,0.0216272625859152,,9263
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,180,frequency_bias,0,1,,,1,1.067215118438926,1.067215118438926,1.067215118438926,,235086
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,180,frequency_bias,1,5,,,5,0.7047912659082513,0.7047912659082513,0.7047912659082513,,78497
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,180,frequency_bias,2,10,,,10,0.3150006888272225,0.3150006888272225,0.3150006888272225,,33874
+exprecast_patch_cnn,exPreCast + CNN,0|1|2,mean_of_replicate_metrics,180,frequency_bias,3,20,,,20,0.0084925690021231,0.0084925690021231,0.0084925690021231,,9263
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,60,frequency_bias,0,1,,,1,1.088211689906389,1.088211689906389,1.088211689906389,,235086
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,60,frequency_bias,1,5,,,5,1.032162587954529,1.032162587954529,1.032162587954529,,78497
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,60,frequency_bias,2,10,,,10,0.9451595127039422,0.9451595127039422,0.9451595127039422,,33874
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,60,frequency_bias,3,20,,,20,0.7598330274569074,0.7598330274569074,0.7598330274569074,,9263
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,120,frequency_bias,0,1,,,1,1.200224598657513,1.200224598657513,1.200224598657513,,235086
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,120,frequency_bias,1,5,,,5,0.9340314491848946,0.9340314491848946,0.9340314491848946,,78497
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,120,frequency_bias,2,10,,,10,0.6846548975615515,0.6846548975615515,0.6846548975615515,,33874
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,120,frequency_bias,3,20,,,20,0.2483356723883551,0.2483356723883551,0.2483356723883551,,9263
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,180,frequency_bias,0,1,,,1,1.343533855695362,1.343533855695362,1.343533855695362,,235086
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,180,frequency_bias,1,5,,,5,0.8513318980343199,0.8513318980343199,0.8513318980343199,,78497
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,180,frequency_bias,2,10,,,10,0.4702820255456495,0.4702820255456495,0.4702820255456495,,33874
+direct_r2p,Direct R2P,0|1|2,mean_of_replicate_metrics,180,frequency_bias,3,20,,,20,0.0665731044657958,0.0665731044657958,0.0665731044657958,,9263

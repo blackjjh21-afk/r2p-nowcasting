@@ -1,0 +1,45 @@
+{
+  "schema": "cnn-readout-provenance-v1",
+  "target": "normalized RN60",
+  "loss": "mean squared error",
+  "target_scale_source": "frozen 2019-2022 fitting-station Direct R2P scale",
+  "checkpoint_records": [
+    {
+      "route": "exPreCast + CNN",
+      "refit_seed": 21040,
+      "epoch": 4,
+      "sha256": "64c68d653fd1b35f754593d0706d075a0c6ade52ce8f316f930ed5276ed2eff7"
+    },
+    {
+      "route": "exPreCast + CNN",
+      "refit_seed": 21041,
+      "epoch": 4,
+      "sha256": "f8e7b1a915e669e69416b944b45d57b983062922c4b8220ad24e5fee27b9ea49"
+    },
+    {
+      "route": "exPreCast + CNN",
+      "refit_seed": 21042,
+      "epoch": 4,
+      "sha256": "907d6ec2a3eb53f6826091ac9f4326018a6adea1ff67758e324efe157ec41456"
+    },
+    {
+      "route": "pySTEPS + CNN",
+      "refit_seed": 21040,
+      "epoch": 6,
+      "sha256": "e2dc96e572372490d6557e11993c2d66cdc88d49d4f66dd0e9f14806e4df86f1"
+    },
+    {
+      "route": "pySTEPS + CNN",
+      "refit_seed": 21041,
+      "epoch": 6,
+      "sha256": "4b472ecf74c69110f09c9705a3d2debef1008074044fd23ae76a08195911d711"
+    },
+    {
+      "route": "pySTEPS + CNN",
+      "refit_seed": 21042,
+      "epoch": 6,
+      "sha256": "9eb6b58f0f9bd47ebaa7267ff90e8c41a35e4576900624a71bcf84a9695d66cd"
+    }
+  ],
+  "checkpoint_weights_distributed": false
+}

@@ -1,74 +1,31 @@
-# Release verification and archive workflow
+# CNN revision publication workflow
 
-This repository is the audited source root of the public 4-km/10-min release.
-Legacy packages and private-project history remain outside its release
-contract.
+Version 1.1.0 contains new CNN experiments, runtime code, figures and tables.
+Version 1.0.0 and its historical tag and DOI remain unchanged.
 
-## 1. Release metadata
+1. Synchronize the current manuscript workbook and reference figures with
+   `scripts/sync_public_paper_outputs.py`.
+2. Run `python scripts/refresh_artifact_manifest.py`,
+   `python scripts/audit_release.py`, and
+   `pytest -q -p no:cacheprovider tests`. Staging may report the pending
+   version-specific DOI; all file and scientific-contract errors must be zero.
+3. Commit the audited source and push the normal GitHub branch.
+4. Create a new version of software record 22147192 in Zenodo. Reserve its new
+   DOI, then add that DOI to CITATION and manuscript metadata.
+5. Create a new version of derived-data record 22146749 and reserve its new
+   DOI. It receives the updated Supplementary Data 1 workbook and checksum.
+6. Freeze the final metadata commit, tag it `v1.1.0`, create a GitHub release,
+   and archive that exact tag as `r2p-nowcasting-v1.1.0.zip` with its SHA256.
+7. Upload the new software and derived-data files to their new Zenodo versions,
+   verify metadata and both authors' Earth & Tech Inc. and WIZAI Co., Ltd.
+   affiliations, and publish.
+8. Verify public archive hashes and manuscript version-specific DOI links.
 
-The approved BSD-3-Clause `LICENSE` and responsible-author
-`DATA_REDISTRIBUTION_DECISION.md` are installed. `CITATION.cff` records the
-public repository URL, version 1.0.0, release date and published software DOI
-`10.5281/zenodo.22147192`. `preferred-citation` remains omitted until the
-associated paper citation is final.
+The software concept DOI is 10.5281/zenodo.22147191. The data concept DOI is
+10.5281/zenodo.22146748. These links cover version histories; until the new
+version is published, they do not contain the current CNN artifacts.
 
-The conservative repository decision matches the published tree: station identifiers,
-coordinates, split tables, stationwise values and case time series are not
-redistributed through GitHub. The separate Supplementary Data 1 decision covers
-the exact named derived sheets intended for the journal/archive, including
-held-out-station identifiers/names/coordinates, distance groups, selected-case
-time series and stationwise metrics. The public figure code accepts
-author-supplied versions of station-resolved inputs.
-
-## 2. Run the local release gate
-
-From the repository root:
-
-```bash
-find . -type d \( -name __pycache__ -o -name .pytest_cache -o -name build -o -name dist -o -name '*.egg-info' \) -prune -exec rm -rf {} +
-python scripts/refresh_artifact_manifest.py
-python scripts/audit_release.py
-python scripts/audit_release.py --release-ready
-python -m pytest -q -p no:cacheprovider tests
-```
-
-Build the wheel from a clean copy, install it without dependency resolution
-into a clean environment that already contains the pinned dependencies, and
-run every console command with `--help`. One network-independent build route
-from that prepared environment is:
-
-```bash
-python -m pip wheel --no-deps --no-build-isolation --wheel-dir /tmp/r2p-wheel .
-python -m pip install --no-deps --force-reinstall /tmp/r2p-wheel/direct_r2p_4km10min-*.whl
-```
-
-Run `r2p-paper-figures` from the repository root (or pass explicit aggregate
-paths) because manuscript data and editable Figure 6 assets are checkout
-artifacts rather than wheel package data. Do not commit `build/`, `dist/`,
-`*.egg-info`, caches or local environments.
-
-## 3. Verify the published repository and archive
-
-Version 1.0.0 is published at
-<https://github.com/blackjjh21-afk/r2p-nowcasting/releases/tag/v1.0.0> and
-archived at <https://doi.org/10.5281/zenodo.22147192>. The version in
-`pyproject.toml`, the CFF version, the Git tag and the Zenodo record must remain
-identical. The Zenodo software record was populated manually, so automatic
-GitHub--Zenodo archiving remains disabled to avoid creating a duplicate record.
-
-Generate the two Zenodo files from the exact audited tag in a clean working
-directory:
-
-```bash
-git archive --format=zip --prefix=r2p-nowcasting-1.0.0/ \
-  --output=r2p-nowcasting-v1.0.0.zip v1.0.0
-sha256sum r2p-nowcasting-v1.0.0.zip \
-  > r2p-nowcasting-v1.0.0.zip.sha256
-```
-
-After an approved documentation-only correction, rerun every gate above,
-update the mutable `v1.0.0` tag to the audited commit, regenerate both files,
-replace them through Zenodo's published-file editing workflow, and republish
-the existing record without changing its DOI or version. GitHub and Zenodo
-publication actions require the authors' authenticated accounts and are not
-automated by this repository.
+The public software package excludes raw KMA arrays, checkpoints, full
+predictions and restricted station-resolved data. The separate derived-data
+archive includes only the approved verification sheets recorded in
+DATA_REDISTRIBUTION_DECISION.md.

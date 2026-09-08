@@ -19,7 +19,7 @@ python -m exprecast_adapter.adapter audit-field \
   --report-json /path/to/field_audit.json
 ```
 
-Create the frozen 3 x 3 station-patch cache used by Patch MLP:
+Create the frozen 3 x 3 station-patch cache used by CNN:
 
 ```bash
 python -m exprecast_adapter.adapter extract-patches \

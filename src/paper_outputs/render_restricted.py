@@ -21,20 +21,20 @@ import numpy as np
 import pandas as pd
 
 
-ROUTE_ORDER = ("truth", "pysteps_context_patch_mlp", "long_context_patch_mlp", "direct_r2p")
+ROUTE_ORDER = ("truth", "pysteps_patch_cnn", "exprecast_patch_cnn", "direct_r2p")
 ROUTE_COLORS = {
     "truth": "#303030",
-    "pysteps_context_patch_mlp": "#2C7FB8",
-    "long_context_patch_mlp": "#009E73",
+    "pysteps_patch_cnn": "#2C7FB8",
+    "exprecast_patch_cnn": "#009E73",
     "direct_r2p": "#D62728",
 }
 ROUTE_LABELS = {
     "truth": "Gauge truth",
-    "pysteps_context_patch_mlp": "pySTEPS + Patch MLP",
-    "long_context_patch_mlp": "exPreCast + Patch MLP",
+    "pysteps_patch_cnn": "pySTEPS + CNN",
+    "exprecast_patch_cnn": "exPreCast + CNN",
     "direct_r2p": "Direct R2P",
-    "pysteps": "pySTEPS + Patch MLP",
-    "exprecast": "exPreCast + Patch MLP",
+    "pysteps": "pySTEPS + CNN",
+    "exprecast": "exPreCast + CNN",
     "r2p": "Direct R2P",
 }
 
@@ -273,7 +273,7 @@ def render_s3(
         raise ValueError("FigS3 station IDs differ from the held-out station split")
 
     ccrs, cfeature = configure_cartopy(cartopy_data_dir)
-    routes = ("pysteps", "exprecast", "r2p")
+    routes = ROUTE_ORDER[1:]
     figure, axes = plt.subplots(
         4, 3, figsize=(12.8, 17.0),
         subplot_kw={"projection": ccrs.PlateCarree()},

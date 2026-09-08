@@ -53,6 +53,14 @@ def test_frozen_route_registry_passes() -> None:
     assert report.errors == []
 
 
+def test_contract_rejects_cnn_loss_or_replication_drift() -> None:
+    value = copy.deepcopy(CONTRACT)
+    value["cnn_readout"]["loss"] = "another objective"
+    value["cnn_readout"]["exprecast_upstream_members"] = 3
+    report = AUDIT.validate_scientific_contract(value)
+    assert len([issue for issue in report.errors if issue.code == "cnn-contract"]) == 2
+
+
 def test_radar_only_requires_matched_checkpoint_truth_axes_and_mask() -> None:
     value = copy.deepcopy(REGISTRY)
     radar = next(

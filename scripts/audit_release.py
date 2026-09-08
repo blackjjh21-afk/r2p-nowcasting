@@ -28,8 +28,8 @@ EXPECTED_POINT_LEADS = list(range(5, 181, 5))
 EXPECTED_REPORT_LEADS = [60, 90, 120, 150, 180]
 EXPECTED_THRESHOLDS = [1, 5, 10, 20]
 EXPECTED_CORE_ROUTES = {
-    "pysteps_patch_mlp",
-    "exprecast_patch_mlp",
+    "pysteps_cnn",
+    "exprecast_cnn",
     "direct_r2p",
 }
 EXPECTED_AUXILIARY_ROUTES = {
@@ -242,8 +242,8 @@ def validate_scientific_contract(data: Any, path: str | Path = "scientific_contr
                 f"lead_minutes must equal {EXPECTED_FIELD_LEADS}",
             ),
             (field.get("frame_interval_minutes") == 10, "frame_interval_minutes must equal 10"),
-            (field.get("native_quantity") == "instantaneous_precipitation_rate", "native_quantity must equal 'instantaneous_precipitation_rate'"),
-            (field.get("native_unit") == "mm h-1", "native_unit must equal 'mm h-1'"),
+            (field.get("native_quantity") == "normalized_reflectivity_for_point_readout", "native_quantity must identify the common normalized-reflectivity readout input"),
+            (field.get("native_unit") == "nonnegative dBZ divided by 100", "native_unit must equal 'nonnegative dBZ divided by 100'"),
         )
         for ok, message in checks:
             _expect(report, ok, path, "field-value", message)
@@ -338,11 +338,25 @@ def validate_scientific_contract(data: Any, path: str | Path = "scientific_contr
 
     _expect(
         report,
-        data.get("primary_routes") == ["pysteps_patch_mlp", "exprecast_patch_mlp", "direct_r2p"],
+        data.get("primary_routes") == ["pysteps_cnn", "exprecast_cnn", "direct_r2p"],
         path,
         "primary-routes",
         "primary_routes must contain the frozen three routes in display order",
     )
+    cnn = data.get("cnn_readout")
+    _expect(report, _mapping(cnn), path, "cnn-schema", "cnn_readout must describe the current readout")
+    if _mapping(cnn):
+        for key, expected_value in {
+            "patch_shape": [6, 3, 3],
+            "auxiliary_dimension": 39,
+            "target": "normalized RN60",
+            "loss": "mean squared error",
+            "selected_epochs": {"pysteps": 6, "exprecast": 4},
+            "final_readout_members": 3,
+            "exprecast_upstream_members": 1,
+        }.items():
+            _expect(report, cnn.get(key) == expected_value, path, "cnn-contract",
+                    f"cnn_readout.{key} must equal {expected_value!r}")
     radar_only = data.get("radar_only_ablation")
     _expect(report, _mapping(radar_only), path, "radar-only-schema", "radar_only_ablation must be an object")
     if _mapping(radar_only):
@@ -441,20 +455,20 @@ def validate_route_registry(data: Any, path: str | Path = "route_registry") -> R
     )
 
     expected = {
-        "pysteps_patch_mlp": {
-            "display_name": "pySTEPS + Patch MLP",
+        "pysteps_cnn": {
+            "display_name": "pySTEPS + CNN",
             "role": "field_first_comparator",
             "field_source": "pySTEPS",
-            "point_readout": "Patch MLP",
+            "point_readout": "CNN",
             "patch_shape": [3, 3],
             "uses_permitted_issuance_time_gauge_context": True,
             "evaluated_station_support": "heldout128",
         },
-        "exprecast_patch_mlp": {
-            "display_name": "exPreCast + Patch MLP",
+        "exprecast_cnn": {
+            "display_name": "exPreCast + CNN",
             "role": "field_first_comparator",
             "field_source": "project_adapted_exprecast_i7_o18",
-            "point_readout": "Patch MLP",
+            "point_readout": "CNN",
             "patch_shape": [3, 3],
             "uses_permitted_issuance_time_gauge_context": True,
             "evaluated_station_support": "heldout128",

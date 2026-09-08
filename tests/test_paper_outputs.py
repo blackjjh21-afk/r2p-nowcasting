@@ -43,6 +43,19 @@ def test_code_native_figure6_smoke(tmp_path: Path) -> None:
     assert pdf.is_file() and pdf.stat().st_size > 1_000
 
 
+def test_current_cnn_sources_and_validtime_support() -> None:
+    data = ROOT / "data/paper_aggregates"
+    table = pd.read_csv(data / "Table1_main.csv")
+    assert set(table.Route) == {"pySTEPS + CNN", "exPreCast + CNN", "Direct R2P"}
+    assert not (data / "TableS1b_readout.csv").exists()
+    fb = pd.read_csv(data / "Fig2d_FB_summary.csv")
+    assert set(fb.route) == {"fixed_mp", "center_mlp", "patch_cnn"}
+    # Panel d uses held-out 2024–2025 support, not panel c's all-station support.
+    fixed_d = fb[fb.route.eq("fixed_mp")].sort_values("threshold_mm")
+    fixed_c = pd.read_csv(data / "Fig2c_fixed_metrics.csv").sort_values("threshold_mm")
+    assert not np.allclose(fixed_d.frequency_bias_mean, fixed_c.frequency_bias)
+
+
 def test_all_public_aggregate_renderers(tmp_path: Path) -> None:
     data = ROOT / "data/paper_aggregates"
     examples = ROOT / "data/examples"
@@ -162,7 +175,7 @@ def test_restricted_s3_display_transform(
     split.to_csv(stations, index=False)
     heldout = split[split.split.eq("test")]
     rows = []
-    for route_index, route in enumerate(("pysteps", "exprecast", "r2p")):
+    for route_index, route in enumerate(render_restricted.ROUTE_ORDER[1:]):
         for threshold in (1.0, 5.0, 10.0, 20.0):
             for record in heldout.itertuples(index=False):
                 rows.append(

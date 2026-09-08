@@ -88,7 +88,7 @@ format is not compatible with PyTorch's restricted `weights_only` loader.
 Accordingly, the runner accepts checkpoints only from beneath the configured
 local output root and emits a warning before loading them. Treat `--resume`
 and `evaluate` as trusted-local operations: never place downloaded or otherwise
-untrusted `.pt` files in the output tree. Patch MLP checkpoints contain only
+untrusted `.pt` files in the output tree. CNN checkpoints contain only
 tensors and primitive metadata and are loaded with `weights_only=True`.
 
 ### Same-checkpoint radar-only inference
@@ -161,4 +161,4 @@ The default frozen-hash checks are intentionally strict and require the exact
 authorized station files. Use `--allow-unfrozen-contract` only for a new
 station/data contract and report that departure separately. This runner covers
 Direct R2P and its ablations. The field-first components are documented under
-`src/pysteps_adapter/`, `src/exprecast_adapter/` and `src/patch_mlp/`.
+`src/pysteps_adapter/`, `src/exprecast_adapter/` and `src/cnn_readout/`.

@@ -67,7 +67,7 @@ provide an explicit software or model-artifact license; users must obtain the
 materials from the upstream authors and determine whether their intended use
 is permitted.
 
-The paper-facing route called **exPreCast + Patch MLP** uses a project-specific
+The paper-facing route called **exPreCast + CNN** uses a project-specific
 7-input/18-output long-horizon adaptation. It must not be represented as the
 unchanged official checkpoint or as a verbatim reproduction of every upstream
 training setting. Public provenance records must distinguish the upstream
@@ -85,7 +85,7 @@ weights.
 
 The field source internally uses the Lucas-Kanade optical-flow configuration,
 but figures and tables use the simplified reader-facing name **pySTEPS**. The
-full route is **pySTEPS + Patch MLP**. pySTEPS is independent of and is not
+full route is **pySTEPS + CNN**. pySTEPS is independent of and is not
 endorsed by this project.
 
 ## Python dependencies

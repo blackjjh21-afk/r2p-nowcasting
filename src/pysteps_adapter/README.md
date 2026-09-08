@@ -43,7 +43,7 @@ The input array has shape `[7, H, W]`. An NPZ output contains
 `input_offsets_minutes`, together with the supplied `issue_times_ns`; an NPY
 output contains only normalized forecast HSR.
 
-Extract station patches and six-frame Patch MLP windows. The mapping CSV uses
+Extract station patches and six-frame CNN windows. The mapping CSV uses
 the manuscript coordinate contract (`station_id`, `exprecast_y`,
 `exprecast_x`) by default:
 

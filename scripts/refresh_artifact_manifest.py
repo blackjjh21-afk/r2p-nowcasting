@@ -12,6 +12,11 @@ ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "configs/artifact_manifest.csv"
 
 ROLES = {
+    "configs/cnn_readout_provenance.json": "CNN checkpoint identities and target contract",
+    "src/cnn_readout/model.py": "CNN architecture matching final research checkpoints",
+    "src/cnn_readout/loss.py": "normalized RN60 MSE and exact sampling correction",
+    "src/cnn_readout/sampling.py": "deterministic target-stratified sampling",
+    "src/cnn_readout/workflow.py": "prepared-tuple CNN selection fitting and prediction",
     "configs/upstream_artifact_provenance.json": "non-redistributed upstream checkpoint provenance",
     "docs/PAPER_OUTPUT_REPRODUCIBILITY.md": "paper-output reproducibility scope and commands",
     "scripts/finalize_fig6_architecture.py": "exact editable-source Figure 6 finalizer",
@@ -21,6 +26,15 @@ ROLES = {
     "src/paper_outputs/__init__.py": "paper-output package marker",
     "src/paper_outputs/render_publication.py": "public aggregate figure and table renderer",
     "src/paper_outputs/render_restricted.py": "authorized-input station-resolved display renderer",
+}
+
+RETIRED_ARTIFACTS = {
+    "data/paper_aggregates/Paired_date_bootstrap.csv",
+    "data/paper_aggregates/TableS2b_diagnostics.csv",
+    "data/paper_aggregates/Route_metric_CI.csv",
+    "data/paper_aggregates/Fig5_intensity_point_CI.csv",
+    "data/paper_aggregates/TableS1a_training.csv",
+    "data/paper_aggregates/TableS1b_readout.csv",
 }
 
 
@@ -69,7 +83,8 @@ def main() -> None:
     existing: dict[str, str] = {}
     with MANIFEST.open(encoding="utf-8", newline="") as stream:
         for row in csv.DictReader(stream):
-            existing[str(row["path"])] = str(row["role"])
+            if str(row["path"]) not in RETIRED_ARTIFACTS:
+                existing[str(row["path"])] = str(row["role"])
 
     roles = {**existing, **discover_public_artifacts(), **ROLES}
     missing = sorted(relative for relative in roles if not (ROOT / relative).is_file())

@@ -13,6 +13,7 @@ authors:
     email: "neolegacy@gmail.com"
     orcid: "https://orcid.org/0000-0003-0337-4019"
 repository-code: "https://github.com/blackjjh21-afk/r2p-nowcasting"
-version: "1.0.0"
-date-released: "2026-08-29"
-doi: "10.5281/zenodo.22147192"
+version: "1.1.0"
+date-released: "2026-09-09"
+# A version-specific DOI will be added after the CNN revision is archived.
+url: "https://github.com/blackjjh21-afk/r2p-nowcasting"

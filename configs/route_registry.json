@@ -3,22 +3,22 @@
   "registry_id": "field_first_vs_direct_4km10min_v1",
   "routes": [
     {
-      "route_id": "pysteps_patch_mlp",
-      "display_name": "pySTEPS + Patch MLP",
+      "route_id": "pysteps_cnn",
+      "display_name": "pySTEPS + CNN",
       "role": "field_first_comparator",
       "field_source": "pySTEPS",
-      "point_readout": "Patch MLP",
+      "point_readout": "CNN",
       "patch_shape": [3, 3],
       "uses_permitted_issuance_time_gauge_context": true,
       "evaluated_station_support": "heldout128",
       "notes": "Lucas-Kanade is an internal pySTEPS configuration detail and is omitted from the reader-facing name."
     },
     {
-      "route_id": "exprecast_patch_mlp",
-      "display_name": "exPreCast + Patch MLP",
+      "route_id": "exprecast_cnn",
+      "display_name": "exPreCast + CNN",
       "role": "field_first_comparator",
       "field_source": "project_adapted_exprecast_i7_o18",
-      "point_readout": "Patch MLP",
+      "point_readout": "CNN",
       "patch_shape": [3, 3],
       "uses_permitted_issuance_time_gauge_context": true,
       "evaluated_station_support": "heldout128",
@@ -66,7 +66,7 @@
     "pySTEPS-LK": "pySTEPS",
     "selected long exPreCast": "exPreCast",
     "Long exPreCast": "exPreCast",
-    "Context Patch MLP": "Patch MLP",
+    "Context CNN": "CNN",
     "Direct R2P (stride 2)": "Direct R2P",
     "No-station-dropout R2P": "Direct R2P (no station dropout)"
   }

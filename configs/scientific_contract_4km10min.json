@@ -1,11 +1,19 @@
 {
   "schema": "r2p-4km10min-scientific-contract-v1",
   "contract_id": "r2p_4km10min_release_v1",
-  "status": "frozen_release",
+  "status": "prepared_cnn_release",
   "time": {
     "project_timezone": "Asia/Seoul",
-    "evaluation_months": [6, 7, 8, 9],
-    "evaluation_years": [2024, 2025],
+    "evaluation_months": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "evaluation_years": [
+      2024,
+      2025
+    ],
     "issue_time_count": 35088,
     "bootstrap_block": "issuance_date"
   },
@@ -21,26 +29,109 @@
     "grid_spacing_km": 4,
     "frame_interval_minutes": 10,
     "frame_count": 7,
-    "relative_minutes": [-60, -50, -40, -30, -20, -10, 0]
+    "relative_minutes": [
+      -60,
+      -50,
+      -40,
+      -30,
+      -20,
+      -10,
+      0
+    ]
   },
   "field_forecast": {
     "frame_count": 18,
-    "lead_minutes": [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180],
+    "lead_minutes": [
+      10,
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140,
+      150,
+      160,
+      170,
+      180
+    ],
     "frame_interval_minutes": 10,
-    "native_quantity": "instantaneous_precipitation_rate",
-    "native_unit": "mm h-1"
+    "native_quantity": "normalized_reflectivity_for_point_readout",
+    "native_unit": "nonnegative dBZ divided by 100"
   },
   "direct_r2p_target": {
     "quantity": "gauge_RN60",
     "unit": "mm",
     "lead_count": 36,
-    "lead_minutes": [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180]
+    "lead_minutes": [
+      5,
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60,
+      65,
+      70,
+      75,
+      80,
+      85,
+      90,
+      95,
+      100,
+      105,
+      110,
+      115,
+      120,
+      125,
+      130,
+      135,
+      140,
+      145,
+      150,
+      155,
+      160,
+      165,
+      170,
+      175,
+      180
+    ]
   },
   "direct_r2p_checkpoint_selection": {
     "period": "June-September 2023 at fitting stations",
     "metric": "unweighted RN60 macro CSI",
-    "lead_minutes": [60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180],
-    "thresholds_mm": [1, 5, 10, 20],
+    "lead_minutes": [
+      60,
+      70,
+      80,
+      90,
+      100,
+      110,
+      120,
+      130,
+      140,
+      150,
+      160,
+      170,
+      180
+    ],
+    "thresholds_mm": [
+      1,
+      5,
+      10,
+      20
+    ],
     "cell_count": 52,
     "validation_support": "all issues with any fitting-station RN60 target >=0.1 mm, plus dry issues within 180 min of such an issue",
     "validation_input_condition": {
@@ -48,26 +139,46 @@
       "station_dropout": "disabled"
     },
     "smoothing": "none",
-    "excluded_epochs": [1, 2, 3],
+    "excluded_epochs": [
+      1,
+      2,
+      3
+    ],
     "tie_break": "earliest epoch"
   },
   "paper_evaluation": {
     "truth_quantity": "gauge_RN60",
     "truth_unit": "mm",
-    "lead_minutes": [60, 90, 120, 150, 180],
-    "thresholds_mm": [1, 5, 10, 20],
+    "lead_minutes": [
+      60,
+      90,
+      120,
+      150,
+      180
+    ],
+    "thresholds_mm": [
+      1,
+      5,
+      10,
+      20
+    ],
     "primary_metric": "CSI",
     "csi_pooling": "pool_hit_miss_false_alarm_over_common_issue_time_and_station_support",
     "seed_summary": "arithmetic_mean_of_seed_level_CSI",
     "uncertainty": {
       "method": "paired_issuance_date_block_bootstrap",
       "confidence_level": 0.95,
-      "pairing_axes": ["issue_time", "station", "lead", "threshold"]
+      "pairing_axes": [
+        "issue_time",
+        "station",
+        "lead",
+        "threshold"
+      ]
     }
   },
   "primary_routes": [
-    "pysteps_patch_mlp",
-    "exprecast_patch_mlp",
+    "pysteps_cnn",
+    "exprecast_cnn",
     "direct_r2p"
   ],
   "radar_only_ablation": {
@@ -90,17 +201,35 @@
     "comparison": "Direct R2P minus no-station-dropout control"
   },
   "reader_facing_names": {
-    "pysteps_patch_mlp": "pySTEPS + Patch MLP",
-    "exprecast_patch_mlp": "exPreCast + Patch MLP",
+    "pysteps_cnn": "pySTEPS + CNN",
+    "exprecast_cnn": "exPreCast + CNN",
     "direct_r2p": "Direct R2P",
     "direct_r2p_radar_only": "Direct R2P (radar-only)",
     "direct_r2p_no_station_dropout": "Direct R2P (no station dropout)"
   },
   "excluded_from_primary_route_set": [
     "all_station_r2p",
-    "patch_cnn",
     "patch_gnn",
     "public_exprecast_60min",
     "field_dl"
-  ]
+  ],
+  "cnn_readout": {
+    "architecture": "two residual convolution blocks with attention pooling",
+    "patch_shape": [
+      6,
+      3,
+      3
+    ],
+    "auxiliary_dimension": 39,
+    "target": "normalized RN60",
+    "loss": "mean squared error",
+    "normalization": "frozen fitting-station Direct R2P min-max scale",
+    "selected_epochs": {
+      "pysteps": 6,
+      "exprecast": 4
+    },
+    "epoch_selection": "2023-only 4 month x 3 station-fold OOF macro CSI; earliest exact tie",
+    "final_readout_members": 3,
+    "exprecast_upstream_members": 1
+  }
 }

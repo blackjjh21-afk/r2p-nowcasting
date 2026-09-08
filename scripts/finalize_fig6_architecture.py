@@ -180,6 +180,9 @@ def modify_presentation(xml: bytes) -> bytes:
 
 def modify_slide(xml: bytes) -> bytes:
     root = ET.fromstring(xml)
+    for node in root.findall(".//a:t", NS):
+        if node.text:
+            node.text = node.text.replace("Patch MLP", "CNN")
     found_shapes: set[str] = set()
     found_connectors: set[str] = set()
     found_output_shapes: set[str] = set()
@@ -387,7 +390,7 @@ def render_static() -> None:
                 fill=FIELD_FILL, edge=FIELD_EDGE)
     rounded_box(ax, 8.689, 1.456, 1.575, .787, "Forecast HSR",
                 fill=FIELD_FILL, edge=FIELD_EDGE)
-    rounded_box(ax, 11.641, 1.456, 1.575, .787, "Patch MLP",
+    rounded_box(ax, 11.641, 1.456, 1.575, .787, "CNN",
                 fill=PATCH_FILL, edge=FIELD_EDGE)
     rounded_box(ax, 14.594, 1.456, 1.575, .787, "Gauge RN60",
                 fill=PANEL_FILL, edge=OUTPUT_EDGE)
@@ -534,6 +537,16 @@ def verify_pptx() -> dict[str, object]:
 
 
 def main() -> None:
+    # Keep the editable input's displayed readout name aligned with this release.
+    temporary = SOURCE.with_suffix(".pptx.partial")
+    with zipfile.ZipFile(SOURCE) as original, zipfile.ZipFile(temporary, "w") as target:
+        for info in original.infolist():
+            content = original.read(info.filename)
+            if info.filename.startswith("ppt/slides/") and info.filename.endswith(".xml"):
+                content = content.replace(b"Patch MLP", b"CNN")
+            target.writestr(info, content)
+    temporary.replace(SOURCE)
+    scrub_office_file(SOURCE)
     write_editable_pptx()
     render_static()
     caption = (

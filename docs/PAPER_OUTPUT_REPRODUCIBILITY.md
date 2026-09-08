@@ -98,5 +98,5 @@ This split is deliberate. It exposes the final transformations while keeping
 station-resolved KMA-derived inputs outside the public repository under the
 approved scope recorded in `DATA_REDISTRIBUTION_DECISION.md`. It does not turn
 the release into a raw-KMA-to-paper reproduction package: upstream exPreCast
-training/export and construction of the private Patch MLP tuple cache remain
+training/export and construction of the private CNN tuple cache remain
 separate authorized-input workflows.

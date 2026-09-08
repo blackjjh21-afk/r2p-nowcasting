@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit exPreCast field exports and create Patch MLP station-patch caches.
+"""Audit exPreCast field exports and create CNN station-patch caches.
 
 The adapted exPreCast training code and weights are not redistributed here.
 This adapter consumes its audited HDF5 export: normalized-reflectivity fields
@@ -205,7 +205,7 @@ def extract_station_patches(
 
 
 def gather_scene_windows(patches18: np.ndarray) -> np.ndarray:
-    """Return [issue,station,13,6,3,3] lead-aligned Patch MLP inputs."""
+    """Return [issue,station,13,6,3,3] lead-aligned CNN inputs."""
 
     patches = np.asarray(patches18, dtype=np.float32)
     if patches.ndim != 5 or tuple(patches.shape[2:]) != (18, 3, 3):

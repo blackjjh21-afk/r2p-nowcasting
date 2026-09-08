@@ -11,23 +11,23 @@
       "name": "Table1_main",
       "path": "Table1_main.csv",
       "rows": 15,
-      "sha256": "26e8a0fb760df441271a7bf37a2bb5f0878644741001e82e03d95108a4ada6bf"
+      "sha256": "aad62e85ebbaa26783d6d9bea43dcd22f03b8bbe5cf33dbc74abb998b2495d2f"
+    },
+    {
+      "columns": 10,
+      "kind": "aggregate_sheet",
+      "name": "Table1_numeric",
+      "path": "Table1_numeric.csv",
+      "rows": 15,
+      "sha256": "86e7f347a14fe90be0465cfbbc64092464b25479435bc756c89bf366f24e74c2"
     },
     {
       "columns": 5,
       "kind": "aggregate_sheet",
-      "name": "TableS1a_training",
-      "path": "TableS1a_training.csv",
-      "rows": 7,
-      "sha256": "3268fbd74c1b2ee7ee075cbbe7c1f38b111a40d47d43750cfb525af8ee8e64b9"
-    },
-    {
-      "columns": 3,
-      "kind": "aggregate_sheet",
-      "name": "TableS1b_readout",
-      "path": "TableS1b_readout.csv",
-      "rows": 2,
-      "sha256": "0e9ea1a5e8f2472033429e096e856c3f4e5c22fd361f0487f77a936ffb5435cd"
+      "name": "TableS1_training",
+      "path": "TableS1_training.csv",
+      "rows": 9,
+      "sha256": "d1fbf4d83104ad53e41ae9846890203c4188dba64b365a23e2b23e136f5655b4"
     },
     {
       "columns": 3,
@@ -46,20 +46,20 @@
       "sha256": "3a55a450e01c952b1c9334a6e911e0c2fcd73bccdd8d882d61c51d21a2dde477"
     },
     {
-      "columns": 41,
+      "columns": 17,
       "kind": "aggregate_sheet",
       "name": "Table1_seed_numeric",
       "path": "Table1_seed_numeric.csv",
       "rows": 45,
-      "sha256": "4bf503bdc749f91f33e521ccae50123f73f7e2bc1d77f5e2b35d9a691b844831"
+      "sha256": "474f33ed3343c97fce1b4e7ea9665cf8a01729a75ab9b9f6c80595d0baa75a74"
     },
     {
       "columns": 6,
       "kind": "aggregate_sheet",
       "name": "Gauge_contract_matrix",
       "path": "Gauge_contract_matrix.csv",
-      "rows": 8,
-      "sha256": "7609de0b777c235edb47dbcb02e1a7f69b99dcc8578b7bb5278ece20e5e59fe0"
+      "rows": 9,
+      "sha256": "c8bd734d052b1a33c55323ef4c2175f6b11ce9a13a99251d96b3a15f2fb520d7"
     },
     {
       "columns": 3,
@@ -99,7 +99,7 @@
       "name": "Fig2d_CSI_summary",
       "path": "Fig2d_CSI_summary.csv",
       "rows": 12,
-      "sha256": "1db18f53d7d3236b3bb51f9c6f433b0c978e80c0cd4f42d870eec08d6acc6670"
+      "sha256": "77bb42b532d0632fe8c9eb5dd907cef20a379d0e716b836bb3165be4f4072c33"
     },
     {
       "columns": 5,
@@ -107,71 +107,87 @@
       "name": "Fig2d_FB_summary",
       "path": "Fig2d_FB_summary.csv",
       "rows": 12,
-      "sha256": "985694e60d5f4ef4e8c5037c8fd3ccc23e9bf0cbcb5a1a909d30a3db008ceb32"
-    },
-    {
-      "columns": 9,
-      "kind": "aggregate_sheet",
-      "name": "Fig2d_readout_members",
-      "path": "Fig2d_readout_members.csv",
-      "rows": 28,
-      "sha256": "a38ae41596e8d3d2e2bf5e7af53f4ca838c32c0334209581bbc1eb6231d569d3"
-    },
-    {
-      "columns": 9,
-      "kind": "aggregate_sheet",
-      "name": "Fig2d_delta_CI",
-      "path": "Fig2d_delta_CI.csv",
-      "rows": 8,
-      "sha256": "fab0947dd68fad8fee7d96649a2fe65fe5e25630efc18a7a8765c29e32764a8b"
-    },
-    {
-      "columns": 15,
-      "kind": "aggregate_sheet",
-      "name": "Categorical_per_rep",
-      "path": "Categorical_per_rep.csv",
-      "rows": 180,
-      "sha256": "8e95feeab3f1f1226a9518cb66d5cb2d8e84d3c902803be340dfaa6364f1df8e"
-    },
-    {
-      "columns": 23,
-      "kind": "aggregate_sheet",
-      "name": "Categorical_mean_sd",
-      "path": "Categorical_mean_sd.csv",
-      "rows": 60,
-      "sha256": "57fa5a7456bc63c466a7b1ebacde556a98c6654c4a0277b99bdc793963bdd4e3"
-    },
-    {
-      "columns": 16,
-      "kind": "aggregate_sheet",
-      "name": "Continuous_per_rep",
-      "path": "Continuous_per_rep.csv",
-      "rows": 45,
-      "sha256": "9597acb57f2504df06716f7d6b76333f95beba20c3c4f8df60af8c5f84306a46"
+      "sha256": "96d363b31ed51070ded012b9caf03725b950b86b6814f227b20d4b71dce60501"
     },
     {
       "columns": 10,
       "kind": "aggregate_sheet",
-      "name": "Continuous_mean_sd",
-      "path": "Continuous_mean_sd.csv",
-      "rows": 15,
-      "sha256": "2f81f4490b4a8133897ae7824844cf8992c36ab1ccfc576682b1ac7f208d15bb"
+      "name": "Fig2d_readout_members",
+      "path": "Fig2d_readout_members.csv",
+      "rows": 28,
+      "sha256": "d456888c7961d35a2971ff8b740a250077e432f5b7ad57e0c72e23fab68b171d"
     },
     {
-      "columns": 17,
+      "columns": 10,
       "kind": "aggregate_sheet",
-      "name": "Paired_date_bootstrap",
-      "path": "Paired_date_bootstrap.csv",
-      "rows": 325,
-      "sha256": "321f12b1a77474b9888ed79c6acc06c856139861e39b5cd8624ad90e6dd2e4e9"
+      "name": "Fig2d_delta_CI",
+      "path": "Fig2d_delta_CI.csv",
+      "rows": 8,
+      "sha256": "3559ffa832dce96407ebae16645a3dd22a97b954a1a300c063425c768185cb26"
+    },
+    {
+      "columns": 16,
+      "kind": "aggregate_sheet",
+      "name": "Categorical_per_rep",
+      "path": "Categorical_per_rep.csv",
+      "rows": 468,
+      "sha256": "c52f13be4166d3fa144ced2dc11deadfe4d16f934623520e0ec278eda800e08e"
     },
     {
       "columns": 13,
       "kind": "aggregate_sheet",
+      "name": "Categorical_mean_sd",
+      "path": "Categorical_mean_sd.csv",
+      "rows": 156,
+      "sha256": "c04734c4b610af6b1b50b2e99e98ceb810c7850a6e5821c0bc8dcd6ea4c7315f"
+    },
+    {
+      "columns": 12,
+      "kind": "aggregate_sheet",
+      "name": "Continuous_per_rep",
+      "path": "Continuous_per_rep.csv",
+      "rows": 117,
+      "sha256": "f24a842ee540b8ab5fcd22092096471503703544f49ed2281382a29bda6e126f"
+    },
+    {
+      "columns": 14,
+      "kind": "aggregate_sheet",
+      "name": "Continuous_mean_sd",
+      "path": "Continuous_mean_sd.csv",
+      "rows": 39,
+      "sha256": "a14cc25884cd907614bd49d2ca6ca85df0ec6ab8133ccdf821a5f70491abc1b3"
+    },
+    {
+      "columns": 12,
+      "kind": "aggregate_sheet",
       "name": "Fig3ef_route_contrasts",
       "path": "Fig3ef_route_contrasts.csv",
-      "rows": 40,
-      "sha256": "34cf2c3b33d739b7eed5aea0ee3c2fb185b2c0b803344cdb043035e7444470d7"
+      "rows": 104,
+      "sha256": "5a27824dbb00b1b5a06ac570a3e90c43c30a48f3a05c9818ffa566ef43358726"
+    },
+    {
+      "columns": 11,
+      "kind": "aggregate_sheet",
+      "name": "Fig3_macro_contrasts",
+      "path": "Fig3_macro_contrasts.csv",
+      "rows": 2,
+      "sha256": "186c4c288132705d565541552b7c869c1f03ba73c8bf650541b3edb8698e4514"
+    },
+    {
+      "columns": 15,
+      "kind": "aggregate_sheet",
+      "name": "Fig4a_radar_only",
+      "path": "Fig4a_radar_only.csv",
+      "rows": 20,
+      "sha256": "4401418ba5b515a1433cebab75084596016aa241e8a50ca854982f9ede8e2d76"
+    },
+    {
+      "columns": 17,
+      "kind": "aggregate_sheet",
+      "name": "Fig4b_no_dropout",
+      "path": "Fig4b_no_dropout.csv",
+      "rows": 20,
+      "sha256": "bd23088e6c69f80c4ab9ce50e690f71243c6d712f8d92bd0dbf4e8b1c6aaaa34"
     },
     {
       "columns": 11,
@@ -206,36 +222,36 @@
       "sha256": "084c0034dfa23991d80d6d1c719e36266444dce309d290de2d48dc081c00f52c"
     },
     {
-      "columns": 11,
+      "columns": 16,
       "kind": "aggregate_sheet",
-      "name": "Route_metric_CI",
-      "path": "Route_metric_CI.csv",
-      "rows": 285,
-      "sha256": "95bf4fe201b6d2f19bca9fd8e93ecd4f0ee67ea4899bb76c7f7df9c3610cecf8"
-    },
-    {
-      "columns": 19,
-      "kind": "aggregate_sheet",
-      "name": "Fig5_intensity_point_CI",
-      "path": "Fig5_intensity_point_CI.csv",
+      "name": "Fig5_plot_source",
+      "path": "Fig5_plot_source.csv",
       "rows": 96,
-      "sha256": "b62a8cd6ef4a19787042f73498c629cb3213e9645de1cca4e5d1763a23e216e7"
+      "sha256": "aa6753fca852d0fa7aab8040fc3be42ef623cb93ef758b9a1f5901e90cdb93fb"
     },
     {
-      "columns": 11,
+      "columns": 7,
       "kind": "aggregate_sheet",
-      "name": "TableS2b_diagnostics",
-      "path": "TableS2b_diagnostics.csv",
-      "rows": 60,
-      "sha256": "fc4d207a84baa6a0b426a90ec2789ca8a9985617df42e48abdd9ed8e85c0c380"
+      "name": "Fig5_amount",
+      "path": "Fig5_amount.csv",
+      "rows": 156,
+      "sha256": "32212f4bd720eef04d2c2c3fa0195ac21c60c577f22dccedbe21d3f646d68680"
     },
     {
-      "columns": 15,
+      "columns": 7,
+      "kind": "aggregate_sheet",
+      "name": "Fig5_frequency",
+      "path": "Fig5_frequency.csv",
+      "rows": 156,
+      "sha256": "a407f0cfc5436f45596437562fcb21e3c91ba334fda4cd2cbefe95df9cac6b14"
+    },
+    {
+      "columns": 17,
       "kind": "aggregate_sheet",
       "name": "Case_per_rep",
       "path": "Case_per_rep.csv",
       "rows": 360,
-      "sha256": "57a5199cc6ac1cf635ad412c56ed6ca6933b522c2c2d5eaf73cd50a8a02f4fca"
+      "sha256": "00f3b153445d5ac3fa9726a86a72631e49a16a5a9d57bf7fb4fff05d98c4ce12"
     },
     {
       "columns": 13,
@@ -243,7 +259,7 @@
       "name": "Case_mean_sd",
       "path": "Case_mean_sd.csv",
       "rows": 120,
-      "sha256": "6bd5837a544b9a9c8ee99145b855148809aea29211d493adbb142f64d8d3af58"
+      "sha256": "27882e1f37bf62ce4f264a8a2aee56fae43a2adce697725c3e1c3b024da2ddd7"
     },
     {
       "columns": 8,
@@ -251,7 +267,7 @@
       "name": "FigS3_pairwise_counts",
       "path": "FigS3_pairwise_counts.csv",
       "rows": 8,
-      "sha256": "d1499ec976b56b55334729ea9c0bead57ef94d75cd6423f93ebb561187a64888"
+      "sha256": "694acd8acef51243ad807c6c98ce53a5e10874312d8f720b51c462c36344ba88"
     },
     {
       "columns": 3,
@@ -297,20 +313,20 @@
       "kind": "aggregate_workbook",
       "name": "Supplementary Data 1 public aggregate subset",
       "path": "Supplementary_Data_1_public_aggregate.xlsx",
-      "sha256": "52d41588e7f23b0da09aec459a31b1d5147aca22252ea947988942187650eb69",
-      "sheet_count": 36
+      "sha256": "750a763d9ed305fe45292085f24081a1ca1d397e19094fb41fa7c6048c783b44",
+      "sheet_count": 38
     },
     {
       "kind": "reference_rendering",
       "name": "figure2_valid_time_readout.png",
       "path": "figures/reference/figure2_valid_time_readout.png",
-      "sha256": "38fdc9db22723a4ae06ba2198a3d2fbb3467930fe1518c7e12595a10931abd0e"
+      "sha256": "e16404be7e11e1d4f86254973e4a5bdba6f147fa47336f2a517b7aa882ffcfc8"
     },
     {
       "kind": "reference_rendering",
       "name": "figure3_route_skill_and_contrasts.png",
       "path": "figures/reference/figure3_route_skill_and_contrasts.png",
-      "sha256": "1b2aaa912ab3d5d7a70c483298fb9d9560132f204238954b609aa418a243aa2c"
+      "sha256": "237ea8efc8f65f14388f0230a8d0e0301793b87dc21503d384d8d5fe84b9bd42"
     },
     {
       "kind": "reference_rendering",
@@ -322,13 +338,13 @@
       "kind": "reference_rendering",
       "name": "figure5_heavy_rain_attenuation.png",
       "path": "figures/reference/figure5_heavy_rain_attenuation.png",
-      "sha256": "fec8537d6cf99fb7d34693d73afbb13e194cd59cd3d9fec41234b9fa107ffe93"
+      "sha256": "6e1c4d1428570d8430a4a57f9ca68a5760974c62ab8b703e9b49be5767278409"
     },
     {
       "kind": "reference_rendering",
       "name": "figure6_route_architecture.png",
       "path": "figures/reference/figure6_route_architecture.png",
-      "sha256": "9620a98f1fa940b59704bb994082ef4f2149bda7ebb78a07c02e160f6f32459d"
+      "sha256": "d2a520ef83eaffdb3f00c13178adb2553ca1a7a2bb35106bbc78f6902def37b6"
     },
     {
       "kind": "reference_rendering",
@@ -346,11 +362,11 @@
       "kind": "reference_rendering",
       "name": "table1_heldout_point_skill.png",
       "path": "figures/reference/table1_heldout_point_skill.png",
-      "sha256": "1980433e010d962577239d55166b9f2e8cebe2ca3aa8f97ea75814a87cd78456"
+      "sha256": "be22538cb568d64d6f571dca17577508e3b33aa7bfe7f40bdad4d6b35b67253f"
     }
   ],
   "schema": "r2p-4km10min-public-paper-audit-layer-v1",
-  "source_reader_manifest_sha256": "99290a7604229ccc981d7e9b9c24e007e4c43d3333ce4121f7e41d9ae8637192",
-  "source_supplementary_data_sha256": "386fba7b829ed482825658b074cd23d66898215c56b87f8e1f39e296a460c8ec",
+  "source_reader_manifest_sha256": "e2669fee24b18acbcf22360c55354f85b4fae9b91b718ad00abf64ac6e10aabe",
+  "source_supplementary_data_sha256": "6b70c3215f9a95744c9b8d47a5974191f283b65f4b7e005fb605e962a06eeb2d",
   "station_resolved_content_included": false
 }

@@ -195,7 +195,7 @@ def _patches(args: argparse.Namespace) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Generate deterministic pySTEPS fields or Patch MLP lead windows."
+        description="Generate deterministic pySTEPS fields or CNN lead windows."
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "direct-r2p-4km10min"
-version = "1.0.0"
+version = "1.1.0"
 description = "Reference implementations and audit workflows for 4-km/10-min gauge-referenced precipitation nowcasting"
 readme = "README.md"
 authors = [
@@ -38,6 +38,8 @@ r2p-radar-only = "evaluation.radar_only_comparison:main"
 r2p-station-dropout = "evaluation.station_dropout_comparison:main"
 prepare-kma-hsr-4km10min = "preprocessing.prepare_kma_hsr_4km10min:main"
 pysteps-4km10min = "pysteps_adapter.cli:main"
+cnn-readout-4km10min = "cnn_readout.workflow:main"
+# Historical workflow retained for old archived checkpoints.
 patch-mlp-4km10min = "patch_mlp.workflow:main"
 exprecast-export-adapter = "exprecast_adapter.adapter:main"
 r2p-paper-figures = "paper_outputs.render_publication:main"

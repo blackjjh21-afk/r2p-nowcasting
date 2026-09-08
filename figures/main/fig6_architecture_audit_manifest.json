@@ -25,20 +25,20 @@
   },
   "outputs": {
     "fig6_architecture.pdf": {
-      "sha256": "a0e683b4a987c738ff65991bb1bced82f863ac7396eae6b02f4c42511244cfe9",
-      "size_bytes": 19887
+      "sha256": "1a0e56bb392c705ca5f1d0bc9f4729b87148fb04f7f9cf42eb70b0ccdfa7013c",
+      "size_bytes": 19869
     },
     "fig6_architecture.png": {
-      "sha256": "9620a98f1fa940b59704bb994082ef4f2149bda7ebb78a07c02e160f6f32459d",
-      "size_bytes": 426639
+      "sha256": "d2a520ef83eaffdb3f00c13178adb2553ca1a7a2bb35106bbc78f6902def37b6",
+      "size_bytes": 425653
     },
     "fig6_architecture_caption.txt": {
       "sha256": "6cccf88a90f6bbeb50e2bc7303bd8fb88c5739eca7640400051c2c6d54bc1874",
       "size_bytes": 437
     },
     "fig6_architecture_editable.pptx": {
-      "sha256": "416af360d70d9ab332784487c3cbeec5eeaa69c5523ef6e0aa9462012379c5ea",
-      "size_bytes": 10505
+      "sha256": "ad424f14a42bee7dd59ccf9d6351d07b2a6dd7e2890ff02c7fb83551632ad4b3",
+      "size_bytes": 10502
     }
   },
   "pptx_verification": {
@@ -174,12 +174,12 @@
   "schema": "figure6-jh2-final-v1",
   "script": {
     "path": "scripts/finalize_fig6_architecture.py",
-    "sha256": "ff4f9063a9c68a2f21892b61bff365c81458912cc8ae0f15e38f4bb359fb72f0"
+    "sha256": "86f1f1c10a8e13421e202f814b96ef8ddb0ceb99ecac03b0eb45fd331b5fdda4"
   },
   "source_modified": false,
   "source_pptx": {
     "path": "figures/main/fig6_architecture_source.pptx",
-    "sha256": "95b87a9ae50942d8a9f060ae04db500879d5524be206e07c9480bc264d4b4747"
+    "sha256": "1b9313dab4233eb5a3b9328679e990d87a2fea0efbbc2bc1d092243d3a66e7f2"
   },
   "status": "complete"
 }
