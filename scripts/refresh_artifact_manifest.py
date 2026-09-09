@@ -28,16 +28,6 @@ ROLES = {
     "src/paper_outputs/render_restricted.py": "authorized-input station-resolved display renderer",
 }
 
-RETIRED_ARTIFACTS = {
-    "data/paper_aggregates/Paired_date_bootstrap.csv",
-    "data/paper_aggregates/TableS2b_diagnostics.csv",
-    "data/paper_aggregates/Route_metric_CI.csv",
-    "data/paper_aggregates/Fig5_intensity_point_CI.csv",
-    "data/paper_aggregates/TableS1a_training.csv",
-    "data/paper_aggregates/TableS1b_readout.csv",
-}
-
-
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -83,8 +73,7 @@ def main() -> None:
     existing: dict[str, str] = {}
     with MANIFEST.open(encoding="utf-8", newline="") as stream:
         for row in csv.DictReader(stream):
-            if str(row["path"]) not in RETIRED_ARTIFACTS:
-                existing[str(row["path"])] = str(row["role"])
+            existing[str(row["path"])] = str(row["role"])
 
     roles = {**existing, **discover_public_artifacts(), **ROLES}
     missing = sorted(relative for relative in roles if not (ROOT / relative).is_file())

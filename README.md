@@ -2,26 +2,23 @@
 
 Public code package for the 4-km/10-min CNN readout experiments.
 
-This directory is the source tree for the CNN revision of the 4-km/10-min public
-release. It is maintained independently from the legacy analysis package and
-the private research workspace. The scientific contract is
+This package contains the methods and public-safe outputs for the final
+4-km/10-min paper experiments. The scientific contract is
 frozen in [`configs/scientific_contract_4km10min.json`](configs/scientific_contract_4km10min.json),
 and the reader-facing route names are frozen in
 [`configs/route_registry.json`](configs/route_registry.json).
 
-> **Release status:** the current CNN revision is prepared as version 1.1.0.
-> Version 1.0.0, published on 2026-08-29, remains available at
-> [its historical software DOI](https://doi.org/10.5281/zenodo.22147192).
-> That archived version does not contain the current CNN results. A new
-> Zenodo version is required to archive this revision.
+> **Release status:** version 1.1.0 is prepared but not yet published to
+> Zenodo. Version-specific software and derived-data DOIs are pending.
 
 ## Scientific question
 
 The paper first holds observed HSR fixed at the target valid time and asks how
 much of the fixed field-to-point readout deficit can be recovered by
-gauge-supervised MLP and CNN readouts. It then compares a direct
-radar-to-point route with two complete field-first routes on exactly the same
-held-out stations, issue times, gauge truth and reported leads:
+gauge-supervised center-cell MLP and local-patch CNN readouts (Fig. 2). These
+valid-time diagnostics are distinct from the forecast-route comparison, which
+compares a direct radar-to-point route with two complete field-first routes on
+exactly the same held-out stations, issue times, gauge truth and reported leads:
 
 - **pySTEPS + CNN**
 - **exPreCast + CNN**
@@ -86,6 +83,10 @@ current capabilities are:
 | Re-render station-resolved Fig. 1 and S2/S3 | Display code available; authorized radar/station inputs and a caller-supplied Natural Earth cache are required and are not redistributed here |
 | Inspect Supplementary Tables S1/S2 and the public portion of Supplementary Data 1 | Available as schema-bound CSV files and a deterministic aggregate-only XLSX |
 
+The Fig. 2 center-cell MLP and local-patch CNN diagnostics are provided as
+aggregate results and renderings, not as public model-training workflows.
+`src/cnn_readout/` implements the forecast-route CNN readout.
+
 The release provides a compact public audit and display layer. Users who
 lawfully obtain the required KMA and third-party inputs can run the portable
 components explicitly listed above; raw-to-paper reproduction also depends on
@@ -113,8 +114,8 @@ r2p-nowcasting/
 └── environment.yml
 ```
 
-[`RELEASE_STATUS.md`](RELEASE_STATUS.md) records the audited status and scope
-of the current CNN revision and its archived predecessor.
+[`RELEASE_STATUS.md`](RELEASE_STATUS.md) records the status and scope of
+version 1.1.0.
 
 ## Implemented public components
 
@@ -201,8 +202,8 @@ pytest -q -p no:cacheprovider tests
 ```
 
 The release-ready command verifies that `CITATION.cff` records the final
-version, release date, repository URL and archived software DOI. The approved
-repository and Supplementary Data 1 scopes are recorded in
+version, release date, repository URL and version-specific software DOI. The
+approved repository and Supplementary Data 1 scopes are recorded in
 `DATA_REDISTRIBUTION_DECISION.md`. The audit also rejects machine-specific paths,
 credential-like content, caches, symlinks, model/data archives, oversized
 files, dirty notebook outputs, and drift in either frozen JSON contract. No
@@ -229,7 +230,8 @@ Author-generated software is distributed under the BSD-3-Clause license in
 [`LICENSE`](LICENSE). This license does not relicense KMA observations,
 KMA-derived station data, exPreCast materials or other third-party assets.
 The approved public-repository and Supplementary Data 1 scopes are recorded in
-[`DATA_REDISTRIBUTION_DECISION.md`](DATA_REDISTRIBUTION_DECISION.md). Final
-citation metadata for this source revision are provided in
-[`CITATION.cff`](CITATION.cff). The previously published software archive remains
-available at [its version DOI](https://doi.org/10.5281/zenodo.22147192).
+[`DATA_REDISTRIBUTION_DECISION.md`](DATA_REDISTRIBUTION_DECISION.md). Citation
+metadata are provided in [`CITATION.cff`](CITATION.cff); the version-specific
+archive DOI is pending. See
+[`docs/PUBLICATION_WORKFLOW.md`](docs/PUBLICATION_WORKFLOW.md) for the
+publication steps.

@@ -16,7 +16,7 @@ observations are not confused with publicly redistributable aggregate results.
 | Reader output | Rendering code | Bundled numerical source | Scope |
 |---|---|---|---|
 | Figure 1 | `paper_outputs.render_restricted figure1` | No | Authorized radar footprint and frozen station split required; final coastline/border transform is implemented with caller-supplied Natural Earth data |
-| Figure 2 | `r2p-paper-figures --item 2` | Yes | Public aggregate numerical/display reconstruction |
+| Figure 2 | `r2p-paper-figures --item 2` | Yes | Public aggregate numerical/display reconstruction, including the valid-time center-cell MLP and local-patch CNN diagnostics |
 | Figure 3 | `r2p-paper-figures --item 3` | Yes | Public aggregate numerical/display reconstruction |
 | Figure 4 | `r2p-paper-figures --item 4`; component audits in `src/evaluation/` | Yes | Public aggregate numerical/display reconstruction; private stores are required only to recompute the aggregates |
 | Figure 5 | `r2p-paper-figures --item 5` | Yes | Public aggregate numerical/display reconstruction |
@@ -28,6 +28,10 @@ observations are not confused with publicly redistributable aggregate results.
 | Table 1 | `r2p-paper-figures --item table1` | Yes | Public aggregate numerical/display reconstruction |
 | Supplementary Tables S1/S2 | CSV sheets in `data/paper_aggregates/` | Yes | Public aggregate reproduction |
 | Supplementary Data 1 | `scripts/sync_public_paper_outputs.py` | Aggregate-only workbook included | The complete reader workbook remains a manuscript/data-archive item because it contains station-resolved sheets |
+
+Figure 2 includes the final center-cell MLP and local-patch CNN aggregate
+results and reference rendering. Their valid-time model-training workflow is
+not distributed; `src/cnn_readout/` is the separate forecast-route CNN workflow.
 
 ## Re-render public aggregate outputs
 

@@ -174,7 +174,7 @@
   "schema": "figure6-jh2-final-v1",
   "script": {
     "path": "scripts/finalize_fig6_architecture.py",
-    "sha256": "86f1f1c10a8e13421e202f814b96ef8ddb0ceb99ecac03b0eb45fd331b5fdda4"
+    "sha256": "d836460b6305c6f77bd492aef1b4919a1395db2b6bbbcc0d28ac2fe03a3f4f95"
   },
   "source_modified": false,
   "source_pptx": {
