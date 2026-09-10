@@ -181,25 +181,23 @@ def render_figure1(
     save(fig, output, "figure1_study_design")
 
 
-def read_excel(path: Path, sheet: str) -> pd.DataFrame:
-    try:
-        return pd.read_excel(path, sheet_name=sheet)
-    except ImportError as exc:  # pragma: no cover
-        raise SystemExit("install the paper-output optional dependency openpyxl") from exc
+def read_source_csv(source_data: Path, name: str) -> pd.DataFrame:
+    """Read one explicitly named, caller-supplied station-resolved table."""
+    return pd.read_csv(source_data / f"{name}.csv", encoding="utf-8-sig")
 
 
-def render_s2(workbook: Path, output: Path) -> None:
+def render_s2(source_data: Path, output: Path) -> None:
     """Render four +60-min station examples, without CSI panels or shading.
 
     Case definitions and station observations must be supplied by the caller;
     the public repository does not bundle station-resolved case metadata.
     """
-    series = read_excel(workbook, "FigS2_station_timeseries")
-    cases = read_excel(workbook, "Case_definitions")
+    series = read_source_csv(source_data, "FigS2_station_timeseries")
+    cases = read_source_csv(source_data, "Case_definitions")
     required_series = {"case_rank", "station_id", "valid_time_kst", "lead_min", "route", "value_mean_mm"}
     required_cases = {"panel", "case_rank", "station_id", "window_start_exclusive", "window_end_inclusive", "lead_min"}
     if not required_series.issubset(series) or not required_cases.issubset(cases):
-        raise ValueError("Supplementary Data 1 lacks the four-case station-time schema")
+        raise ValueError("S2 source CSVs lack the four-case station-time schema")
     cases = cases.sort_values("panel").reset_index(drop=True)
     if list(cases.panel) != list("abcd") or not cases.case_rank.is_unique:
         raise ValueError("S2 requires four distinct cases with panels a, b, c and d")
@@ -255,12 +253,12 @@ def render_s2(workbook: Path, output: Path) -> None:
 
 
 def render_s3(
-    workbook: Path,
+    source_data: Path,
     stations_csv: Path,
     cartopy_data_dir: Path,
     output: Path,
 ) -> None:
-    station = read_excel(workbook, "FigS3_station_CSI")
+    station = read_source_csv(source_data, "FigS3_station_CSI")
     required = {"station_id", "lat", "lon", "route", "threshold_mm", "csi_mean"}
     if not required.issubset(station):
         raise ValueError("FigS3_station_CSI does not match the frozen schema")
@@ -366,10 +364,12 @@ def parser() -> argparse.ArgumentParser:
     p1.add_argument("--cartopy-data-dir", type=Path, required=True)
     p1.add_argument("--output-dir", type=Path, required=True)
     p2 = sub.add_parser("s2")
-    p2.add_argument("--supplementary-data", type=Path, required=True)
+    p2.add_argument("--source-data", type=Path, required=True,
+                    help="directory containing authorized S2 source CSVs")
     p2.add_argument("--output-dir", type=Path, required=True)
     p3 = sub.add_parser("s3")
-    p3.add_argument("--supplementary-data", type=Path, required=True)
+    p3.add_argument("--source-data", type=Path, required=True,
+                    help="directory containing authorized S3 source CSVs")
     p3.add_argument("--stations-csv", type=Path, required=True)
     p3.add_argument("--cartopy-data-dir", type=Path, required=True)
     p3.add_argument("--output-dir", type=Path, required=True)
@@ -384,10 +384,10 @@ def main() -> None:
             args.output_dir,
         )
     elif args.item == "s2":
-        render_s2(args.supplementary_data, args.output_dir)
+        render_s2(args.source_data, args.output_dir)
     else:
         render_s3(
-            args.supplementary_data, args.stations_csv,
+            args.source_data, args.stations_csv,
             args.cartopy_data_dir, args.output_dir,
         )
 

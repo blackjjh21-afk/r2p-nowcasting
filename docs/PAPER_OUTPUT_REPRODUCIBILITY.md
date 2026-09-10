@@ -20,15 +20,15 @@ observations are not confused with publicly redistributable aggregate results.
 | Figure 3 | `r2p-paper-figures --item 3` | Yes | Public aggregate numerical/display reconstruction |
 | Figure 4 | `r2p-paper-figures --item 4`; component audits in `src/evaluation/` | Yes | Public aggregate numerical/display reconstruction; private stores are required only to recompute the aggregates |
 | Figure 5 | `r2p-paper-figures --item 5` | Yes | Public aggregate numerical/display reconstruction |
-| Figure 6 | `r2p-paper-figures --item 6` | Editable source included | Exact source-bound finalizer and final PNG/PDF/PPTX |
+| Figure 6 | `r2p-paper-figures --item 6` | Renderer source included | Pure Matplotlib code renderer; no Office source required |
 | Supplementary Figure S1 | `r2p-paper-figures --item s1` | Yes, distance-group aggregates only | Public aggregate numerical/display reconstruction; no station assignment table |
-| Supplementary Figure S2 | `paper_outputs.render_restricted s2` | No | Four +60-min station time series, using three-member means without shading; case definitions and station values require authorized Supplementary Data 1 |
-| Supplementary Figure S3 | `paper_outputs.render_restricted s3` | Pairwise station-count summary only | Exact stationwise CSI plus the authorized full station split are required; renderer includes the fitting-station and geographic context layers |
+| Supplementary Figure S2 | `paper_outputs.render_restricted s2` | No | Four +60-min station time series, using three-member means without shading; authorized case-definition and station-time CSVs are required |
+| Supplementary Figure S3 | `paper_outputs.render_restricted s3` | Pairwise station-count summary only | Exact stationwise CSI CSV plus the authorized full station-split CSV are required; renderer includes the fitting-station and geographic context layers |
 | Supplementary Figure S4 | `r2p-paper-figures --item s4` | Yes | Public aggregate numerical/display reconstruction |
 | Table 1 | `r2p-paper-figures --item table1` | Yes | Public aggregate numerical/display reconstruction |
 | Supplementary Table S1 | CSV sheet in `data/paper_aggregates/` | Yes | Public aggregate reproduction |
 | Supplementary Table S2 | `TableS2_cases` in authorized Supplementary Data 1 | No | Exact four-case windows and held-out station identifiers; not bundled with the public aggregate subset |
-| Supplementary Data 1 | Frozen workbook and CSV subset in `data/paper_aggregates/` | Aggregate-only workbook included | The complete reader workbook remains a separate data-archive item because it contains station-resolved sheets |
+| Supplementary Data 1 | CSV subset in `data/paper_aggregates/` | Aggregate-only CSV tables included | The complete reader workbook remains a separate data-archive item because it contains station-resolved sheets |
 
 Figure 2 includes the final center-cell MLP and local-patch CNN aggregate
 results and reference rendering. Their valid-time model-training workflow is
@@ -44,28 +44,27 @@ r2p-paper-figures --item all --output-dir outputs/paper_figures
 ```
 
 When invoking a wheel-installed command outside the checkout, pass
-`--data-root` and `--examples-root` explicitly. Figure 6 additionally requires
-the included editable source and finalizer in a source checkout.
+`--data-root` and `--examples-root` explicitly. Figure 6 uses its included
+Matplotlib renderer without an Office source file.
 
 The command reads the frozen compact tables and emits PNG/PDF files.  The
 manuscript renderings copied under `figures/reference/` are hash-bound reference
-images.  Figures 2--5, S1 and S4 are numerical/display reconstructions from
-those aggregate values, not assertions of byte-identical page artwork.  Figure
-6 is the exception: its finalizer is bound to the included editable source and
-its PNG hash matches the final manuscript asset.  Matplotlib output hashes can
+images. Figures 2--5, S1 and S4 are numerical/display reconstructions from
+those aggregate values, not assertions of byte-identical page artwork.
+Figure 6 is rendered directly from its code-defined diagram. Matplotlib output hashes can
 vary across FreeType and operating-system versions even when numerical values
 are identical.
 
 ## Bundled aggregate data
 
-`data/paper_aggregates/` contains the frozen public-safe CSV sheets and
-`Supplementary_Data_1_public_aggregate.xlsx`. These exclude station identifiers,
+`data/paper_aggregates/` contains the frozen public-safe CSV tables.
+These exclude station identifiers,
 coordinates and station-time values. The bundled reference figures are also
 non-station-resolved; Fig. 1, Supplementary Fig. S2 and Supplementary Fig. S3
 require the authorized inputs described below.
 
-`Table1_main` retains full-precision numerical values; the table renderer and
-workbook number formats display CSI to four decimal places and continuous
+`Table1_main` retains full-precision numerical values; the table renderer
+displays CSI to four decimal places and continuous
 metrics to three. `Table1_seed_numeric` retains the individual members.
 `Fig2d_readout_summary` combines CSI and frequency-bias means and standard
 deviations on the same route–threshold rows, with the member count; individual
@@ -84,11 +83,11 @@ python -m paper_outputs.render_restricted figure1 \
   --output-dir outputs/paper_figures
 
 python -m paper_outputs.render_restricted s2 \
-  --supplementary-data data/private/Supplementary_Data_1.xlsx \
+  --source-data data/private/station_figure_sources \
   --output-dir outputs/paper_figures
 
 python -m paper_outputs.render_restricted s3 \
-  --supplementary-data data/private/Supplementary_Data_1.xlsx \
+  --source-data data/private/station_figure_sources \
   --stations-csv data/private/station_split.csv \
   --cartopy-data-dir data/private/cartopy \
   --output-dir outputs/paper_figures
@@ -98,8 +97,14 @@ The Cartopy directory must contain the Natural Earth 10m land, ocean,
 coastline and national-boundary shapefiles.  The command validates these files
 before rendering and never downloads them implicitly.
 
-Supplementary Figure S2 reads `Case_definitions` and
-`FigS2_station_timeseries` from the authorized workbook. It validates panels
+The `--source-data` directory must contain the externally supplied,
+authorized CSVs named `Case_definitions.csv` and `FigS2_station_timeseries.csv`
+for S2, and `FigS3_station_CSI.csv` for S3. The station-split CSV must contain
+`station_id`, `lat`, `lon` and `split` (`train` or `test`). These inputs are not
+bundled with the public repository. The renderers read CSV files directly;
+they do not read Excel workbooks or construct Supplementary Data documents.
+
+Supplementary Figure S2 validates panels
 a–d, their display stations, 24-hour windows and the common +60-minute
 valid-time index before plotting. The four station examples are qualitative
 illustrations; the plotted means are not uncertainty bands. Member-resolved

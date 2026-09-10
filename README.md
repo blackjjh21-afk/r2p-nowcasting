@@ -79,9 +79,9 @@ current capabilities are:
 | Validate prepared CNN tuples, run out-of-fold epoch selection, refit and predict | Available from prepared inputs; construction from restricted inputs is an external authorized-input workflow and is not distributed |
 | Generate pySTEPS field forecasts and station patch windows | Available through `src/pysteps_adapter/` |
 | Audit project-adapted exPreCast field exports and extract station patches | Available through `src/exprecast_adapter/`; upstream exPreCast training/export remains external |
-| Re-render Figs. 2--6, S1/S4 and Table 1 from public aggregate sources | Available; Figure 6 uses the exact editable-source finalizer, while the others are aggregate numerical/display reconstructions with hash-bound manuscript reference images |
+| Re-render Figs. 2--6, S1/S4 and Table 1 from public aggregate sources | Available; Figure 6 uses a native Matplotlib renderer, while the others are aggregate numerical/display reconstructions with hash-bound manuscript reference images |
 | Re-render station-resolved Fig. 1 and S2/S3 | Display code available; authorized radar/station inputs and a caller-supplied Natural Earth cache are required and are not redistributed here |
-| Inspect Supplementary Tables S1/S2 and the public portion of Supplementary Data 1 | Available as schema-bound CSV files and a deterministic aggregate-only XLSX |
+| Inspect Supplementary Table S1 and the public portion of Supplementary Data 1 | Available as schema-bound CSV files; station-resolved Table S2 is supplied in the authorized full data archive |
 
 The Fig. 2 center-cell MLP and local-patch CNN diagnostics are provided as
 aggregate results and renderings, not as public model-training workflows.
@@ -104,9 +104,8 @@ r2p-nowcasting/
 ├── configs/                 # frozen scientific and route contracts
 ├── docs/                    # data and release policy
 ├── data/paper_aggregates/   # compact aggregate paper sources
-├── figures/                 # reference assets and editable Figure 6
+├── figures/                 # reference images and Figure 6 renderings
 ├── src/                     # models, evaluation and paper-output renderers
-├── scripts/                 # synchronization, Figure 6 and release audits
 ├── tests/                   # synthetic and contract tests
 ├── README.md
 ├── RELEASE_STATUS.md
@@ -147,9 +146,6 @@ version 1.1.0.
 - `src/paper_outputs/`: public aggregate numerical/display renderers for Figs.
   2--6, S1/S4 and Table 1, plus authorized-input renderers for Fig. 1 and
   S2/S3. See [`docs/PAPER_OUTPUT_REPRODUCIBILITY.md`](docs/PAPER_OUTPUT_REPRODUCIBILITY.md).
-- `scripts/finalize_fig6_architecture.py`: exact renderer for the included
-  editable Figure 6 source; Office author metadata and volatile timestamps are
-  scrubbed when release assets are generated.
 - `src/preprocessing/prepare_kma_hsr_4km10min.py`: the exact provider-format
   500-m HSR to normalized 4-km exPreCast transform, including source decoding,
   coordinate audit, missing-frame accounting, and reproducibility manifests.
@@ -168,7 +164,6 @@ conda env create -f environment.yml
 conda activate r2p-4km10min-release
 python -m pip install --no-deps -e .
 python -m r2p_4km10min.run_vanilla_r2p --help
-python scripts/audit_release.py
 pytest -q -p no:cacheprovider tests
 ```
 
@@ -182,30 +177,13 @@ CLI-only and intentionally contains no Jupyter runtime.
 GPU-specific PyTorch installation may need to be adjusted for the target CUDA
 driver while retaining the recorded major software versions.
 
-## Release audit and tests
+## Tests
 
-Run the portable audit in staging mode during local development:
-
-```bash
-python scripts/audit_release.py
-```
-
-Staging must finish with no errors, and generated caches must be removed before
-a clean audit. To verify a release, run the stricter gate:
-
-```bash
-python scripts/audit_release.py --release-ready
-pytest -q -p no:cacheprovider tests
-```
-
-The release-ready command verifies that `CITATION.cff` records the final
-version, release date, repository URL and version-specific software DOI. The
-approved repository and Supplementary Data 1 scopes are recorded in
-`DATA_REDISTRIBUTION_DECISION.md`. The audit also rejects machine-specific paths,
-credential-like content, caches, symlinks, model/data archives, oversized
-files, dirty notebook outputs, and drift in either frozen JSON contract. No
-notebooks are distributed in this release; the supported workflows are
-command-line interfaces.
+The test suite checks the model and data contracts, prepared-input validation,
+evaluation routines and figure/table renderers using synthetic inputs. The
+figure renderers read CSV data and generate individual PNG/PDF figures;
+Table 1 can be rendered as CSV or Markdown. No manuscript assembly or Office
+document processing is required.
 
 ## Evaluation conventions
 

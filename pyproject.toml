@@ -29,7 +29,7 @@ dependencies = [
 # pySTEPS does not declare OpenCV because several motion backends are
 # optional, but this repository's frozen Lucas–Kanade route requires it.
 pysteps = ["pysteps==1.21.1", "opencv-python-headless==4.10.0.84"]
-paper = ["openpyxl==3.1.5", "cartopy==0.23.0"]
+paper = ["cartopy==0.23.0"]
 test = ["pytest==7.4.4"]
 
 [project.scripts]

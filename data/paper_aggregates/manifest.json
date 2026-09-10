@@ -263,13 +263,6 @@
       "sha256": "c8bd734d052b1a33c55323ef4c2175f6b11ce9a13a99251d96b3a15f2fb520d7"
     },
     {
-      "kind": "aggregate_workbook",
-      "name": "Supplementary Data 1 public aggregate subset",
-      "path": "Supplementary_Data_1_public_aggregate.xlsx",
-      "sha256": "f3dfb67a2c72fc4e6f12252613167cdc425ff9ba379309335e75e1e1acc9531a",
-      "sheet_count": 32
-    },
-    {
       "kind": "reference_rendering",
       "name": "figure2_valid_time_readout.png",
       "path": "figures/reference/figure2_valid_time_readout.png",

@@ -12,11 +12,29 @@ def test_author_release_preparation_is_not_distributed() -> None:
         "scripts/prepare_cnn_release_artifacts.py",
         "scripts/sync_public_paper_outputs.py",
         "scripts/refresh_artifact_manifest.py",
+        "scripts/audit_release.py",
+        "scripts/scrub_office_metadata.py",
+        "scripts/finalize_fig6_architecture.py",
+        "tests/test_release_audit.py",
         "docs/PUBLICATION_WORKFLOW.md",
         "docs/ZENODO_SOFTWARE_FORM_VALUES.md",
     ):
         assert not (ROOT / relative).exists(), relative
     assert not list((ROOT / "docs/templates").glob("*.in"))
+
+
+def test_scientific_package_has_no_office_documents_or_dependencies() -> None:
+    for directory in ("data", "figures", "src", "tests"):
+        assert not [
+            path for path in (ROOT / directory).rglob("*")
+            if path.suffix.lower() in {".xlsx", ".xls", ".pptx", ".docx", ".doc"}
+        ]
+    metadata = tomllib.loads((ROOT / "pyproject.toml").read_text())
+    dependencies = metadata["project"]["dependencies"]
+    assert not any(
+        dependency.startswith(("openpyxl", "python-docx", "python-pptx", "xlsxwriter"))
+        for dependency in dependencies
+    )
 
 
 def test_distributed_packages_match_manuscript_workflows() -> None:

@@ -310,18 +310,18 @@ def _synthetic_s2_frames() -> tuple[pd.DataFrame, pd.DataFrame]:
     return pd.DataFrame(series_rows), pd.DataFrame(case_rows)
 
 
-def _write_s2_workbook(path: Path, series: pd.DataFrame, cases: pd.DataFrame) -> None:
-    with pd.ExcelWriter(path) as writer:
-        series.to_excel(writer, sheet_name="FigS2_station_timeseries", index=False)
-        cases.to_excel(writer, sheet_name="Case_definitions", index=False)
+def _write_s2_source_data(path: Path, series: pd.DataFrame, cases: pd.DataFrame) -> None:
+    path.mkdir(parents=True, exist_ok=True)
+    series.to_csv(path / "FigS2_station_timeseries.csv", index=False)
+    cases.to_csv(path / "Case_definitions.csv", index=False)
 
 
 def test_restricted_s2_display_transform(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     series, cases = _synthetic_s2_frames()
     # A missing observation remains a gap, not an interpolated or zero-filled point.
     series.loc[2, "value_mean_mm"] = np.nan
-    workbook = tmp_path / "supplementary.xlsx"
-    _write_s2_workbook(workbook, series, cases)
+    source_data = tmp_path / "source_data"
+    _write_s2_source_data(source_data, series, cases)
     original_save = render_restricted.save
 
     def inspect_and_save(figure, *args):
@@ -339,7 +339,7 @@ def test_restricted_s2_display_transform(tmp_path: Path, monkeypatch: pytest.Mon
         return original_save(figure, *args)
 
     monkeypatch.setattr(render_restricted, "save", inspect_and_save)
-    render_restricted.render_s2(workbook, tmp_path)
+    render_restricted.render_s2(source_data, tmp_path)
     assert (tmp_path / "figureS2_case_analysis.png").stat().st_size > 5_000
     assert (tmp_path / "figureS2_case_analysis.pdf").stat().st_size > 1_000
 
@@ -359,10 +359,10 @@ def test_restricted_s2_rejects_misaligned_cases(tmp_path: Path, defect: str) -> 
         cases = cases.drop(columns="station_id")
     elif defect == "infinite_value":
         series.loc[0, "value_mean_mm"] = np.inf
-    workbook = tmp_path / "invalid.xlsx"
-    _write_s2_workbook(workbook, series, cases)
+    source_data = tmp_path / "invalid_source_data"
+    _write_s2_source_data(source_data, series, cases)
     with pytest.raises(ValueError):
-        render_restricted.render_s2(workbook, tmp_path)
+        render_restricted.render_s2(source_data, tmp_path)
     assert not (tmp_path / "figureS2_case_analysis.png").exists()
 
 
@@ -397,8 +397,9 @@ def test_restricted_s3_display_transform(
                         "csi_mean": min(0.75, 0.05 + route_index * 0.03 + threshold / 45 + (record.station_id % 11) / 100),
                     }
                 )
-    workbook = tmp_path / "supplementary.xlsx"
-    pd.DataFrame(rows).to_excel(workbook, sheet_name="FigS3_station_CSI", index=False)
+    source_data = tmp_path / "source_data"
+    source_data.mkdir()
+    pd.DataFrame(rows).to_csv(source_data / "FigS3_station_CSI.csv", index=False)
     original_save = render_restricted.save
 
     def inspect_labels_and_save(figure, *args, **kwargs):
@@ -414,5 +415,5 @@ def test_restricted_s3_display_transform(
         return original_save(figure, *args, **kwargs)
 
     monkeypatch.setattr(render_restricted, "save", inspect_labels_and_save)
-    render_restricted.render_s3(workbook, stations, tmp_path, tmp_path)
+    render_restricted.render_s3(source_data, stations, tmp_path, tmp_path)
     assert (tmp_path / "figureS3_stationwise_CSI.png").stat().st_size > 5_000

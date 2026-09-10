@@ -10,9 +10,6 @@ station-resolved inputs and are handled by ``paper_outputs.render_restricted``.
 from __future__ import annotations
 
 import argparse
-import shutil
-import subprocess
-import sys
 from pathlib import Path
 
 import matplotlib
@@ -24,6 +21,8 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 import numpy as np
 import pandas as pd
+
+from .render_architecture import render as render_architecture
 
 
 LEADS = (60, 90, 120, 150, 180)
@@ -506,33 +505,8 @@ def render_figure_s4(data: Path, output: Path) -> tuple[Path, Path]:
 
 
 def render_figure6(output: Path) -> tuple[Path, Path]:
-    """Run the editable-source-bound renderer used for the final manuscript."""
-
-    release_root = next(
-        (
-            candidate
-            for candidate in (Path.cwd(), *Path.cwd().parents)
-            if (candidate / "scripts/finalize_fig6_architecture.py").is_file()
-            and (candidate / "figures/main/fig6_architecture_source.pptx").is_file()
-        ),
-        None,
-    )
-    if release_root is None:
-        raise PaperOutputError(
-            "Figure 6 requires a source checkout with scripts/"
-            "finalize_fig6_architecture.py and figures/main/fig6_architecture_source.pptx"
-        )
-    subprocess.run(
-        [sys.executable, str(release_root / "scripts/finalize_fig6_architecture.py")],
-        cwd=release_root,
-        check=True,
-    )
-    output.mkdir(parents=True, exist_ok=True)
-    png = output / "figure6_route_architecture.png"
-    pdf = output / "figure6_route_architecture.pdf"
-    shutil.copy2(release_root / "figures/main/fig6_architecture.png", png)
-    shutil.copy2(release_root / "figures/main/fig6_architecture.pdf", pdf)
-    return png, pdf
+    """Render the fixed manuscript architecture without Office dependencies."""
+    return render_architecture(output)
 
 
 def format_table1(frame: pd.DataFrame) -> pd.DataFrame:
