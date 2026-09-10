@@ -5,8 +5,9 @@ experiments. Experiment settings are recorded in
 [`configs/scientific_contract_4km10min.json`](configs/scientific_contract_4km10min.json)
 and route definitions in [`configs/route_registry.json`](configs/route_registry.json).
 
-Version 1.1.0 is prepared; its Zenodo DOIs are pending. See
-[`RELEASE_STATUS.md`](RELEASE_STATUS.md).
+Software version 1.1.0:
+[doi:10.5281/zenodo.22684438](https://doi.org/10.5281/zenodo.22684438).
+See [`CITATION.cff`](CITATION.cff) for citation metadata.
 
 ## Scientific question
 

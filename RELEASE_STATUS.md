@@ -1,9 +1,10 @@
-# Release status
+# Release information
 
-Status: **version 1.1.0 prepared; new Zenodo version not yet published**.
+Software version: **1.1.0**.
 
-The version-specific software and derived-data DOIs and publication dates
-remain pending. Software and Supplementary Data 1 are separate archive items.
+Software DOI: [10.5281/zenodo.22684438](https://doi.org/10.5281/zenodo.22684438).
+
+Software and Supplementary Data 1 are separate archive items.
 
 See [README.md](README.md) for the available workflows,
 [figure/table reproduction](docs/PAPER_OUTPUT_REPRODUCIBILITY.md) for output
