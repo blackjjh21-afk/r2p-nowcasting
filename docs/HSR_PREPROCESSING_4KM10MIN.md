@@ -18,7 +18,7 @@ Raw KMA data and the provider coordinate file are not redistributed here; see
 | Time contract | KST timestamps at minute phase 0 on a 10-min grid |
 
 The aligned point decimation is part of the published checkpoint contract. It
-must not be replaced by block averaging, interpolation, the project's older
+must not be replaced by block averaging, interpolation,
 2-km effective-reflectivity aggregation, or `uint8 / 255` normalization.
 
 The final grid covers a nominal 1,024-km square. Its first 231 columns map to

@@ -18,9 +18,8 @@ natural-prevalence objective.
 
 ## Prepared NPZ contract
 
-The command-line workflow starts from a prepared NPZ and never opens private
-radar, gauge, or forecast archives. The canonical schema is dense over issue
-time, station, and lead:
+The command-line workflow takes a prepared NPZ archive. The canonical schema
+is dense over issue time, station and lead:
 
 | key | dtype and shape | meaning |
 |---|---|---|

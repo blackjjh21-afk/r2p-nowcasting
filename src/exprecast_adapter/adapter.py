@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Audit exPreCast field exports and create CNN station-patch caches.
 
-The adapted exPreCast training code and weights are not redistributed here.
+Adapted field training and export are provided by exprecast_adapted.
 This adapter consumes its audited HDF5 export: normalized-reflectivity fields
 at +10,...,+180 min on the frozen 256 x 256 grid.
 """

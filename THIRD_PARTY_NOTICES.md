@@ -61,18 +61,23 @@ Changhoon Song, Teng Yuan Chang and Youngjoon Hong:
 - paper: <https://arxiv.org/abs/2602.05204>
 - audited upstream revision: `092922c126bdf6098fbda2e08b2f1f3b2873bd9a`
 
-No official exPreCast source files or pretrained checkpoints are redistributed
-in this release. At the audited revision, the upstream repository did not
-provide an explicit software or model-artifact license; users must obtain the
-materials from the upstream authors and determine whether their intended use
-is permitted.
+The project-specific adaptation in `src/exprecast_adapted/` is shared with
+permission from the upstream authors, as confirmed by the study author. It
+includes the adapted model wrapper, training, RN60 checkpoint selection and
+field generation. The long-horizon model uses seven input fields and eighteen
+output fields; it is not the unchanged official checkpoint.
 
-The paper-facing route called **exPreCast + CNN** uses a project-specific
-7-input/18-output long-horizon adaptation. It must not be represented as the
-unchanged official checkpoint or as a verbatim reproduction of every upstream
-training setting. Public provenance records must distinguish the upstream
-architecture/source from the project adaptation and its locally trained
-weights.
+The original upstream `model.py` and pretrained or locally trained checkpoints
+are not bundled. Obtain the upstream source separately at the revision above;
+the loader verifies its hash before use. Source and checkpoint identities are
+recorded in `configs/exprecast_adaptation_provenance.json` and
+`configs/upstream_artifact_provenance.json`.
+
+The reported permission covers sharing this adaptation; it is not treated as
+a grant to relicense upstream-derived material under this repository's
+BSD-3-Clause license. At the audited revision the upstream repository did not
+provide an explicit license. The repository license applies to the study
+authors' original contributions, not to rights in upstream-derived portions.
 
 ## pySTEPS
 

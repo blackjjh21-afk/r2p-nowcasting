@@ -1,9 +1,8 @@
 # exPreCast field-export adapter
 
-The paper uses a project-adapted exPreCast configuration. Upstream exPreCast
-source, training code and weights are not vendored here. Users obtain those
-items under their original terms and export the selected field checkpoint to
-an HDF5 file containing:
+The [adapted exPreCast workflow](../exprecast_adapted/README.md) trains the field
+model, selects its checkpoint and exports forecasts. This adapter validates
+that HDF5 output and extracts station patches. The expected export contains:
 
 - `forecast_normalized_dbz`: `[issue,18,256,256]`, finite values in `[0,1]`;
 - `issue_time_ns`: increasing issue times as Unix nanoseconds;
@@ -31,5 +30,5 @@ python -m exprecast_adapter.adapter extract-patches \
 The mapping requires `station_id`, `exprecast_y` and `exprecast_x`. The cache
 contains 18 forecast patches per issue and station. `WINDOW_INDICES` converts
 these to the 13 six-field sequences at `L-50,...,L` used to predict RN60 at
-`L=60,70,...,180` min. This adapter makes the downstream interface explicit;
-it does not claim to redistribute or independently reproduce exPreCast.
+`L=60,70,...,180` min. The adapter requires an exPreCast field export; it
+does not train or reproduce the field model itself.

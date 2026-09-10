@@ -1,161 +1,89 @@
 # Where historical gauge supervision enters radar-based precipitation nowcasting for gauge-referenced point accumulation
 
-Public code package for the 4-km/10-min CNN readout experiments.
+Code and aggregate results for the 4-km/10-min radar-to-point nowcasting
+experiments. Experiment settings are recorded in
+[`configs/scientific_contract_4km10min.json`](configs/scientific_contract_4km10min.json)
+and route definitions in [`configs/route_registry.json`](configs/route_registry.json).
 
-This package contains the methods and public-safe outputs for the final
-4-km/10-min paper experiments. The scientific contract is
-frozen in [`configs/scientific_contract_4km10min.json`](configs/scientific_contract_4km10min.json),
-and the reader-facing route names are frozen in
-[`configs/route_registry.json`](configs/route_registry.json).
-
-> **Release status:** version 1.1.0 is prepared but not yet published to
-> Zenodo. Version-specific software and derived-data DOIs are pending.
+Version 1.1.0 is prepared; its Zenodo DOIs are pending. See
+[`RELEASE_STATUS.md`](RELEASE_STATUS.md).
 
 ## Scientific question
 
-The paper first holds observed HSR fixed at the target valid time and asks how
-much of the fixed field-to-point readout deficit can be recovered by
-gauge-supervised center-cell MLP and local-patch CNN readouts (Fig. 2). These
-valid-time diagnostics are distinct from the forecast-route comparison, which
-compares a direct radar-to-point route with two complete field-first routes on
-exactly the same held-out stations, issue times, gauge truth and reported leads:
+The valid-time diagnostic uses observed HSR to measure how much of the fixed
+field-to-point readout deficit can be recovered by gauge-supervised center-cell
+MLP and local-patch CNN readouts (Fig. 2). The forecast comparison evaluates
+three complete routes at the same held-out stations, issue times, gauge truth
+and reported leads:
 
 - **pySTEPS + CNN**
 - **exPreCast + CNN**
 - **Direct R2P**
 
-The forecast-route comparison asks whether Direct R2P can forecast
-gauge-referenced 60-minute accumulated precipitation (RN60) competitively
-without first producing a dense precipitation field. A matched **Direct R2P
-(radar-only)** ablation evaluates the same trained checkpoints after masking
-all issuance-time gauge context. It is an input ablation, not a separately
-trained model.
+The two field-first routes pair different upstream field sources with
+separately fitted instances of the same CNN architecture. Each readout uses a
+3 × 3 forecast patch sequence and issuance-time gauge context to predict
+60-minute station accumulation (RN60). Direct R2P predicts RN60 from the radar
+history and gauge context without producing an intermediate forecast field.
 
-## Frozen comparison contract
+The 128 held-out stations are excluded from fitting, checkpoint selection and
+gauge-context inputs. The radar-only sensitivity test masks the remaining
+fitting-station gauge context in the same Direct R2P checkpoints; it is not a
+separately trained model.
 
-| Item | Contract |
+## Experimental setup
+
+| Item | Setting |
 |---|---|
 | Radar input | Prepared KMA 4-km TIFF fields at 10-min spacing |
 | Radar history | 7 frames: -60, -50, -40, -30, -20, -10 and 0 min |
 | Field forecasts | 18 fields: +10 to +180 min at 10-min spacing |
 | Direct R2P output | 36 gauge-RN60 targets: +5 to +180 min at 5-min spacing |
-| Paper-facing leads | +60, +90, +120, +150 and +180 min |
+| Reported leads | +60, +90, +120, +150 and +180 min |
 | Thresholds | RN60 >= 1, 5, 10 and 20 mm |
 | Station split | 514 fitting stations; 128 stations excluded from fitting |
 | Evaluation support | 35,088 common issue times in June-September 2024-2025 |
-| Primary score | CSI pooled over the frozen issue-time/station support |
+| Primary score | CSI pooled over the common issue-time/station support |
 | Uncertainty | Paired bootstrap over issuance-date blocks |
 
-The 18 field-forecast frames and 36 Direct R2P targets are different output
-contracts. Comparisons are therefore made only after conversion to the same
-gauge-RN60 verification axes at the five paper-facing leads.
+The 18 field-forecast frames and 36 Direct R2P targets have different time
+axes. They are compared as gauge RN60 at the same five reported leads.
 
-## Route definitions
+## Code and usage
 
-The two field-first routes pair different upstream field sources with
-separately fitted instances of the same CNN architecture under a matched
-fitting and evaluation protocol. Each readout uses a local 3 x 3 forecast patch
-sequence and permitted issuance-time gauge context to predict station RN60.
-`Direct R2P` receives the common radar history and its permitted context
-directly. The 128 evaluation stations are excluded from model fitting and
-checkpoint selection.
-
-Internal experiment names such as `pySTEPS-LK`, `selected long exPreCast`,
-`Context CNN`, and `Direct R2P (stride 2)` are provenance details, not
-reader-facing route names. Public figures and tables use the simplified names
-listed above.
-
-## Current reproducibility scope
-
-This release is not a self-contained raw-data reproduction package. Its
-current capabilities are:
-
-| Task | Current status |
+| Component | Guide |
 |---|---|
-| Inspect the frozen scientific and route contracts | Available |
-| Inspect and hash-audit the bundled Direct R2P radar-only and station-dropout aggregates and reference renderings | Available; recomputation and re-rendering require private prediction stores |
-| Convert user-obtained provider-format KMA HSR to the frozen 4-km/10-min radar contract | Available |
-| Train and evaluate Direct R2P | Available only with the authorized gauge and station-contract inputs described below |
-| Validate prepared CNN tuples, run out-of-fold epoch selection, refit and predict | Available from prepared inputs; construction from restricted inputs is an external authorized-input workflow and is not distributed |
-| Generate pySTEPS field forecasts and station patch windows | Available through `src/pysteps_adapter/` |
-| Audit project-adapted exPreCast field exports and extract station patches | Available through `src/exprecast_adapter/`; upstream exPreCast training/export remains external |
-| Re-render Figs. 2--6, S1/S4 and Table 1 from public aggregate sources | Available; Figure 6 uses a native Matplotlib renderer, while the others are aggregate numerical/display reconstructions with hash-bound manuscript reference images |
-| Re-render station-resolved Fig. 1 and S2/S3 | Display code available; authorized radar/station inputs and a caller-supplied Natural Earth cache are required and are not redistributed here |
-| Inspect Supplementary Table S1 and the public portion of Supplementary Data 1 | Available as schema-bound CSV files; station-resolved Table S2 is supplied in the authorized full data archive |
+| Direct R2P training, evaluation and same-checkpoint radar-only inference | [Direct R2P](src/r2p_4km10min/README.md) |
+| Forecast-route CNN validation, OOF epoch selection, refitting and prediction | [CNN readout](src/cnn_readout/README.md) |
+| Deterministic pySTEPS field forecasts and station patches | [pySTEPS adapter](src/pysteps_adapter/README.md) |
+| Adapted exPreCast training, RN60 checkpoint selection and field generation | [Adapted exPreCast](src/exprecast_adapted/README.md) |
+| Adapted exPreCast export validation and station patches | [exPreCast adapter](src/exprecast_adapter/README.md) |
+| Radar-only and station-dropout comparisons with paired date-block intervals | [Evaluation](src/evaluation/README.md) |
+| Provider-format KMA HSR conversion to the 4-km/10-min grid | [HSR preprocessing](docs/HSR_PREPROCESSING_4KM10MIN.md) |
+| Figure and table rendering | [Figure/table reproduction](docs/PAPER_OUTPUT_REPRODUCIBILITY.md) |
+| Aggregate CSV values and member-resolved summaries | [Aggregate data](data/paper_aggregates/README.md) |
 
-The Fig. 2 center-cell MLP and local-patch CNN diagnostics are provided as
-aggregate results and renderings, not as public model-training workflows.
-`src/cnn_readout/` implements the forecast-route CNN readout.
+Shared metric, contract and bootstrap functions are in `src/common/`.
 
-The release provides a compact public audit and display layer. Users who
-lawfully obtain the required KMA and third-party inputs can run the portable
-components explicitly listed above; raw-to-paper reproduction also depends on
-the external upstream exPreCast export and private-input tuple construction
-identified in the status table. Raw KMA observations, prepared radar archives, gauge time series,
-pretrained exPreCast artifacts, project checkpoints, and full prediction
-arrays are not part of this release. See
-[`docs/DATA_POLICY.md`](docs/DATA_POLICY.md) and
-[`RELEASE_STATUS.md`](RELEASE_STATUS.md).
+## Data and reproducibility
 
-## Release layout
+The bundled aggregates support rendering Figs. 2–6, S1/S4 and Table 1.
+Fig. 1 and S2/S3 require separately obtained station or radar data; the map
+renderers also require Natural Earth shapefiles. See the
+[figure/table guide](docs/PAPER_OUTPUT_REPRODUCIBILITY.md) for inputs and commands.
 
-```text
-r2p-nowcasting/
-├── configs/                 # frozen scientific and route contracts
-├── docs/                    # data and release policy
-├── data/paper_aggregates/   # compact aggregate paper sources
-├── figures/                 # reference images and Figure 6 renderings
-├── src/                     # models, evaluation and paper-output renderers
-├── tests/                   # synthetic and contract tests
-├── README.md
-├── RELEASE_STATUS.md
-├── THIRD_PARTY_NOTICES.md
-└── environment.yml
-```
-
-[`RELEASE_STATUS.md`](RELEASE_STATUS.md) records the status and scope of
-version 1.1.0.
-
-## Implemented public components
-
-- `src/r2p_4km10min/`: portable Direct R2P model, data contract, training,
-  standard evaluation, and same-checkpoint radar-only evaluation. Real station
-  contract files remain user-supplied.
-- `src/cnn_readout/`: standalone six-step 3×3 CNN, deterministic
-  target-stratified sampler, exact importance-corrected unweighted
-  normalized-RN60 MSE objective, and prepared-data validation, OOF selection,
-  refit and prediction workflow. The private-input-to-prepared-cache builder
-  remains outside the public release scope.
-- `src/pysteps_adapter/`: explicit-file deterministic pySTEPS field generation
-  and station patch-window extraction.
-- `src/exprecast_adapter/`: validation of user-generated project-adapted
-  exPreCast HDF5 exports and exact station-patch extraction. Upstream source,
-  weights and field generation remain governed by the original project. The
-  selected adapted epoch-10 field checkpoint is not redistributed; its
-  SHA-256 provenance is frozen in
-  [`configs/upstream_artifact_provenance.json`](configs/upstream_artifact_provenance.json).
-- `src/evaluation/radar_only_comparison.py`: checkpoint/truth/axis audit,
-  lead-by-threshold CSI, 50,000-replicate paired issuance-date bootstrap, and
-  radar-only figure rendering.
-- `src/evaluation/station_dropout_comparison.py`: complete three-seed audit of
-  the separately trained no-station-dropout control, paired date-block
-  intervals, and the grouped-bar Fig. 4b renderer. It fails rather than
-  producing a partial comparison when any seed is missing.
-- `src/common/`: compact categorical metrics, contracts, and paired block
-  bootstrap helpers.
-- `src/paper_outputs/`: public aggregate numerical/display renderers for Figs.
-  2--6, S1/S4 and Table 1, plus authorized-input renderers for Fig. 1 and
-  S2/S3. See [`docs/PAPER_OUTPUT_REPRODUCIBILITY.md`](docs/PAPER_OUTPUT_REPRODUCIBILITY.md).
-- `src/preprocessing/prepare_kma_hsr_4km10min.py`: the exact provider-format
-  500-m HSR to normalized 4-km exPreCast transform, including source decoding,
-  coordinate audit, missing-frame accounting, and reproducibility manifests.
-  See [`docs/HSR_PREPROCESSING_4KM10MIN.md`](docs/HSR_PREPROCESSING_4KM10MIN.md).
-
-The aggregate paper tables, radar-only and station-dropout results, sanitized provenance
-manifests and reference renderings under `data/` and `figures/`
-contain no station identifiers, coordinates, or station-time observations.
-They were regenerated from the final three-seed checkpoint selections and use
-the current **Fig. 4a** and **Fig. 4b** filenames.
+Training and prediction require user-supplied KMA data. Raw observations,
+prepared archives, checkpoints and full prediction arrays are not bundled.
+The CNN workflow starts from prepared tuples; tuple construction remains an
+external step. Adapted exPreCast training, checkpoint selection and field
+generation are included and require separately obtained upstream source.
+Upstream checkpoint
+identities are recorded in
+[`configs/upstream_artifact_provenance.json`](configs/upstream_artifact_provenance.json).
+The valid-time MLP and CNN in Fig. 2 are provided as results and renderings,
+not training workflows. This is therefore not a complete raw-data-to-results
+package. Data access and redistribution details are in
+[`docs/DATA_POLICY.md`](docs/DATA_POLICY.md).
 
 ## Environment
 
@@ -167,23 +95,17 @@ python -m r2p_4km10min.run_vanilla_r2p --help
 pytest -q -p no:cacheprovider tests
 ```
 
-An installation is required because the package uses a `src/` layout; the
-command above uses an editable install for convenient work from a source
-checkout, while a regular wheel installation is also supported. `--no-deps`
-leaves the versions installed from `environment.yml` unchanged. Direct package
-and environment requirements are pinned consistently. The environment is
-CLI-only and intentionally contains no Jupyter runtime.
+The editable install makes the `src/` packages available from the checkout.
+`--no-deps` preserves the versions installed from `environment.yml`; a regular
+wheel installation is also supported.
 
 GPU-specific PyTorch installation may need to be adjusted for the target CUDA
 driver while retaining the recorded major software versions.
 
 ## Tests
 
-The test suite checks the model and data contracts, prepared-input validation,
-evaluation routines and figure/table renderers using synthetic inputs. The
-figure renderers read CSV data and generate individual PNG/PDF figures;
-Table 1 can be rendered as CSV or Markdown. No manuscript assembly or Office
-document processing is required.
+The test suite checks model and data contracts, prepared-input validation,
+evaluation routines and figure/table renderers using synthetic inputs.
 
 ## Evaluation conventions
 
@@ -204,7 +126,5 @@ document processing is required.
 Author-generated software is distributed under the BSD-3-Clause license in
 [`LICENSE`](LICENSE). This license does not relicense KMA observations,
 KMA-derived station data, exPreCast materials or other third-party assets.
-The approved public-repository and Supplementary Data 1 scopes are recorded in
-[`DATA_REDISTRIBUTION_DECISION.md`](DATA_REDISTRIBUTION_DECISION.md). Citation
-metadata are provided in [`CITATION.cff`](CITATION.cff); the version-specific
-archive DOI is pending.
+See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) for provider and upstream
+notices, and [`CITATION.cff`](CITATION.cff) for citation metadata.

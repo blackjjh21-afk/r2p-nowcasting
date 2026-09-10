@@ -116,9 +116,8 @@ python src/evaluation/radar_only_comparison.py \
   --figure-dir figures/radar_only
 ```
 
-The standalone radar-only rendering corresponds to **Fig. 4a** in the current
-manuscript. The bundled aggregate and reference rendering use the current
-`fig4a_radar_only_same_checkpoint_4km10min` filename.
+The radar-only comparison is **Fig. 4a**. Its bundled aggregate and reference
+rendering use the `fig4a_radar_only_same_checkpoint_4km10min` filename.
 
 ### Matched no-station-dropout training command
 
@@ -152,12 +151,11 @@ python -m r2p_4km10min.run_vanilla_r2p evaluate \
   --seeds 0,1,2
 ```
 
-This reproduces the computational control. The public comparison command is
-documented in `src/evaluation/README.md`; its final aggregate, sanitized audit
-manifest and reference rendering are bundled under `data/examples/` and
-`figures/`.
+The comparison command is documented in `src/evaluation/README.md`; its
+aggregate, sanitized audit manifest and reference rendering are bundled under
+`data/examples/` and `figures/`.
 
-The default frozen-hash checks are intentionally strict and require the exact
+The default frozen-hash checks require the exact
 authorized station files. Use `--allow-unfrozen-contract` only for a new
 station/data contract and report that departure separately. This runner covers
 Direct R2P and its ablations. The field-first components are documented under

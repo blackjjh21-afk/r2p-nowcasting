@@ -1,6 +1,6 @@
 # Station-contract inputs
 
-The public runner deliberately does not bundle the study's real station
+The release does not bundle the study's real station
 identifiers, coordinates, fitting/held-out split, or station-to-grid mapping.
 Provide them explicitly with `--mapping-csv`, `--stations-csv`, and
 `--split-csv` after obtaining the underlying observations under their
@@ -36,8 +36,7 @@ cells.
 ### `split.csv`
 
 The two columns are `station_id,split`. The frozen contract uses exactly 514
-`train` rows and 128 `test` rows. The loader's code value is `test`, although
-the manuscript describes these stations as held out.
+fitting-station (`train`) rows and 128 held-out (`test`) rows.
 
 ### Gauge CSV
 

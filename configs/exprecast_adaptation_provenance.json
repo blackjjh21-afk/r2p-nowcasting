@@ -1,0 +1,59 @@
+{
+  "schema": "exprecast-adaptation-provenance-v1",
+  "upstream": {
+    "repository": "https://github.com/tony890048/exPreCast",
+    "revision": "092922c126bdf6098fbda2e08b2f1f3b2873bd9a",
+    "model_sha256": "1d8fa4d16ea9631dd8b3addfeaaa3ca36d0f641f9dfc307588b7ee9424e70625",
+    "source_bundled": false,
+    "weights_bundled": false
+  },
+  "reference_implementation_sha256": {
+    "model": "0a57e71b38c0c1b5d3d99c58b2eb69abdd758895b2df65ec51ba5c9e86998ab0",
+    "data": "6ab5dad7a7c26d38165995ab107709dad2eeb61faf9f8794b115e8d341a640eb",
+    "training_export": "52dee71dcb6f61d5e1be03db98c86457dbeab3a3a826b4b0e3190491d68c7973",
+    "rn60_selection": "1d3d00af1af2c3320fdbfc038bf51a4efdd47e52ee9cf9944e2609fb4cd73035"
+  },
+  "data": {
+    "grid_shape": [256, 256],
+    "resolution_km": 4,
+    "frame_minutes": 10,
+    "phase_minutes": 0,
+    "months": [6, 7, 8, 9],
+    "training_years": [2019, 2020, 2021, 2022],
+    "selection_years": [2023]
+  },
+  "training": {
+    "seed": 6455,
+    "input_frames": 7,
+    "short_output_frames": 6,
+    "short_profile": "memory_safe_add",
+    "long_output_frames": 18,
+    "long_profile": "paper_long_concat",
+    "micro_batch": 4,
+    "gradient_accumulation": 4,
+    "optimizer_steps_per_stage": 100000,
+    "precision": "bf16",
+    "optimizer": "AdamW",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "warmup_ratio": 0.2,
+    "minimum_lr_ratio": 0.001,
+    "loss": "FACL",
+    "facl_epsilon": 1e-8,
+    "long_initialization": "all shape-compatible tensors from the same-seed short best.pt",
+    "frozen_modules": ["patch_embed", "encoder stages except the final stage"]
+  },
+  "final_selection": {
+    "epochs": [1, 23],
+    "epoch_range_inclusive": true,
+    "metric": "equal-weight native-grid RN60 CSI mean",
+    "leads_minutes": [60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180],
+    "thresholds_mm": [1, 5, 10, 20],
+    "evaluation_windows": 1441,
+    "anchor_stride_frames": 12,
+    "valid_cells": 59136,
+    "exact_tie_rule": "earliest epoch",
+    "selected_epoch": 10,
+    "selected_checkpoint_sha256": "d5da6228b79f00b9d0ec115e7be62bd46631067a184783b52ca7fd18cb7cce5d"
+  }
+}

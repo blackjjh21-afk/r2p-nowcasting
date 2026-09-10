@@ -1,15 +1,16 @@
 # Paper-output reproducibility scope
 
-The repository separates three reproducibility levels so that restricted KMA
-observations are not confused with publicly redistributable aggregate results.
+The repository supports three reproducibility levels:
 
 1. **Public aggregate reproduction** uses the CSV files under
    `data/paper_aggregates/` and requires no station identifiers, coordinates or
    station-time observations.
 2. **Authorized-input reproduction** provides the display code but requires a
    user to supply the provider-derived station or radar inputs lawfully.
-3. **Upstream model reproduction** requires KMA observations and, for
-   exPreCast, separately obtained upstream source and weights.
+3. **Model training and prediction** require KMA observations. The
+   [adapted exPreCast workflow](../src/exprecast_adapted/README.md) also requires
+   separately obtained upstream source; its short and long stages train the
+   field checkpoints locally.
 
 ## Reader-output matrix
 
@@ -20,7 +21,7 @@ observations are not confused with publicly redistributable aggregate results.
 | Figure 3 | `r2p-paper-figures --item 3` | Yes | Public aggregate numerical/display reconstruction |
 | Figure 4 | `r2p-paper-figures --item 4`; component audits in `src/evaluation/` | Yes | Public aggregate numerical/display reconstruction; private stores are required only to recompute the aggregates |
 | Figure 5 | `r2p-paper-figures --item 5` | Yes | Public aggregate numerical/display reconstruction |
-| Figure 6 | `r2p-paper-figures --item 6` | Renderer source included | Pure Matplotlib code renderer; no Office source required |
+| Figure 6 | `r2p-paper-figures --item 6` | Renderer source included | Code-defined Matplotlib diagram |
 | Supplementary Figure S1 | `r2p-paper-figures --item s1` | Yes, distance-group aggregates only | Public aggregate numerical/display reconstruction; no station assignment table |
 | Supplementary Figure S2 | `paper_outputs.render_restricted s2` | No | Four +60-min station time series, using three-member means without shading; authorized case-definition and station-time CSVs are required |
 | Supplementary Figure S3 | `paper_outputs.render_restricted s3` | Pairwise station-count summary only | Exact stationwise CSI CSV plus the authorized full station-split CSV are required; renderer includes the fitting-station and geographic context layers |
@@ -44,8 +45,7 @@ r2p-paper-figures --item all --output-dir outputs/paper_figures
 ```
 
 When invoking a wheel-installed command outside the checkout, pass
-`--data-root` and `--examples-root` explicitly. Figure 6 uses its included
-Matplotlib renderer without an Office source file.
+`--data-root` and `--examples-root` explicitly.
 
 The command reads the frozen compact tables and emits PNG/PDF files.  The
 manuscript renderings copied under `figures/reference/` are hash-bound reference
@@ -57,11 +57,8 @@ are identical.
 
 ## Bundled aggregate data
 
-`data/paper_aggregates/` contains the frozen public-safe CSV tables.
-These exclude station identifiers,
-coordinates and station-time values. The bundled reference figures are also
-non-station-resolved; Fig. 1, Supplementary Fig. S2 and Supplementary Fig. S3
-require the authorized inputs described below.
+The frozen CSV tables in `data/paper_aggregates/` and bundled reference figures
+exclude station identifiers, coordinates and station-time values.
 
 `Table1_main` retains full-precision numerical values; the table renderer
 displays CSI to four decimal places and continuous
@@ -73,7 +70,7 @@ readouts and paired contrasts remain in `Fig2d_readout_members` and
 
 ## Authorized station-resolved outputs
 
-The following commands intentionally fail without user-supplied inputs:
+Supply authorized inputs to render Figure 1 and Supplementary Figures S2–S3:
 
 ```bash
 python -m paper_outputs.render_restricted figure1 \
@@ -101,8 +98,7 @@ The `--source-data` directory must contain the externally supplied,
 authorized CSVs named `Case_definitions.csv` and `FigS2_station_timeseries.csv`
 for S2, and `FigS3_station_CSI.csv` for S3. The station-split CSV must contain
 `station_id`, `lat`, `lon` and `split` (`train` or `test`). These inputs are not
-bundled with the public repository. The renderers read CSV files directly;
-they do not read Excel workbooks or construct Supplementary Data documents.
+bundled with the public repository.
 
 Supplementary Figure S2 validates panels
 a–d, their display stations, 24-hour windows and the common +60-minute
@@ -110,9 +106,7 @@ valid-time index before plotting. The four station examples are qualitative
 illustrations; the plotted means are not uncertainty bands. Member-resolved
 values remain available in the full Supplementary Data 1.
 
-This split is deliberate. It exposes the final transformations while keeping
-station-resolved KMA-derived inputs outside the public repository under the
-approved scope recorded in `DATA_REDISTRIBUTION_DECISION.md`. It does not turn
-the release into a raw-KMA-to-paper reproduction package: upstream exPreCast
-training/export and construction of the private CNN tuple cache remain
-separate authorized-input workflows.
+Station-resolved KMA-derived inputs are excluded under the scope recorded in
+`DATA_REDISTRIBUTION_DECISION.md`. The release is not a raw-KMA-to-paper
+reproduction package: constructing the CNN tuple cache remains an external
+authorized-input step, and valid-time readout training is not included.

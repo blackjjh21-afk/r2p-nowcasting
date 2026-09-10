@@ -1,8 +1,7 @@
 # pySTEPS adapter
 
 This package exposes the deterministic pySTEPS field source used by the
-4-km/10-min field-first route without naming the local package `pysteps` (and
-therefore without shadowing the upstream dependency).
+4-km/10-min field-first route.
 
 The numerical contract is:
 
@@ -44,7 +43,7 @@ The input array has shape `[7, H, W]`. An NPZ output contains
 output contains only normalized forecast HSR.
 
 Extract station patches and six-frame CNN windows. The mapping CSV uses
-the manuscript coordinate contract (`station_id`, `exprecast_y`,
+the station coordinate contract (`station_id`, `exprecast_y`,
 `exprecast_x`) by default:
 
 ```bash

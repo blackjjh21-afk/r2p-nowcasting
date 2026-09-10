@@ -40,6 +40,8 @@ prepare-kma-hsr-4km10min = "preprocessing.prepare_kma_hsr_4km10min:main"
 pysteps-4km10min = "pysteps_adapter.cli:main"
 cnn-readout-4km10min = "cnn_readout.workflow:main"
 exprecast-export-adapter = "exprecast_adapter.adapter:main"
+exprecast-adapted = "exprecast_adapted.workflow:main"
+exprecast-select-rn60 = "exprecast_adapted.selection:main"
 r2p-paper-figures = "paper_outputs.render_publication:main"
 r2p-restricted-figures = "paper_outputs.render_restricted:main"
 

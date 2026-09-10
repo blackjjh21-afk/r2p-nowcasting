@@ -22,8 +22,8 @@ python src/evaluation/radar_only_comparison.py \
   --figure-dir figures/radar_only
 ```
 
-The standalone sensitivity rendering corresponds to **Fig. 4a** in the current
-manuscript and is written as `fig4a_radar_only_same_checkpoint_4km10min`.
+The sensitivity rendering (**Fig. 4a**) is written as
+`fig4a_radar_only_same_checkpoint_4km10min`.
 Full tensor hashes are computed by default; `--skip-source-hashes` is intended
 only for development runs. The route contrasts reported as Fig. 3e,f are a
 separate result and are not mixed into this ablation renderer.
@@ -34,8 +34,8 @@ separate result and are not mixed into this ablation renderer.
 separately trained control in which station dropout was disabled. It requires
 all three seeds for both routes and verifies identical issue-time, station,
 lead and truth axes. It also verifies that the two frozen scientific contracts
-differ only in their station-dropout configuration. A missing control seed,
-including a missing seed 1, is a hard error rather than a partial comparison.
+differ only in their station-dropout configuration. A missing control seed
+is a hard error.
 
 Pass both result roots and both evaluation-store names explicitly:
 
@@ -52,5 +52,4 @@ python src/evaluation/station_dropout_comparison.py \
 The output is station-dropout Direct R2P minus the no-station-dropout control
 at 60, 90, 120, 150 and 180 min and RN60 thresholds of 1, 5, 10 and 20 mm.
 The same issuance-date bootstrap draws are applied to both routes. The
-standalone Fig. 4b renderer uses grouped bars and intentionally adds no plot
-title; the manuscript caption supplies the panel title.
+standalone Fig. 4b renderer uses grouped bars without a plot title.

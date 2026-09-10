@@ -42,7 +42,7 @@ def test_distributed_packages_match_manuscript_workflows() -> None:
         path.parent.name for path in (ROOT / "src").glob("*/__init__.py")
     }
     assert packages == {
-        "cnn_readout", "common", "evaluation", "exprecast_adapter",
+        "cnn_readout", "common", "evaluation", "exprecast_adapter", "exprecast_adapted",
         "paper_outputs", "preprocessing", "pysteps_adapter", "r2p_4km10min",
     }
 
@@ -58,6 +58,8 @@ def test_console_commands_match_supported_workflows() -> None:
         "pysteps-4km10min": "pysteps_adapter.cli:main",
         "cnn-readout-4km10min": "cnn_readout.workflow:main",
         "exprecast-export-adapter": "exprecast_adapter.adapter:main",
+        "exprecast-adapted": "exprecast_adapted.workflow:main",
+        "exprecast-select-rn60": "exprecast_adapted.selection:main",
         "r2p-paper-figures": "paper_outputs.render_publication:main",
         "r2p-restricted-figures": "paper_outputs.render_restricted:main",
     }

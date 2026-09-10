@@ -1,7 +1,7 @@
 # Data and artifact policy
 
-This policy separates code reproducibility from permission to redistribute KMA
-observations and station-resolved derivatives.
+KMA observations and station-resolved derivatives have separate redistribution
+requirements from the code.
 
 ## Never included in the public source repository
 
@@ -17,7 +17,7 @@ observations and station-resolved derivatives.
 These files can be reconstructed or mounted by an authorized user, but they
 must remain ignored by version control.
 
-## Public audit layer
+## Public reproducibility materials
 
 - Scientific contracts and array schemas containing no observations.
 - Aggregate categorical counts and metrics over the frozen evaluation support.
@@ -29,8 +29,7 @@ must remain ignored by version control.
 
 ## Approved repository and Supplementary Data 1 scopes
 
-Under the recorded repository decision, the following station-resolved
-materials are excluded from this public source repository:
+The public source repository excludes:
 
 - KMA station identifiers and names;
 - station latitude/longitude coordinates;
@@ -39,21 +38,19 @@ materials are excluded from this public source repository:
 - stationwise metrics, maps, case totals or time series;
 - exact issue-time lists if joined to station-resolved outcomes.
 
-The recorded decision excludes station-resolved material from the public
-repository and separately approves the named derived sheets in Supplementary
-Data 1 for journal and permanent-archive distribution. Repository exclusion
-does not imply archive exclusion, and archive approval does not authorize
+The named derived sheets in Supplementary Data 1 are separately approved for
+journal and permanent-archive distribution. This approval does not extend to
 station-resolved files in GitHub.
 
-The machine-auditable `DATA_REDISTRIBUTION_DECISION.md` at the repository root
+`DATA_REDISTRIBUTION_DECISION.md` at the repository root
 uses `public_redistribution_excluded` for the repository and
 `derived_station_resolved_archive_approved` for Supplementary Data 1. It also
-identifies the KMA source products, official access URLs, access date and terms
-reviewed by the responsible author.
+identifies the KMA source products, official access URLs, access date and
+reviewed terms.
 
 ## User-supplied prepared inputs
 
-A full rerun may reference repository-relative mount points such as:
+A full rerun requires user-supplied inputs, for example:
 
 ```text
 data/private/
@@ -70,18 +67,16 @@ data/private/
 
 The Direct R2P documentation passes these locations explicitly through
 `--radar-root`, `--gauge-csv`, `--mapping-csv`, `--stations-csv`,
-`--split-csv`, and `--output-root`; users need not reproduce the runner's
-historical project-relative defaults. The public code and documentation must
-not contain usernames, machine names or author-specific absolute paths.
+`--split-csv`, and `--output-root`.
 
 The exact paper contract is byte-hash checked and therefore requires the
 authorized original mapping, station and split files. A user-constructed
 replacement can be run with `--allow-unfrozen-contract`, but it defines a new
 station/data contract and is not an exact reproduction of the paper split.
 
-## Public result policy
+## Result metadata
 
-Every public aggregate result must identify:
+The aggregate results and accompanying manifests record:
 
 1. the scientific-contract version;
 2. the route ID and reader-facing display name;
@@ -93,10 +88,3 @@ Every public aggregate result must identify:
 
 Standard and radar-only Direct R2P results additionally require exact truth
 and axis equality and a matching checkpoint hash within every seed.
-
-## Retention outside GitHub
-
-Private arrays and large archives may be retained in controlled project storage
-with checksums and manifests. A GitHub release should contain only the compact
-audit layer needed to substantiate the manuscript values. Storage location is
-not a redistribution permission.
