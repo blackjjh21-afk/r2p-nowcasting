@@ -2,7 +2,8 @@
   "excluded_reader_assets": [
     "Figure 1 (station coordinates and radar footprint)",
     "Supplementary Figure S2 (station time series)",
-    "Supplementary Figure S3 (stationwise map)"
+    "Supplementary Figure S3 (stationwise map)",
+    "Supplementary Table S2 and case definitions (held-out station identifiers)"
   ],
   "records": [
     {
@@ -28,22 +29,6 @@
       "path": "TableS1_training.csv",
       "rows": 9,
       "sha256": "d1fbf4d83104ad53e41ae9846890203c4188dba64b365a23e2b23e136f5655b4"
-    },
-    {
-      "columns": 3,
-      "kind": "aggregate_sheet",
-      "name": "TableS2_cases",
-      "path": "TableS2_cases.csv",
-      "rows": 2,
-      "sha256": "1168a84d44ce5cfa76f94140905d94279bbf5f7a2f33e7758ced2d0007fad700"
-    },
-    {
-      "columns": 8,
-      "kind": "aggregate_sheet",
-      "name": "Case_definitions",
-      "path": "Case_definitions.csv",
-      "rows": 2,
-      "sha256": "3a55a450e01c952b1c9334a6e911e0c2fcd73bccdd8d882d61c51d21a2dde477"
     },
     {
       "columns": 17,
@@ -246,22 +231,6 @@
       "sha256": "a407f0cfc5436f45596437562fcb21e3c91ba334fda4cd2cbefe95df9cac6b14"
     },
     {
-      "columns": 17,
-      "kind": "aggregate_sheet",
-      "name": "Case_per_rep",
-      "path": "Case_per_rep.csv",
-      "rows": 360,
-      "sha256": "00f3b153445d5ac3fa9726a86a72631e49a16a5a9d57bf7fb4fff05d98c4ce12"
-    },
-    {
-      "columns": 13,
-      "kind": "aggregate_sheet",
-      "name": "Case_mean_sd",
-      "path": "Case_mean_sd.csv",
-      "rows": 120,
-      "sha256": "27882e1f37bf62ce4f264a8a2aee56fae43a2adce697725c3e1c3b024da2ddd7"
-    },
-    {
       "columns": 8,
       "kind": "aggregate_sheet",
       "name": "FigS3_pairwise_counts",
@@ -313,14 +282,14 @@
       "kind": "aggregate_workbook",
       "name": "Supplementary Data 1 public aggregate subset",
       "path": "Supplementary_Data_1_public_aggregate.xlsx",
-      "sha256": "750a763d9ed305fe45292085f24081a1ca1d397e19094fb41fa7c6048c783b44",
-      "sheet_count": 38
+      "sha256": "22a2af716259a0e1bbec6c082933ed1bba3c07f2832a14e1393fa6ca5774043b",
+      "sheet_count": 34
     },
     {
       "kind": "reference_rendering",
       "name": "figure2_valid_time_readout.png",
       "path": "figures/reference/figure2_valid_time_readout.png",
-      "sha256": "d148870e63d53726e6a1ed7259786cb2c52526416809d6f69beb67a3e692a1db"
+      "sha256": "a1500a5026f3357414ee01f2861342391255dcd71dfb297668391b9ddaa76a0b"
     },
     {
       "kind": "reference_rendering",
@@ -344,7 +313,7 @@
       "kind": "reference_rendering",
       "name": "figure6_route_architecture.png",
       "path": "figures/reference/figure6_route_architecture.png",
-      "sha256": "d2a520ef83eaffdb3f00c13178adb2553ca1a7a2bb35106bbc78f6902def37b6"
+      "sha256": "7a1f24a4f532ef3754a6fe727e0cd9b799f470b280e7147787e225312955d551"
     },
     {
       "kind": "reference_rendering",
@@ -356,7 +325,7 @@
       "kind": "reference_rendering",
       "name": "figureS4_native_field_verification.png",
       "path": "figures/reference/figureS4_native_field_verification.png",
-      "sha256": "c68c840028f652483fadb1c0f7fdcee12d8690dc7d52fbea57e491c19e3552ac"
+      "sha256": "ee436896540d98b456c0dfacba73aadd572b98601c8561a9f777de02fc309f0d"
     },
     {
       "kind": "reference_rendering",
@@ -366,7 +335,7 @@
     }
   ],
   "schema": "r2p-4km10min-public-paper-audit-layer-v1",
-  "source_reader_manifest_sha256": "9230427b069ea9c65c9d5fe50f4fb2651162daf2541a1c8936965767143d2135",
-  "source_supplementary_data_sha256": "6b70c3215f9a95744c9b8d47a5974191f283b65f4b7e005fb605e962a06eeb2d",
+  "source_reader_manifest_sha256": "018eeb9baf5a48c4eadf106add567c0c686bcfeee131f715ec37199b93c6f4d7",
+  "source_supplementary_data_sha256": "36ef8daf6bb2d0f83ec0d589b24f7833c107dd08c1d402e48b5bfa241c2a3a1a",
   "station_resolved_content_included": false
 }

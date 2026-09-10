@@ -24,8 +24,4 @@ station-resolved verification sheets recorded in DATA_REDISTRIBUTION_DECISION.md
 
 The version 1.1.0 software archive and matching derived-data bundle have not
 yet been published to Zenodo. Their version-specific DOIs and publication
-dates remain pending. Follow [`docs/PUBLICATION_WORKFLOW.md`](docs/PUBLICATION_WORKFLOW.md)
-to publish the prepared artifacts and complete release and manuscript metadata.
-
-Verification results and exact archive hashes are written to the release
-artifact directory after final synchronization and testing.
+dates remain pending.

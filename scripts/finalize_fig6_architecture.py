@@ -65,7 +65,7 @@ OUTPUT_EDGE = "#000000"
 
 # Historical targets are supervision rather than a forward-computation input.
 # A white box retains the user's unshaded target treatment; a saturated purple
-# dashed outline gives the historical supervision a clear visual role.
+# outline gives the historical supervision a clear visual role.
 HISTORICAL_FILL = WHITE
 HISTORICAL_EDGE = "#7B5EA7"
 
@@ -74,6 +74,8 @@ HISTORICAL_SHAPES = {
     "Direct historical gauge targets",
 }
 HISTORICAL_CONNECTOR_IDS = {"19", "20"}
+SUPERVISION_SHAPES = HISTORICAL_SHAPES | {"Future HSR supervision"}
+SUPERVISION_CONNECTOR_IDS = HISTORICAL_CONNECTOR_IDS | {"24"}
 MODULE_SHAPES = {
     "Query conditioned attention",
     "Cross lead decoder",
@@ -159,6 +161,18 @@ def replace_paragraphs(shape: ET.Element, lines: list[str]) -> None:
         body.append(paragraph)
 
 
+def set_solid_line(element: ET.Element) -> None:
+    line = element.find("p:spPr/a:ln", NS)
+    if line is None:
+        raise RuntimeError("supervision object lacks a line")
+    dash = line.find("a:prstDash", NS)
+    if dash is None:
+        raise RuntimeError("supervision object lacks its source dash property")
+    dash.set("val", "solid")
+    for custom_dash in line.findall("a:custDash", NS):
+        line.remove(custom_dash)
+
+
 def translate_shape_y(element: ET.Element, identifier: str) -> None:
     transform = element.find("p:spPr/a:xfrm", NS)
     if transform is None:
@@ -188,6 +202,17 @@ def modify_slide(xml: bytes) -> bytes:
     tree = root.find(".//p:spTree", NS)
     if tree is None:
         raise RuntimeError("slide has no shape tree")
+    field_output_body = next(
+        (
+            element.find("p:txBody", NS)
+            for element in tree
+            if (properties := element.find(".//p:cNvPr", NS)) is not None
+            and properties.get("name") == "Field RN60 output"
+        ),
+        None,
+    )
+    if field_output_body is None:
+        raise RuntimeError("field output lacks its text formatting template")
     for element in tree:
         properties = element.find(".//p:cNvPr", NS)
         if properties is None:
@@ -207,6 +232,15 @@ def modify_slide(xml: bytes) -> bytes:
         if name in WRAPS:
             replace_paragraphs(element, WRAPS[name])
             found_shapes.add(name)
+        if name == "Direct detail output":
+            body = element.find("p:txBody", NS)
+            if body is None:
+                raise RuntimeError("detail output lacks a text body")
+            position = list(element).index(body)
+            element.remove(body)
+            element.insert(position, copy.deepcopy(field_output_body))
+        if name in SUPERVISION_SHAPES or identifier in SUPERVISION_CONNECTOR_IDS:
+            set_solid_line(element)
         if name in HISTORICAL_SHAPES:
             shape_properties = element.find("p:spPr", NS)
             if shape_properties is None:
@@ -398,19 +432,18 @@ def render_static() -> None:
 
     rounded_box(ax, 5.736, 2.480, 1.575, .787,
                 "Future HSR\ntargets\n(exPreCast only)", fill=WHITE,
-                edge=FIELD_EDGE, fontsize=10.2, dashed=True)
-    arrow(ax, [(6.523, 2.480), (6.523, 2.243)], color=FIELD_EDGE, dashed=True)
+                edge=FIELD_EDGE, fontsize=10.2)
+    arrow(ax, [(6.523, 2.480), (6.523, 2.243)], color=FIELD_EDGE)
 
     rounded_box(ax, 10.460, 2.638, 1.575, .787, "Historical gauge\ntargets",
-                fill=HISTORICAL_FILL, edge=HISTORICAL_EDGE, fontsize=10.5,
-                dashed=True)
+                fill=HISTORICAL_FILL, edge=HISTORICAL_EDGE, fontsize=10.5)
     rounded_box(ax, 12.822, 2.638, 1.575, .787, "Issuance-time\ngauge context",
                 fill=CONTEXT_FILL, edge=CONTEXT_EDGE, fontsize=10.5)
     # Use symmetric, visibly long elbow connectors.  The previous raster
     # reconstruction attached adjacent box edges and reduced both horizontal
     # runs to ~0.2 units, even though the editable PPTX used full elbows.
     arrow(ax, [(11.2475, 2.638), (11.2475, 2.4405), (12.3105, 2.4405),
-               (12.3105, 2.243)], color=HISTORICAL_EDGE, dashed=True,
+               (12.3105, 2.243)], color=HISTORICAL_EDGE,
           linewidth=1.55)
     arrow(ax, [(13.6095, 2.638), (13.6095, 2.4405), (12.5475, 2.4405),
                (12.5475, 2.243)], color=CONTEXT_EDGE, linewidth=1.55)
@@ -430,14 +463,13 @@ def render_static() -> None:
 
     rounded_box(ax, 7.507, 4.606 + LAYOUT_SHIFT, 1.575, .787,
                 "Historical gauge\ntargets",
-                fill=HISTORICAL_FILL, edge=HISTORICAL_EDGE, fontsize=10.5,
-                dashed=True)
+                fill=HISTORICAL_FILL, edge=HISTORICAL_EDGE, fontsize=10.5)
     rounded_box(ax, 9.870, 4.606 + LAYOUT_SHIFT, 1.575, .787,
                 "Issuance-time\ngauge context",
                 fill=CONTEXT_FILL, edge=CONTEXT_EDGE, fontsize=10.5)
     arrow(ax, shifted_y([(8.2945, 4.606), (8.2945, 4.409),
                          (9.3585, 4.409), (9.3585, 4.212)]),
-          color=HISTORICAL_EDGE, dashed=True,
+          color=HISTORICAL_EDGE,
           linewidth=1.55)
     arrow(ax, shifted_y([(10.6575, 4.606), (10.6575, 4.409),
                          (9.5945, 4.409), (9.5945, 4.212)]),
@@ -475,7 +507,7 @@ def render_static() -> None:
                 "Cross-lead\ndecoder",
                 fill=MODULE_FILL, edge=MODULE_EDGE)
     rounded_box(ax, 14.594, 7.717 + LAYOUT_SHIFT, 1.575, .787,
-                "Gauge\nRN60",
+                "Gauge RN60",
                 fill=PANEL_FILL, edge=OUTPUT_EDGE)
     arrow(ax, shifted_y([(9.082, 7.126), (9.476, 7.126),
                          (9.476, 8.110), (9.870, 8.110)]),
@@ -503,6 +535,8 @@ def verify_pptx() -> dict[str, object]:
     colours: dict[str, str] = {}
     outlines: dict[str, str] = {}
     texts: dict[str, list[str]] = {}
+    supervision_line_styles: dict[str, str] = {}
+    output_text_bodies: dict[str, bytes] = {}
     shape_tree = root.find(".//p:spTree", NS)
     if shape_tree is None:
         raise RuntimeError("final PPTX lacks a shape tree")
@@ -511,6 +545,18 @@ def verify_pptx() -> dict[str, object]:
         if properties is None:
             continue
         name = properties.get("name", "")
+        identifier = properties.get("id", "")
+        if name in {"Field RN60 output", "Direct detail output"}:
+            body = element.find("p:txBody", NS)
+            if body is None:
+                raise RuntimeError(f"{name} lacks a text body")
+            output_text_bodies[name] = ET.tostring(body)
+        if name in SUPERVISION_SHAPES or identifier in SUPERVISION_CONNECTOR_IDS:
+            dash = element.find("p:spPr/a:ln/a:prstDash", NS)
+            custom_dash = element.find("p:spPr/a:ln/a:custDash", NS)
+            if dash is None or dash.get("val") != "solid" or custom_dash is not None:
+                raise RuntimeError(f"supervision object {identifier} is not solid")
+            supervision_line_styles[identifier] = "solid"
         if name in set(WRAPS) | HISTORICAL_SHAPES | MODULE_SHAPES | OUTPUT_SHAPES:
             transform = element.find("p:spPr/a:xfrm", NS)
             if transform is not None:
@@ -525,11 +571,19 @@ def verify_pptx() -> dict[str, object]:
             outline = element.find("p:spPr/a:ln/a:solidFill/a:srgbClr", NS)
             if outline is not None:
                 outlines[name] = outline.get("val", "")
+    if len(supervision_line_styles) != 6:
+        raise RuntimeError("expected three solid target boxes and three solid arrows")
+    if texts.get("Direct detail output") != ["Gauge RN60"]:
+        raise RuntimeError("panel (b) output is not a single-line Gauge RN60 label")
+    if output_text_bodies.get("Direct detail output") != output_text_bodies.get("Field RN60 output"):
+        raise RuntimeError("panel (a) and (b) output text formatting differs")
     return {
         "positions_emu": positions,
         "fills": colours,
         "outlines": outlines,
         "wrapped_text": texts,
+        "supervision_line_styles": supervision_line_styles,
+        "detail_output_matches_field_output_text_format": True,
     }
 
 
@@ -541,9 +595,8 @@ def main() -> None:
         "Blue denotes radar inputs and encoding, green the field-first route, "
         "orange issuance-time gauge context and query conditioning, red the "
         "Direct R2P route, blue-gray the attention and decoder modules, and "
-        "white boxes with purple dashed outlines historical gauge targets; "
-        "dashed green denotes future-HSR supervision of exPreCast. Solid "
-        "connectors show forward computation."
+        "white boxes with purple outlines historical gauge targets; the "
+        "white green-outlined box denotes future-HSR supervision of exPreCast."
     )
     CAPTION.write_text(caption + "\n", encoding="utf-8")
     manifest = {

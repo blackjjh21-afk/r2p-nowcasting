@@ -22,12 +22,13 @@ observations are not confused with publicly redistributable aggregate results.
 | Figure 5 | `r2p-paper-figures --item 5` | Yes | Public aggregate numerical/display reconstruction |
 | Figure 6 | `r2p-paper-figures --item 6` | Editable source included | Exact source-bound finalizer and final PNG/PDF/PPTX |
 | Supplementary Figure S1 | `r2p-paper-figures --item s1` | Yes, distance-group aggregates only | Public aggregate numerical/display reconstruction; no station assignment table |
-| Supplementary Figure S2 | `paper_outputs.render_restricted s2` | Case-level CSI aggregates only | Exact station time series require authorized Supplementary Data 1; renderer implements the final panel quantities and layout |
+| Supplementary Figure S2 | `paper_outputs.render_restricted s2` | No | Four +60-min station time series, using three-member means without shading; case definitions and station values require authorized Supplementary Data 1 |
 | Supplementary Figure S3 | `paper_outputs.render_restricted s3` | Pairwise station-count summary only | Exact stationwise CSI plus the authorized full station split are required; renderer includes the fitting-station and geographic context layers |
 | Supplementary Figure S4 | `r2p-paper-figures --item s4` | Yes | Public aggregate numerical/display reconstruction |
 | Table 1 | `r2p-paper-figures --item table1` | Yes | Public aggregate numerical/display reconstruction |
-| Supplementary Tables S1/S2 | CSV sheets in `data/paper_aggregates/` | Yes | Public aggregate reproduction |
-| Supplementary Data 1 | `scripts/sync_public_paper_outputs.py` | Aggregate-only workbook included | The complete reader workbook remains a manuscript/data-archive item because it contains station-resolved sheets |
+| Supplementary Table S1 | CSV sheet in `data/paper_aggregates/` | Yes | Public aggregate reproduction |
+| Supplementary Table S2 | `TableS2_cases` in authorized Supplementary Data 1 | No | Exact four-case windows and held-out station identifiers; not bundled with the public aggregate subset |
+| Supplementary Data 1 | Frozen workbook and CSV subset in `data/paper_aggregates/` | Aggregate-only workbook included | The complete reader workbook remains a separate data-archive item because it contains station-resolved sheets |
 
 Figure 2 includes the final center-cell MLP and local-patch CNN aggregate
 results and reference rendering. Their valid-time model-training workflow is
@@ -55,22 +56,13 @@ its PNG hash matches the final manuscript asset.  Matplotlib output hashes can
 vary across FreeType and operating-system versions even when numerical values
 are identical.
 
-## Rebuild the public aggregate layer (authors)
+## Bundled aggregate data
 
-The author-side synchronization command takes explicit paths and has no
-machine-specific defaults:
-
-```bash
-python scripts/sync_public_paper_outputs.py \
-  --supplementary-data manuscript_assets/14_Supplementary_Data_1.xlsx \
-  --reader-assets manuscript_assets
-```
-
-The command exports only an explicit sheet allow-list, rejects station-like
-columns in those sheets, creates
-`Supplementary_Data_1_public_aggregate.xlsx`, and copies only the non-station-
-resolved reference figures.  It never copies Fig. 1, Supplementary Fig. S2 or
-Supplementary Fig. S3.
+`data/paper_aggregates/` contains the frozen public-safe CSV sheets and
+`Supplementary_Data_1_public_aggregate.xlsx`. These exclude station identifiers,
+coordinates and station-time values. The bundled reference figures are also
+non-station-resolved; Fig. 1, Supplementary Fig. S2 and Supplementary Fig. S3
+require the authorized inputs described below.
 
 ## Authorized station-resolved outputs
 
@@ -97,6 +89,13 @@ python -m paper_outputs.render_restricted s3 \
 The Cartopy directory must contain the Natural Earth 10m land, ocean,
 coastline and national-boundary shapefiles.  The command validates these files
 before rendering and never downloads them implicitly.
+
+Supplementary Figure S2 reads `Case_definitions` and
+`FigS2_station_timeseries` from the authorized workbook. It validates panels
+a–d, their display stations, 24-hour windows and the common +60-minute
+valid-time index before plotting. The four station examples are qualitative
+illustrations; the plotted means are not uncertainty bands. Member-resolved
+values remain available in the full Supplementary Data 1.
 
 This split is deliberate. It exposes the final transformations while keeping
 station-resolved KMA-derived inputs outside the public repository under the

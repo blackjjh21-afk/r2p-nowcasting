@@ -7,7 +7,9 @@ reader-asset manifest from which it was extracted.
 
 The bundle contains aggregate and seed-resolved counts, skill summaries,
 paired date-block intervals, valid-time readout values, All-station distance-
-group summaries, native-grid verification and the manuscript tables.  It does
+group summaries, native-grid verification and Tables 1 and S1. Table S2 and
+the Fig. S2 case definitions contain station identifiers and are supplied only
+in the authorized full Supplementary Data 1. This public subset does
 not contain station identifiers, station coordinates, station assignments,
 station-time observations, stationwise CSI or case-station time series.
 

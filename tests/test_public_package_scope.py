@@ -7,6 +7,18 @@ import tomllib
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_author_release_preparation_is_not_distributed() -> None:
+    for relative in (
+        "scripts/prepare_cnn_release_artifacts.py",
+        "scripts/sync_public_paper_outputs.py",
+        "scripts/refresh_artifact_manifest.py",
+        "docs/PUBLICATION_WORKFLOW.md",
+        "docs/ZENODO_SOFTWARE_FORM_VALUES.md",
+    ):
+        assert not (ROOT / relative).exists(), relative
+    assert not list((ROOT / "docs/templates").glob("*.in"))
+
+
 def test_distributed_packages_match_manuscript_workflows() -> None:
     packages = {
         path.parent.name for path in (ROOT / "src").glob("*/__init__.py")

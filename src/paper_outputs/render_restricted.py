@@ -15,6 +15,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 import numpy as np
@@ -188,65 +189,68 @@ def read_excel(path: Path, sheet: str) -> pd.DataFrame:
 
 
 def render_s2(workbook: Path, output: Path) -> None:
-    series = read_excel(workbook, "FigS2_station_timeseries")
-    metrics = read_excel(workbook, "Case_mean_sd")
-    required_series = {"case_rank", "valid_time_kst", "lead_min", "route", "value_mean_mm", "value_min_mm", "value_max_mm"}
-    required_metrics = {"case_rank", "lead_min", "threshold_mm", "route", "csi_mean", "csi_sd"}
-    if not required_series.issubset(series) or not required_metrics.issubset(metrics):
-        raise ValueError("Supplementary Data 1 station/case sheets do not match the frozen schema")
-    series["valid_time_kst"] = pd.to_datetime(series.valid_time_kst)
-    figure, axes = plt.subplots(2, 2, figsize=(12.8, 7.8), label="figureS2_case_analysis")
-    for row, rank in enumerate((1, 2)):
-        ax = axes[row, 0]
-        for route in ROUTE_ORDER:
-            block = series[series.case_rank.eq(rank) & series.route.eq(route) & series.lead_min.eq(60)].sort_values("valid_time_kst")
-            if block.empty:
-                raise ValueError(f"missing case {rank}, route {route}")
-            ax.plot(block.valid_time_kst, block.value_mean_mm, color=ROUTE_COLORS[route], lw=1.5,
-                    ls=":" if route == "truth" else "-", label=ROUTE_LABELS[route])
-            if route != "truth":
-                ax.fill_between(block.valid_time_kst, block.value_min_mm, block.value_max_mm,
-                                color=ROUTE_COLORS[route], alpha=0.12, linewidth=0)
-        ax.set(ylabel="RN60 (mm)", title=f"({chr(97 + 2 * row)}) +60-min station time series")
-        ax.title.set_fontsize(15)
-        ax.title.set_fontweight("bold")
-        ax.xaxis.label.set_size(14)
-        ax.yaxis.label.set_size(14)
-        ax.tick_params(axis="both", labelsize=13)
-        ax.tick_params(axis="x", rotation=25)
-        ax.grid(axis="y", alpha=0.2)
+    """Render four +60-min station examples, without CSI panels or shading.
 
-        ax = axes[row, 1]
-        x = np.arange(5); width = 0.22
-        for idx, route in enumerate(ROUTE_ORDER[1:]):
-            block = metrics[metrics.case_rank.eq(rank) & metrics.route.eq(route) & np.isclose(metrics.threshold_mm, 10)].set_index("lead_min").loc[[60, 90, 120, 150, 180]]
-            ax.bar(x + (idx - 1) * width, block.csi_mean, width=width, yerr=block.csi_sd,
-                   color=ROUTE_COLORS[route], capsize=2, label=ROUTE_LABELS[route])
-        ax.set(xticks=x, xticklabels=[60, 90, 120, 150, 180], xlabel="Lead time (min)", ylabel="10-mm event CSI",
-               title=f"({chr(98 + 2 * row)}) Event CSI across held-out stations")
-        ax.title.set_fontsize(15)
-        ax.title.set_fontweight("bold")
-        ax.xaxis.label.set_size(14)
-        ax.yaxis.label.set_size(14)
-        ax.tick_params(axis="both", labelsize=13)
-        ax.grid(axis="y", alpha=0.2)
-    handles, labels = axes[0, 0].get_legend_handles_labels()
-    figure.legend(
-        handles,
-        labels,
-        loc="upper center",
-        ncol=4,
-        frameon=False,
-        fontsize=13,
-    )
-    figure.subplots_adjust(
-        left=0.090,
-        right=0.985,
-        bottom=0.100,
-        top=0.835,
-        hspace=0.50,
-        wspace=0.28,
-    )
+    Case definitions and station observations must be supplied by the caller;
+    the public repository does not bundle station-resolved case metadata.
+    """
+    series = read_excel(workbook, "FigS2_station_timeseries")
+    cases = read_excel(workbook, "Case_definitions")
+    required_series = {"case_rank", "station_id", "valid_time_kst", "lead_min", "route", "value_mean_mm"}
+    required_cases = {"panel", "case_rank", "station_id", "window_start_exclusive", "window_end_inclusive", "lead_min"}
+    if not required_series.issubset(series) or not required_cases.issubset(cases):
+        raise ValueError("Supplementary Data 1 lacks the four-case station-time schema")
+    cases = cases.sort_values("panel").reset_index(drop=True)
+    if list(cases.panel) != list("abcd") or not cases.case_rank.is_unique:
+        raise ValueError("S2 requires four distinct cases with panels a, b, c and d")
+    if not cases.lead_min.eq(60).all() or not series.lead_min.eq(60).all():
+        raise ValueError("S2 time series must use +60-min forecasts")
+    if set(series.case_rank) != set(cases.case_rank):
+        raise ValueError("S2 case definitions and time series do not match")
+    series["valid_time_kst"] = pd.to_datetime(series.valid_time_kst)
+    validated = []
+    for case in cases.itertuples(index=False):
+        start, end = pd.Timestamp(case.window_start_exclusive), pd.Timestamp(case.window_end_inclusive)
+        if end - start != pd.Timedelta(hours=24):
+            raise ValueError("Each S2 case must span exactly 24 h")
+        expected_times = pd.date_range(start + pd.Timedelta(minutes=10), end, freq="10min")
+        blocks = []
+        case_rows = series[series.case_rank.eq(case.case_rank)]
+        if set(case_rows.route) != set(ROUTE_ORDER):
+            raise ValueError(f"case {case.case_rank} lacks the exact four plotted series")
+        for route in ROUTE_ORDER:
+            block = case_rows[case_rows.route.eq(route)].sort_values("valid_time_kst")
+            if not block.station_id.eq(case.station_id).all():
+                raise ValueError(f"case {case.case_rank} contains the wrong display station")
+            if not pd.DatetimeIndex(block.valid_time_kst).equals(expected_times):
+                raise ValueError(f"case {case.case_rank}, route {route} lacks exact common valid times")
+            values = block.value_mean_mm.to_numpy(dtype=float)
+            if np.isinf(values).any() or not np.isfinite(values).any():
+                raise ValueError(f"case {case.case_rank}, route {route} has invalid plotted values")
+            blocks.append((route, block))
+        validated.append((case, start, end, blocks))
+
+    plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 12,
+                         "axes.titlesize": 13, "axes.labelsize": 12,
+                         "legend.fontsize": 10, "pdf.fonttype": 42})
+    figure, axes = plt.subplots(2, 2, figsize=(13.2, 7.8), label="figureS2_case_analysis")
+    for ax, (case, start, end, blocks) in zip(axes.flat, validated):
+        for route, block in blocks:
+            ax.plot(block.valid_time_kst, block.value_mean_mm,
+                    color="black" if route == "truth" else ROUTE_COLORS[route],
+                    lw=2.0 if route in ("truth", "direct_r2p") else 1.55,
+                    ls="-", label=ROUTE_LABELS[route])
+        if (start.year, start.month) == (end.year, end.month):
+            date_label = f"{start.day}–{end.day} {start:%B %Y}"
+        else:
+            date_label = f"{start:%d %b %Y}–{end:%d %b %Y}"
+        ax.set(ylabel="RN60 (mm)",
+               title=f"({case.panel}) {date_label}: station {int(case.station_id)}, +60 min")
+        ax.xaxis.set_major_locator(mdates.HourLocator(interval=4))
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m-%d\n%H:%M"))
+        ax.grid(axis="y", color="#dddddd", linewidth=0.7)
+        ax.legend(frameon=False, fontsize=9.5)
+    figure.tight_layout(h_pad=2.5, w_pad=2.0)
     save(figure, output, "figureS2_case_analysis")
 
 
@@ -322,25 +326,26 @@ def render_s3(
                 transform=ccrs.PlateCarree(), zorder=3, rasterized=True,
             )
             ax.text(
-                0.018, 0.982, f"({next(letters)})", transform=ax.transAxes,
-                ha="left", va="top", fontsize=15.0, fontweight="normal",
+                -0.02, 1.025, f"({next(letters)})", transform=ax.transAxes,
+                ha="right", va="bottom", fontsize=16.0, fontweight="normal",
+                clip_on=False,
             )
             ax.set_title(
                 f"{ROUTE_LABELS[route]}\nmean station CSI = "
                 f"{means.loc[(threshold, route)]:.3f}",
-                fontsize=16.0, fontweight="normal", pad=8, linespacing=1.05,
+                fontsize=17.0, fontweight="normal", pad=8, linespacing=1.05,
             )
             if col == 0:
                 ax.text(
                     -0.225, 0.5, f"RN60 ≥ {threshold:g} mm", transform=ax.transAxes,
-                    rotation=90, va="center", ha="center", fontsize=16.0,
+                    rotation=90, va="center", ha="center", fontsize=17.0,
                     fontweight="bold",
                 )
         assert artist is not None
         colorbar_axis = axes[row, 2].inset_axes([1.055, 0.015, 0.035, 0.970])
         colorbar = figure.colorbar(artist, cax=colorbar_axis, orientation="vertical")
-        colorbar.set_label("Station-wise CSI", fontsize=14.5)
-        colorbar.ax.tick_params(labelsize=14.0)
+        colorbar.set_label("Station-wise CSI", fontsize=15.5)
+        colorbar.ax.tick_params(labelsize=15.0)
     figure.subplots_adjust(
         left=0.100,
         right=0.870,

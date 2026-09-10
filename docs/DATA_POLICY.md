@@ -39,39 +39,14 @@ materials are excluded from this public source repository:
 - stationwise metrics, maps, case totals or time series;
 - exact issue-time lists if joined to station-resolved outcomes.
 
-The decision framework allowed either of two repository outcomes:
+The recorded decision excludes station-resolved material from the public
+repository and separately approves the named derived sheets in Supplementary
+Data 1 for journal and permanent-archive distribution. Repository exclusion
+does not imply archive exclusion, and archive approval does not authorize
+station-resolved files in GitHub.
 
-1. **Minimal redistribution approved.** Publish only the fields needed for
-   audit, record provenance and attribution, and remove operational or
-   unrelated metadata.
-2. **Public redistribution excluded.** Publish schemas and synthetic examples
-   only, and keep the exact contract in an authorized archive.
-
-Both are valid repository decisions. The authors selected public repository
-exclusion for station-resolved material and separately approved the named
-derived sheets in Supplementary Data 1 for journal and permanent-archive
-distribution. Repository exclusion does not imply archive exclusion, and
-archive approval does not authorize station-resolved files in GitHub.
-
-The final choices and source-product terms are recorded in the machine-auditable
-`DATA_REDISTRIBUTION_DECISION.md` at the repository root. The non-operative
-template at `docs/templates/DATA_REDISTRIBUTION_DECISION.md.in` is retained for
-future revisions and does not supersede the signed root record.
-
-```text
-repository_decision: minimal_redistribution_approved
-supplementary_data_1_decision: derived_station_resolved_archive_approved
-supplementary_data_1_contents: Distance_station_groups (station_id, nearest-fitting-station distance, distance group); FigS2_station_timeseries and FigS2_timeseries_summary (station_id, exact valid times, gauge truth, route predictions, member ranges); FigS3_station_members, FigS3_station_CSI and FigS3_pairwise_counts (station_id, name, lat, lon, member contingency counts and CSI, mean CSI, pairwise station tallies)
-supplementary_data_1_destination: journal supplementary material and permanent data archive
-approved_by: AUTHOR NAME
-date: YYYY-MM-DD
-source_product: OFFICIAL PRODUCT NAME
-source_url: https://OFFICIAL-PRODUCT-OR-ACCESS-PAGE
-accessed: YYYY-MM-DD
-terms_reference: TERMS TITLE OR URL REVIEWED BY THE AUTHORS
-```
-
-The root record uses `public_redistribution_excluded` for the repository and
+The machine-auditable `DATA_REDISTRIBUTION_DECISION.md` at the repository root
+uses `public_redistribution_excluded` for the repository and
 `derived_station_resolved_archive_approved` for Supplementary Data 1. It also
 identifies the KMA source products, official access URLs, access date and terms
 reviewed by the responsible author.

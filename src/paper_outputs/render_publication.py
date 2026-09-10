@@ -195,10 +195,11 @@ def render_figure2(data: Path, output: Path) -> tuple[Path, Path]:
         ax2.errorbar(np.arange(4), values, yerr=errors, color=colors[route], marker=marker, lw=1.8,
                      label=labels[route])
     ax2.axhline(1, color="0.25", ls="--", lw=1)
-    ax.set(xticks=np.arange(4), xticklabels=["1", "5", "10", "20"], ylim=(0, 1.3),
+    # Axis headroom only: value 1 now occupies the former value 0.8 height.
+    ax.set(xticks=np.arange(4), xticklabels=["1", "5", "10", "20"], ylim=(0, 1.625),
            xlabel="Threshold (mm)", ylabel="CSI (bars)")
     ax2.set(
-        ylim=(0, 1.5),
+        ylim=(0, 1.875),
         yticks=np.arange(0.0, 1.21, 0.2),
         ylabel="Frequency bias (lines)",
     )
@@ -487,7 +488,7 @@ def render_figure_s4(data: Path, output: Path) -> tuple[Path, Path]:
     ax.set(xlabel="Forecast lead (min)", ylabel="ΔCSI (exPreCast − pySTEPS)")
     ax.set_title("(d) Native-grid RN60 CSI difference", fontweight="bold", fontsize=15, pad=9)
     ax.set_ylim(-0.04, 0.17)
-    ax.legend(ncol=4, loc="upper center", frameon=False, fontsize=12.5, handlelength=1.8)
+    ax.legend(ncol=4, loc="upper center", frameon=False, fontsize=12.5, handlelength=1.8, columnspacing=1.0)
     for ax in axes.flat:
         ax.xaxis.label.set_size(14)
         ax.yaxis.label.set_size(14)

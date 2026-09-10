@@ -147,9 +147,6 @@ version 1.1.0.
 - `src/paper_outputs/`: public aggregate numerical/display renderers for Figs.
   2--6, S1/S4 and Table 1, plus authorized-input renderers for Fig. 1 and
   S2/S3. See [`docs/PAPER_OUTPUT_REPRODUCIBILITY.md`](docs/PAPER_OUTPUT_REPRODUCIBILITY.md).
-- `scripts/sync_public_paper_outputs.py`: author-side, exact-schema export of
-  the public-safe aggregate sheets and non-station-resolved reference assets.
-  Unknown columns are rejected rather than silently copied.
 - `scripts/finalize_fig6_architecture.py`: exact renderer for the included
   editable Figure 6 source; Office author metadata and volatile timestamps are
   scrubbed when release assets are generated.
@@ -232,6 +229,4 @@ KMA-derived station data, exPreCast materials or other third-party assets.
 The approved public-repository and Supplementary Data 1 scopes are recorded in
 [`DATA_REDISTRIBUTION_DECISION.md`](DATA_REDISTRIBUTION_DECISION.md). Citation
 metadata are provided in [`CITATION.cff`](CITATION.cff); the version-specific
-archive DOI is pending. See
-[`docs/PUBLICATION_WORKFLOW.md`](docs/PUBLICATION_WORKFLOW.md) for the
-publication steps.
+archive DOI is pending.

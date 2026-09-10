@@ -25,23 +25,24 @@
   },
   "outputs": {
     "fig6_architecture.pdf": {
-      "sha256": "1a0e56bb392c705ca5f1d0bc9f4729b87148fb04f7f9cf42eb70b0ccdfa7013c",
-      "size_bytes": 19869
+      "sha256": "39de1bfd0ae87e4d0be57f6a91fbbb8dee3ff8295861bea19ce30c452e5b6754",
+      "size_bytes": 19805
     },
     "fig6_architecture.png": {
-      "sha256": "d2a520ef83eaffdb3f00c13178adb2553ca1a7a2bb35106bbc78f6902def37b6",
-      "size_bytes": 425653
+      "sha256": "7a1f24a4f532ef3754a6fe727e0cd9b799f470b280e7147787e225312955d551",
+      "size_bytes": 420497
     },
     "fig6_architecture_caption.txt": {
-      "sha256": "6cccf88a90f6bbeb50e2bc7303bd8fb88c5739eca7640400051c2c6d54bc1874",
-      "size_bytes": 437
+      "sha256": "ec035edaf301b64926048ed1f950a84a2551d36ff4ac48a7d9423782c498b20d",
+      "size_bytes": 403
     },
     "fig6_architecture_editable.pptx": {
-      "sha256": "ad424f14a42bee7dd59ccf9d6351d07b2a6dd7e2890ff02c7fb83551632ad4b3",
-      "size_bytes": 10502
+      "sha256": "2c43e15f6e48e4a325c237f35520be67772e01a76b642cdb86a791460ebc4a41",
+      "size_bytes": 10472
     }
   },
   "pptx_verification": {
+    "detail_output_matches_field_output_text_format": true,
     "fills": {
       "Cross lead decoder": "E5E7EE",
       "Direct RN60 output": "F7F8FA",
@@ -128,6 +129,14 @@
         "y": "7296024"
       }
     },
+    "supervision_line_styles": {
+      "18": "solid",
+      "19": "solid",
+      "20": "solid",
+      "23": "solid",
+      "24": "solid",
+      "33": "solid"
+    },
     "wrapped_text": {
       "Cross lead decoder": [
         "Cross-lead",
@@ -137,8 +146,7 @@
         "Gauge RN60"
       ],
       "Direct detail output": [
-        "Gauge",
-        "RN60"
+        "Gauge RN60"
       ],
       "Direct gauge context": [
         "Issuance-time",
@@ -174,7 +182,7 @@
   "schema": "figure6-jh2-final-v1",
   "script": {
     "path": "scripts/finalize_fig6_architecture.py",
-    "sha256": "d836460b6305c6f77bd492aef1b4919a1395db2b6bbbcc0d28ac2fe03a3f4f95"
+    "sha256": "880fa2ff3bfd999478ee222b6d559cf28d932d0cad4687698d30e298755f77b1"
   },
   "source_modified": false,
   "source_pptx": {

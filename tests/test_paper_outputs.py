@@ -30,7 +30,11 @@ def test_public_aggregate_manifest_has_no_station_resolved_sheets() -> None:
     assert "FigS2_station_timeseries" not in names
     assert "FigS3_station_CSI" not in names
     assert "Distance_station_groups" not in names
-    forbidden = {"station_id", "name", "lat", "lon", "valid_time_kst"}
+    excluded_cases = {"TableS2_cases", "Case_definitions", "Case_per_rep", "Case_mean_sd", "FigS2_timeseries_per_member", "FigS2_timeseries_summary"}
+    assert names.isdisjoint(excluded_cases)
+    for name in excluded_cases:
+        assert not (ROOT / "data/paper_aggregates" / f"{name}.csv").exists()
+    forbidden = {"station_id", "held-out_station", "held_out_station", "display_station_id", "name", "lat", "lon", "valid_time_kst"}
     for name in names:
         frame = pd.read_csv(ROOT / "data/paper_aggregates" / f"{name}.csv", nrows=0)
         normalized = {column.strip().lower().replace(" ", "_") for column in frame.columns}
@@ -74,7 +78,7 @@ def test_all_public_aggregate_renderers(tmp_path: Path) -> None:
         assert pdf.is_file() and pdf.stat().st_size > 1_000
 
 
-def test_figure2_frequency_bias_axis_spacing(
+def test_figure2_panel_d_axis_spacing(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     def inspect_and_close(figure, _output):
@@ -82,15 +86,35 @@ def test_figure2_frequency_bias_axis_spacing(
             axis for axis in figure.axes
             if axis.get_ylabel() == "Frequency bias (lines)"
         )
-        assert axis.get_ylim() == (0.0, 1.5)
+        assert axis.get_ylim() == (0.0, 1.875)
         np.testing.assert_allclose(axis.get_yticks(), np.arange(0.0, 1.21, 0.2))
-        # The unit-bias reference now occupies the former 1.2 / 1.8 height.
-        assert 1.0 / axis.get_ylim()[1] == pytest.approx(1.2 / 1.8)
+        # Only headroom changes: value 1 occupies the former value 0.8 height.
+        assert 1.0 / axis.get_ylim()[1] == pytest.approx(0.8 / 1.5)
+        csi_axis = next(ax for ax in figure.axes if ax.get_ylabel() == "CSI (bars)")
+        assert csi_axis.get_ylim() == (0.0, 1.625)
+        assert 1.0 / csi_axis.get_ylim()[1] == pytest.approx(0.8 / 1.3)
         render_publication.plt.close(figure)
         return tmp_path / "figure2.png", tmp_path / "figure2.pdf"
 
     monkeypatch.setattr(render_publication, "save", inspect_and_close)
     render_figure2(ROOT / "data/paper_aggregates", tmp_path)
+
+
+def test_figure_s4_compact_threshold_legend(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def inspect_and_close(figure, _output):
+        axis = figure.axes[3]
+        legend = axis.get_legend()
+        assert legend.columnspacing == 1.0
+        assert len(legend.get_texts()) == 4
+        figure.canvas.draw()
+        assert legend.get_window_extent().x0 > axis.get_window_extent().x0
+        render_publication.plt.close(figure)
+        return tmp_path / "figureS4.png", tmp_path / "figureS4.pdf"
+
+    monkeypatch.setattr(render_publication, "save", inspect_and_close)
+    render_figure_s4(ROOT / "data/paper_aggregates", tmp_path)
 
 
 def _station_split() -> pd.DataFrame:
@@ -135,17 +159,23 @@ def test_restricted_figure1_display_transform(
     assert (tmp_path / "figure1_study_design.png").stat().st_size > 5_000
 
 
-def test_restricted_s2_display_transform(tmp_path: Path) -> None:
+def _synthetic_s2_frames() -> tuple[pd.DataFrame, pd.DataFrame]:
     routes = tuple(render_restricted.ROUTE_ORDER)
-    times = pd.date_range("2025-07-17", periods=4, freq="h")
     series_rows = []
-    for rank in (1, 2):
+    case_rows = []
+    for panel, rank in zip("abcd", (1, 4, 7, 8)):
+        start = pd.Timestamp("2025-07-01") + pd.Timedelta(days=rank)
+        end = start + pd.Timedelta(hours=24)
+        times = pd.date_range(start + pd.Timedelta(minutes=10), end, freq="10min")
+        case_rows.append({"panel": panel, "case_rank": rank, "station_id": 500 + rank,
+                          "window_start_exclusive": start, "window_end_inclusive": end, "lead_min": 60})
         for route_index, route in enumerate(routes):
             for index, valid_time in enumerate(times):
                 value = float(rank + route_index + index)
                 series_rows.append(
                     {
                         "case_rank": rank,
+                        "station_id": 500 + rank,
                         "valid_time_kst": valid_time,
                         "lead_min": 60,
                         "route": route,
@@ -154,26 +184,63 @@ def test_restricted_s2_display_transform(tmp_path: Path) -> None:
                         "value_max_mm": value + 0.2,
                     }
                 )
-    metric_rows = []
-    for rank in (1, 2):
-        for route_index, route in enumerate(routes[1:]):
-            for lead_index, lead in enumerate((60, 90, 120, 150, 180)):
-                metric_rows.append(
-                    {
-                        "case_rank": rank,
-                        "lead_min": lead,
-                        "threshold_mm": 10.0,
-                        "route": route,
-                        "csi_mean": 0.4 - lead_index * 0.04 + route_index * 0.02,
-                        "csi_sd": 0.01,
-                    }
-                )
+    return pd.DataFrame(series_rows), pd.DataFrame(case_rows)
+
+
+def _write_s2_workbook(path: Path, series: pd.DataFrame, cases: pd.DataFrame) -> None:
+    with pd.ExcelWriter(path) as writer:
+        series.to_excel(writer, sheet_name="FigS2_station_timeseries", index=False)
+        cases.to_excel(writer, sheet_name="Case_definitions", index=False)
+
+
+def test_restricted_s2_display_transform(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    series, cases = _synthetic_s2_frames()
+    # A missing observation remains a gap, not an interpolated or zero-filled point.
+    series.loc[2, "value_mean_mm"] = np.nan
     workbook = tmp_path / "supplementary.xlsx"
-    with pd.ExcelWriter(workbook) as writer:
-        pd.DataFrame(series_rows).to_excel(writer, sheet_name="FigS2_station_timeseries", index=False)
-        pd.DataFrame(metric_rows).to_excel(writer, sheet_name="Case_mean_sd", index=False)
+    _write_s2_workbook(workbook, series, cases)
+    original_save = render_restricted.save
+
+    def inspect_and_save(figure, *args):
+        assert len(figure.axes) == 4
+        for axis, case in zip(figure.axes, cases.itertuples(index=False)):
+            assert len(axis.lines) == 4
+            assert not axis.collections and not axis.patches  # no shading or CSI bars
+            assert axis.get_ylabel() == "RN60 (mm)"
+            assert axis.get_title().startswith(f"({case.panel})")
+            assert axis.lines[0].get_color() == "black"
+            for route, line in zip(render_restricted.ROUTE_ORDER, axis.lines):
+                expected = series.loc[series.case_rank.eq(case.case_rank) & series.route.eq(route), "value_mean_mm"]
+                np.testing.assert_allclose(line.get_ydata(), expected, equal_nan=True)
+                assert line.get_linestyle() == "-"
+        return original_save(figure, *args)
+
+    monkeypatch.setattr(render_restricted, "save", inspect_and_save)
     render_restricted.render_s2(workbook, tmp_path)
     assert (tmp_path / "figureS2_case_analysis.png").stat().st_size > 5_000
+    assert (tmp_path / "figureS2_case_analysis.pdf").stat().st_size > 1_000
+
+
+@pytest.mark.parametrize("defect", ("missing_time", "wrong_station", "wrong_lead", "wrong_panel", "missing_schema", "infinite_value"))
+def test_restricted_s2_rejects_misaligned_cases(tmp_path: Path, defect: str) -> None:
+    series, cases = _synthetic_s2_frames()
+    if defect == "missing_time":
+        series = series.iloc[1:]
+    elif defect == "wrong_station":
+        series.loc[0, "station_id"] = -1
+    elif defect == "wrong_lead":
+        series.loc[0, "lead_min"] = 90
+    elif defect == "wrong_panel":
+        cases.loc[0, "panel"] = "d"
+    elif defect == "missing_schema":
+        cases = cases.drop(columns="station_id")
+    elif defect == "infinite_value":
+        series.loc[0, "value_mean_mm"] = np.inf
+    workbook = tmp_path / "invalid.xlsx"
+    _write_s2_workbook(workbook, series, cases)
+    with pytest.raises(ValueError):
+        render_restricted.render_s2(workbook, tmp_path)
+    assert not (tmp_path / "figureS2_case_analysis.png").exists()
 
 
 def test_restricted_s3_display_transform(
@@ -209,5 +276,20 @@ def test_restricted_s3_display_transform(
                 )
     workbook = tmp_path / "supplementary.xlsx"
     pd.DataFrame(rows).to_excel(workbook, sheet_name="FigS3_station_CSI", index=False)
+    original_save = render_restricted.save
+
+    def inspect_labels_and_save(figure, *args, **kwargs):
+        expected = {f"({letter})" for letter in "abcdefghijkl"}
+        labels = [text for axis in figure.axes for text in axis.texts if text.get_text() in expected]
+        assert {text.get_text() for text in labels} == expected
+        assert len(labels) == 12
+        for text in labels:
+            x, y = text.get_position()
+            assert x < 0 and y > 1
+            assert not text.get_clip_on()
+            assert text.get_fontsize() >= 15
+        return original_save(figure, *args, **kwargs)
+
+    monkeypatch.setattr(render_restricted, "save", inspect_labels_and_save)
     render_restricted.render_s3(workbook, stations, tmp_path, tmp_path)
     assert (tmp_path / "figureS3_stationwise_CSI.png").stat().st_size > 5_000
