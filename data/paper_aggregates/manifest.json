@@ -12,23 +12,7 @@
       "name": "Table1_main",
       "path": "Table1_main.csv",
       "rows": 15,
-      "sha256": "aad62e85ebbaa26783d6d9bea43dcd22f03b8bbe5cf33dbc74abb998b2495d2f"
-    },
-    {
-      "columns": 10,
-      "kind": "aggregate_sheet",
-      "name": "Table1_numeric",
-      "path": "Table1_numeric.csv",
-      "rows": 15,
       "sha256": "86e7f347a14fe90be0465cfbbc64092464b25479435bc756c89bf366f24e74c2"
-    },
-    {
-      "columns": 5,
-      "kind": "aggregate_sheet",
-      "name": "TableS1_training",
-      "path": "TableS1_training.csv",
-      "rows": 9,
-      "sha256": "d1fbf4d83104ad53e41ae9846890203c4188dba64b365a23e2b23e136f5655b4"
     },
     {
       "columns": 17,
@@ -39,12 +23,12 @@
       "sha256": "474f33ed3343c97fce1b4e7ea9665cf8a01729a75ab9b9f6c80595d0baa75a74"
     },
     {
-      "columns": 6,
+      "columns": 5,
       "kind": "aggregate_sheet",
-      "name": "Gauge_contract_matrix",
-      "path": "Gauge_contract_matrix.csv",
-      "rows": 9,
-      "sha256": "c8bd734d052b1a33c55323ef4c2175f6b11ce9a13a99251d96b3a15f2fb520d7"
+      "name": "Fig2a_summary",
+      "path": "Fig2a_summary.csv",
+      "rows": 1,
+      "sha256": "b395d5be85a82c0107c25d216ebe4569bd4de19b35d70052e9deea67055ec50c"
     },
     {
       "columns": 3,
@@ -53,14 +37,6 @@
       "path": "Fig2a_density.csv",
       "rows": 3098,
       "sha256": "4e9ca68fc5bcfdd13d9b438c7f33fa8dd9a8b25551b2ffd9776cb35896b8f573"
-    },
-    {
-      "columns": 5,
-      "kind": "aggregate_sheet",
-      "name": "Fig2a_summary",
-      "path": "Fig2a_summary.csv",
-      "rows": 1,
-      "sha256": "b395d5be85a82c0107c25d216ebe4569bd4de19b35d70052e9deea67055ec50c"
     },
     {
       "columns": 4,
@@ -79,20 +55,12 @@
       "sha256": "f0054eafc50158780fc2992c57060cf448fe29294bb8f9badfd9c55517380881"
     },
     {
-      "columns": 4,
+      "columns": 7,
       "kind": "aggregate_sheet",
-      "name": "Fig2d_CSI_summary",
-      "path": "Fig2d_CSI_summary.csv",
+      "name": "Fig2d_readout_summary",
+      "path": "Fig2d_readout_summary.csv",
       "rows": 12,
-      "sha256": "77bb42b532d0632fe8c9eb5dd907cef20a379d0e716b836bb3165be4f4072c33"
-    },
-    {
-      "columns": 5,
-      "kind": "aggregate_sheet",
-      "name": "Fig2d_FB_summary",
-      "path": "Fig2d_FB_summary.csv",
-      "rows": 12,
-      "sha256": "96d363b31ed51070ded012b9caf03725b950b86b6814f227b20d4b71dce60501"
+      "sha256": "57398a6149d265a35a7417ddd5b37cd1587bbbee82539359318121d17ffceaa3"
     },
     {
       "columns": 10,
@@ -111,14 +79,6 @@
       "sha256": "3559ffa832dce96407ebae16645a3dd22a97b954a1a300c063425c768185cb26"
     },
     {
-      "columns": 16,
-      "kind": "aggregate_sheet",
-      "name": "Categorical_per_rep",
-      "path": "Categorical_per_rep.csv",
-      "rows": 468,
-      "sha256": "c52f13be4166d3fa144ced2dc11deadfe4d16f934623520e0ec278eda800e08e"
-    },
-    {
       "columns": 13,
       "kind": "aggregate_sheet",
       "name": "Categorical_mean_sd",
@@ -127,12 +87,12 @@
       "sha256": "c04734c4b610af6b1b50b2e99e98ceb810c7850a6e5821c0bc8dcd6ea4c7315f"
     },
     {
-      "columns": 12,
+      "columns": 16,
       "kind": "aggregate_sheet",
-      "name": "Continuous_per_rep",
-      "path": "Continuous_per_rep.csv",
-      "rows": 117,
-      "sha256": "f24a842ee540b8ab5fcd22092096471503703544f49ed2281382a29bda6e126f"
+      "name": "Categorical_per_rep",
+      "path": "Categorical_per_rep.csv",
+      "rows": 468,
+      "sha256": "c52f13be4166d3fa144ced2dc11deadfe4d16f934623520e0ec278eda800e08e"
     },
     {
       "columns": 14,
@@ -141,6 +101,14 @@
       "path": "Continuous_mean_sd.csv",
       "rows": 39,
       "sha256": "a14cc25884cd907614bd49d2ca6ca85df0ec6ab8133ccdf821a5f70491abc1b3"
+    },
+    {
+      "columns": 12,
+      "kind": "aggregate_sheet",
+      "name": "Continuous_per_rep",
+      "path": "Continuous_per_rep.csv",
+      "rows": 117,
+      "sha256": "f24a842ee540b8ab5fcd22092096471503703544f49ed2281382a29bda6e126f"
     },
     {
       "columns": 12,
@@ -175,38 +143,6 @@
       "sha256": "bd23088e6c69f80c4ab9ce50e690f71243c6d712f8d92bd0dbf4e8b1c6aaaa34"
     },
     {
-      "columns": 11,
-      "kind": "aggregate_sheet",
-      "name": "FigS1_distance_cells",
-      "path": "FigS1_distance_cells.csv",
-      "rows": 80,
-      "sha256": "c6f32ff5bcc8caad03509745a6cd93b288653391de3552da1a2ca886fd33607d"
-    },
-    {
-      "columns": 9,
-      "kind": "aggregate_sheet",
-      "name": "FigS1_distance_summary",
-      "path": "FigS1_distance_summary.csv",
-      "rows": 40,
-      "sha256": "b630d06d9914bd7453dbb93fbd6f3b73a5907f7b749ea1f5dd6f7f0902db1036"
-    },
-    {
-      "columns": 14,
-      "kind": "aggregate_sheet",
-      "name": "Allstation_overall",
-      "path": "Allstation_overall.csv",
-      "rows": 20,
-      "sha256": "9448c864f3d56641b1febdc3685c1f9494d44590f0ea70c8e6924780fec3e2dc"
-    },
-    {
-      "columns": 14,
-      "kind": "aggregate_sheet",
-      "name": "Allstation_seedwise",
-      "path": "Allstation_seedwise.csv",
-      "rows": 60,
-      "sha256": "084c0034dfa23991d80d6d1c719e36266444dce309d290de2d48dc081c00f52c"
-    },
-    {
       "columns": 16,
       "kind": "aggregate_sheet",
       "name": "Fig5_plot_source",
@@ -229,6 +165,38 @@
       "path": "Fig5_frequency.csv",
       "rows": 156,
       "sha256": "a407f0cfc5436f45596437562fcb21e3c91ba334fda4cd2cbefe95df9cac6b14"
+    },
+    {
+      "columns": 9,
+      "kind": "aggregate_sheet",
+      "name": "FigS1_distance_summary",
+      "path": "FigS1_distance_summary.csv",
+      "rows": 40,
+      "sha256": "b630d06d9914bd7453dbb93fbd6f3b73a5907f7b749ea1f5dd6f7f0902db1036"
+    },
+    {
+      "columns": 11,
+      "kind": "aggregate_sheet",
+      "name": "FigS1_distance_cells",
+      "path": "FigS1_distance_cells.csv",
+      "rows": 80,
+      "sha256": "c6f32ff5bcc8caad03509745a6cd93b288653391de3552da1a2ca886fd33607d"
+    },
+    {
+      "columns": 14,
+      "kind": "aggregate_sheet",
+      "name": "Allstation_overall",
+      "path": "Allstation_overall.csv",
+      "rows": 20,
+      "sha256": "9448c864f3d56641b1febdc3685c1f9494d44590f0ea70c8e6924780fec3e2dc"
+    },
+    {
+      "columns": 14,
+      "kind": "aggregate_sheet",
+      "name": "Allstation_seedwise",
+      "path": "Allstation_seedwise.csv",
+      "rows": 60,
+      "sha256": "084c0034dfa23991d80d6d1c719e36266444dce309d290de2d48dc081c00f52c"
     },
     {
       "columns": 8,
@@ -279,11 +247,27 @@
       "sha256": "9f300586dc6423a1aceb3b14e0c5fd8b6b1ca4318e298966e8d83c94041da2f6"
     },
     {
+      "columns": 5,
+      "kind": "aggregate_sheet",
+      "name": "TableS1_training",
+      "path": "TableS1_training.csv",
+      "rows": 9,
+      "sha256": "d1fbf4d83104ad53e41ae9846890203c4188dba64b365a23e2b23e136f5655b4"
+    },
+    {
+      "columns": 6,
+      "kind": "aggregate_sheet",
+      "name": "Gauge_contract_matrix",
+      "path": "Gauge_contract_matrix.csv",
+      "rows": 9,
+      "sha256": "c8bd734d052b1a33c55323ef4c2175f6b11ce9a13a99251d96b3a15f2fb520d7"
+    },
+    {
       "kind": "aggregate_workbook",
       "name": "Supplementary Data 1 public aggregate subset",
       "path": "Supplementary_Data_1_public_aggregate.xlsx",
-      "sha256": "22a2af716259a0e1bbec6c082933ed1bba3c07f2832a14e1393fa6ca5774043b",
-      "sheet_count": 34
+      "sha256": "f3dfb67a2c72fc4e6f12252613167cdc425ff9ba379309335e75e1e1acc9531a",
+      "sheet_count": 32
     },
     {
       "kind": "reference_rendering",
@@ -335,7 +319,7 @@
     }
   ],
   "schema": "r2p-4km10min-public-paper-audit-layer-v1",
-  "source_reader_manifest_sha256": "018eeb9baf5a48c4eadf106add567c0c686bcfeee131f715ec37199b93c6f4d7",
-  "source_supplementary_data_sha256": "36ef8daf6bb2d0f83ec0d589b24f7833c107dd08c1d402e48b5bfa241c2a3a1a",
+  "source_reader_manifest_sha256": "70f722d8e13e08c6779c6c1157d1ec20e0011b33035172754e2af58274639452",
+  "source_supplementary_data_sha256": "f9752d28141a5185aed369bb481c8b0da4c1ec7a4c5144e11b9744b166d5ed65",
   "station_resolved_content_included": false
 }

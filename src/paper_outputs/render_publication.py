@@ -128,8 +128,7 @@ def render_figure2(data: Path, output: Path) -> tuple[Path, Path]:
     summary = read(data, "Fig2a_summary").iloc[0]
     amount = read(data, "Fig2b_amount_bins")
     fixed = read(data, "Fig2c_fixed_metrics")
-    csi = read(data, "Fig2d_CSI_summary")
-    fb = read(data, "Fig2d_FB_summary")
+    readout = read(data, "Fig2d_readout_summary")
     figure, axes = plt.subplots(2, 2, figsize=(13.4, 10.2), label="figure2_valid_time_readout")
 
     ax = axes[0, 0]
@@ -185,12 +184,12 @@ def render_figure2(data: Path, output: Path) -> tuple[Path, Path]:
     colors = {"fixed_mp": "#606A73", "center_mlp": "#DE7A60", "patch_cnn": "#2384A6"}
     offsets = (-0.24, 0, 0.24)
     for offset, route in zip(offsets, route_order, strict=True):
-        block = csi[csi.route.eq(route)].sort_values("threshold_mm")
+        block = readout[readout.route.eq(route)].sort_values("threshold_mm")
         ax.bar(np.arange(4) + offset, block.csi_mean, width=0.22, color=colors[route], alpha=0.55,
                yerr=block.csi_sd, capsize=2)
     ax2 = ax.twinx()
     for route, marker in zip(route_order, ("o", "D", "s"), strict=True):
-        block = fb[fb.route.eq(route)].sort_values("threshold_mm")
+        block = readout[readout.route.eq(route)].sort_values("threshold_mm")
         values, errors = block.frequency_bias_mean, block.frequency_bias_sd
         ax2.errorbar(np.arange(4), values, yerr=errors, color=colors[route], marker=marker, lw=1.8,
                      label=labels[route])
@@ -233,7 +232,7 @@ def render_figure3(data: Path, output: Path) -> tuple[Path, Path]:
     absolute = absolute[absolute.route_key.isin(ROUTES) & absolute.lead_min.isin(LEADS)].copy()
     audit_grid(absolute, routes=set(ROUTES))
     contrasts = read(data, "Fig3ef_route_contrasts")
-    fixed = read(data, "Fig2d_CSI_summary")
+    fixed = read(data, "Fig2d_readout_summary")
     fixed = fixed[fixed.route.eq("fixed_mp")].set_index("threshold_mm")
     figure = plt.figure(figsize=(11.7, 10.3), label="figure3_route_skill_and_contrasts")
     grid = figure.add_gridspec(3, 2, height_ratios=(1, 1, 0.82), hspace=0.62, wspace=0.19)
@@ -536,8 +535,18 @@ def render_figure6(output: Path) -> tuple[Path, Path]:
     return png, pdf
 
 
+def format_table1(frame: pd.DataFrame) -> pd.DataFrame:
+    """Format the full-precision source values for the published Table 1."""
+    display = frame.copy()
+    display["Lead (min)"] = display["Lead (min)"].map(lambda value: f"{float(value):.0f}")
+    for column in display.columns[2:]:
+        places = 4 if "CSI" in column else 3
+        display[column] = display[column].map(lambda value: f"{float(value):.{places}f}")
+    return display.astype(str)
+
+
 def render_table1(data: Path, output: Path) -> tuple[Path, Path]:
-    frame = read(data, "Table1_main").astype(str)
+    frame = format_table1(read(data, "Table1_main"))
     figure, ax = plt.subplots(figsize=(14.5, 5.0), label="table1_heldout_point_skill")
     ax.axis("off")
     table = ax.table(cellText=frame.values, colLabels=frame.columns, cellLoc="center", loc="center")
@@ -548,7 +557,9 @@ def render_table1(data: Path, output: Path) -> tuple[Path, Path]:
             cell.set_facecolor("#E7EBEF"); cell.set_text_props(fontweight="bold")
     output.mkdir(parents=True, exist_ok=True)
     frame.to_csv(output / "table1_heldout_point_skill.csv", index=False)
-    (output / "table1_heldout_point_skill.md").write_text(frame.to_markdown(index=False) + "\n", encoding="utf-8")
+    (output / "table1_heldout_point_skill.md").write_text(
+        frame.to_markdown(index=False, disable_numparse=True) + "\n", encoding="utf-8"
+    )
     return save(figure, output)
 
 

@@ -34,6 +34,11 @@ def test_public_aggregate_manifest_has_no_station_resolved_sheets() -> None:
     assert names.isdisjoint(excluded_cases)
     for name in excluded_cases:
         assert not (ROOT / "data/paper_aggregates" / f"{name}.csv").exists()
+    superseded = {"Table1_numeric", "Fig2d_CSI_summary", "Fig2d_FB_summary"}
+    assert names.isdisjoint(superseded)
+    assert {"Table1_main", "Fig2d_readout_summary"}.issubset(names)
+    for name in superseded:
+        assert not (ROOT / "data/paper_aggregates" / f"{name}.csv").exists()
     forbidden = {"station_id", "held-out_station", "held_out_station", "display_station_id", "name", "lat", "lon", "valid_time_kst"}
     for name in names:
         frame = pd.read_csv(ROOT / "data/paper_aggregates" / f"{name}.csv", nrows=0)
@@ -51,13 +56,131 @@ def test_current_cnn_sources_and_validtime_support() -> None:
     data = ROOT / "data/paper_aggregates"
     table = pd.read_csv(data / "Table1_main.csv")
     assert set(table.Route) == {"pySTEPS + CNN", "exPreCast + CNN", "Direct R2P"}
+    assert all(pd.api.types.is_numeric_dtype(table[column]) for column in table.columns[1:])
+    # The only Table 1 source keeps full precision; rounding belongs to display code.
+    assert table["RN60 CSI-M"].ne(table["RN60 CSI-M"].round(4)).any()
     assert not (data / "TableS1b_readout.csv").exists()
-    fb = pd.read_csv(data / "Fig2d_FB_summary.csv")
+    fb = pd.read_csv(data / "Fig2d_readout_summary.csv")
+    assert list(fb.columns) == [
+        "route", "threshold_mm", "csi_mean", "csi_sd",
+        "frequency_bias_mean", "frequency_bias_sd", "n_members",
+    ]
     assert set(fb.route) == {"fixed_mp", "center_mlp", "patch_cnn"}
+    assert len(fb) == 12 and not fb.duplicated(["route", "threshold_mm"]).any()
+    for route, block in fb.groupby("route"):
+        assert set(block.threshold_mm) == {1, 5, 10, 20}
+        assert set(block.n_members) == ({1} if route == "fixed_mp" else {3})
     # Panel d uses held-out 2024–2025 support, not panel c's all-station support.
     fixed_d = fb[fb.route.eq("fixed_mp")].sort_values("threshold_mm")
     fixed_c = pd.read_csv(data / "Fig2c_fixed_metrics.csv").sort_values("threshold_mm")
     assert not np.allclose(fixed_d.frequency_bias_mean, fixed_c.frequency_bias)
+
+
+def test_table1_numeric_source_preserves_display_precision(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    columns = [
+        "Route", "Lead (min)", "RN60 CSI-M", "CSI ≥1 mm", "CSI ≥5 mm",
+        "CSI ≥10 mm", "CSI ≥20 mm", "RMSE (mm)", "Mean bias (mm)", "Correlation",
+    ]
+    source = pd.DataFrame([[
+        "pySTEPS + CNN", 60.0, 0.1, 0.987654321, 0.0000499,
+        0.123456, 0.5, 1.23456, -0.00567, 0.7,
+    ]], columns=columns)
+    expected = [
+        "pySTEPS + CNN", "60", "0.1000", "0.9877", "0.0000",
+        "0.1235", "0.5000", "1.235", "-0.006", "0.700",
+    ]
+    data = tmp_path / "data"
+    data.mkdir()
+    source_path = data / "Table1_main.csv"
+    source.to_csv(source_path, index=False)
+    source_bytes = source_path.read_bytes()
+    output = tmp_path / "output"
+
+    def inspect_and_close(figure, _output):
+        table = figure.axes[0].tables[0]
+        assert [table[(1, column)].get_text().get_text() for column in range(10)] == expected
+        assert [table[(0, column)].get_text().get_text() for column in range(10)] == columns
+        render_publication.plt.close(figure)
+        return output / "table1.png", output / "table1.pdf"
+
+    monkeypatch.setattr(render_publication, "save", inspect_and_close)
+    render_table1(data, output)
+    display = pd.read_csv(output / "table1_heldout_point_skill.csv", dtype=str)
+    assert display.iloc[0].tolist() == expected
+    markdown_rows = [
+        [cell.strip() for cell in line.strip().strip("|").split("|")]
+        for line in (output / "table1_heldout_point_skill.md").read_text().splitlines()
+    ]
+    assert markdown_rows[2] == expected
+    assert source_path.read_bytes() == source_bytes
+
+
+def test_figure2_panel_d_uses_merged_readout_summary(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    route_order = ("fixed_mp", "center_mlp", "patch_cnn")
+    rows = []
+    for route_index, route in enumerate(route_order):
+        for threshold_index, threshold in enumerate((1, 5, 10, 20)):
+            rows.append({
+                "route": route, "threshold_mm": threshold,
+                "csi_mean": 0.1 + 0.2 * route_index + 0.01 * threshold_index,
+                "csi_sd": 0.001 * route_index,
+                "frequency_bias_mean": 0.4 + 0.1 * route_index + 0.02 * threshold_index,
+                "frequency_bias_sd": 0.01 * route_index,
+                "n_members": 1 if route == "fixed_mp" else 3,
+            })
+    merged = pd.DataFrame(rows[::-1])  # Route/threshold sorting must be explicit.
+    frames = {
+        "Fig2a_density": pd.DataFrame({
+            "gauge_log1p": [0.1, 0.2], "fixed_readout_log1p": [0.08, 0.15],
+            "pair_count": [2, 3],
+        }),
+        "Fig2a_summary": pd.DataFrame({"pearson_r": [0.8]}),
+        "Fig2b_amount_bins": pd.DataFrame({
+            "gauge_bin": ["1–5", "5–10"],
+            "fixed_readout_to_gauge_amount_ratio": [0.9, 0.6],
+            "gauge_conditioned_amount_bias_mm": [-0.1, -0.3],
+        }),
+        "Fig2c_fixed_metrics": pd.DataFrame({
+            "threshold_mm": [1, 5, 10, 20], "frequency_bias": [0.7, 0.5, 0.3, 0.1],
+        }),
+        "Fig2d_readout_summary": merged,
+    }
+    requested = []
+
+    def read_frame(_root, name):
+        requested.append(name)
+        return frames[name].copy()  # Obsolete split-table requests fail immediately.
+
+    def inspect_and_close(figure, _output):
+        csi_axis = next(ax for ax in figure.axes if ax.get_ylabel() == "CSI (bars)")
+        fb_axis = next(ax for ax in figure.axes if ax.get_ylabel() == "Frequency bias (lines)")
+        ordered = [merged[merged.route.eq(route)].sort_values("threshold_mm") for route in route_order]
+        np.testing.assert_allclose(
+            [bar.get_height() for bar in csi_axis.patches],
+            np.concatenate([block.csi_mean.to_numpy() for block in ordered]),
+        )
+        csi_errors = [container for container in csi_axis.containers if hasattr(container, "has_yerr")]
+        for block, bars, lines in zip(ordered, csi_errors, fb_axis.containers, strict=True):
+            np.testing.assert_allclose(
+                np.asarray(lines.lines[0].get_ydata(), dtype=float), block.frequency_bias_mean,
+            )
+            for container, mean, sd in (
+                (bars, block.csi_mean, block.csi_sd),
+                (lines, block.frequency_bias_mean, block.frequency_bias_sd),
+            ):
+                segments = np.asarray(container.lines[2][0].get_segments(), dtype=float)
+                np.testing.assert_allclose(segments[:, :, 1], np.column_stack((mean - sd, mean + sd)))
+        render_publication.plt.close(figure)
+        return tmp_path / "figure2.png", tmp_path / "figure2.pdf"
+
+    monkeypatch.setattr(render_publication, "read", read_frame)
+    monkeypatch.setattr(render_publication, "save", inspect_and_close)
+    render_figure2(tmp_path, tmp_path)
+    assert requested == list(frames)
 
 
 def test_all_public_aggregate_renderers(tmp_path: Path) -> None:

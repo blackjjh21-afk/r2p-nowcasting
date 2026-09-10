@@ -64,6 +64,14 @@ coordinates and station-time values. The bundled reference figures are also
 non-station-resolved; Fig. 1, Supplementary Fig. S2 and Supplementary Fig. S3
 require the authorized inputs described below.
 
+`Table1_main` retains full-precision numerical values; the table renderer and
+workbook number formats display CSI to four decimal places and continuous
+metrics to three. `Table1_seed_numeric` retains the individual members.
+`Fig2d_readout_summary` combines CSI and frequency-bias means and standard
+deviations on the same route–threshold rows, with the member count; individual
+readouts and paired contrasts remain in `Fig2d_readout_members` and
+`Fig2d_delta_CI`.
+
 ## Authorized station-resolved outputs
 
 The following commands intentionally fail without user-supplied inputs:
