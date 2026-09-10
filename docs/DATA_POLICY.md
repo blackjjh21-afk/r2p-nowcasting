@@ -27,7 +27,7 @@ must remain ignored by version control.
   not expose a credential or confidential filename.
 - Truth-free lists of relative lead values and anonymous array dimensions.
 
-## Approved repository and Supplementary Data 1 scopes
+## Repository and Supplementary Data 1 scopes
 
 The public source repository excludes:
 
@@ -38,15 +38,11 @@ The public source repository excludes:
 - stationwise metrics, maps, case totals or time series;
 - exact issue-time lists if joined to station-resolved outcomes.
 
-The named derived sheets in Supplementary Data 1 are separately approved for
-journal and permanent-archive distribution. This approval does not extend to
-station-resolved files in GitHub.
+Station-resolved derived verification tables are provided separately in
+Supplementary Data 1; they are not bundled with the source repository.
 
-`DATA_REDISTRIBUTION_DECISION.md` at the repository root
-uses `public_redistribution_excluded` for the repository and
-`derived_station_resolved_archive_approved` for Supplementary Data 1. It also
-identifies the KMA source products, official access URLs, access date and
-reviewed terms.
+Source-product attribution, official access links and applicable third-party
+terms are summarized in [Third-party notices](../THIRD_PARTY_NOTICES.md).
 
 ## User-supplied prepared inputs
 

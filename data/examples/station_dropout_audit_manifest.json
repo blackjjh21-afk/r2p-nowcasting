@@ -72,9 +72,7 @@
     }
   },
   "outputs": {
-    "data/examples/station_dropout_csi_by_lead_threshold.csv": "4a4fbbc0eab02d69cc50777942841d68401f7301aebce65bb023669c4d8b81fe",
-    "figures/fig4b_station_dropout_training_ablation.png": "3adc2b599ef2cdc7f5ce34739793cc7890b6185f51cddece9f34b7a663896cf7",
-    "figures/fig4b_station_dropout_training_ablation.pdf": "9d571a9f909d5a29f68f1e0085cd69d463691c6a9a6ccd3147ac2beb1d1b6a23"
+    "data/examples/station_dropout_csi_by_lead_threshold.csv": "4a4fbbc0eab02d69cc50777942841d68401f7301aebce65bb023669c4d8b81fe"
   },
   "summary": {
     "cell_count": 20,

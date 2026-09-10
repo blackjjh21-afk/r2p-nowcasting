@@ -201,6 +201,46 @@ def test_all_public_aggregate_renderers(tmp_path: Path) -> None:
         assert pdf.is_file() and pdf.stat().st_size > 1_000
 
 
+def test_figure4_masking_lines_and_dropout_bars_preserve_values_and_intervals(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from matplotlib.container import BarContainer, ErrorbarContainer
+
+    examples = ROOT / "data/examples"
+    radar = pd.read_csv(examples / "radar_only_csi_by_lead_threshold.csv")
+    dropout = pd.read_csv(examples / "station_dropout_csi_by_lead_threshold.csv")
+
+    def inspect_and_close(figure, _output):
+        left, right = figure.axes
+        assert not left.patches
+        assert not any(isinstance(c, BarContainer) for c in left.containers)
+        lines = [c for c in left.containers if isinstance(c, ErrorbarContainer)]
+        bars = [c for c in right.containers if isinstance(c, BarContainer)]
+        bar_errors = [c for c in right.containers if isinstance(c, ErrorbarContainer)]
+        assert len(lines) == len(bars) == len(bar_errors) == 4
+        for threshold, line, bar, bar_error in zip(
+            render_publication.THRESHOLDS, lines, bars, bar_errors, strict=True,
+        ):
+            series = radar[radar.threshold_mm.eq(threshold)].set_index("lead_min").loc[list(render_publication.LEADS)]
+            control = dropout[dropout.threshold_mm.eq(threshold)].set_index("lead_min").loc[list(render_publication.LEADS)]
+            artist = line.lines[0]
+            assert artist.get_linestyle() == "-" and artist.get_marker() == "o"
+            assert artist.get_color() == render_publication.THRESHOLD_COLORS[threshold]
+            np.testing.assert_array_equal(artist.get_xdata(), render_publication.LEADS)
+            np.testing.assert_array_equal(artist.get_ydata(), series.delta_csi_radar_only_minus_standard)
+            np.testing.assert_array_equal([b.get_height() for b in bar], control.delta_csi_station_dropout_minus_no_station_dropout)
+            for errors, frame in ((line, series), (bar_error, control)):
+                endpoints = np.asarray(errors.lines[2][0].get_segments())[:, :, 1]
+                np.testing.assert_allclose(endpoints, np.column_stack((frame.ci_low, frame.ci_high)), atol=1e-17, rtol=1e-14)
+        assert left.get_ylim() == (-0.01, 0.01)
+        assert any(t.get_text() == "max |ΔCSI| = 0.0029" for t in left.texts)
+        render_publication.plt.close(figure)
+        return tmp_path / "figure4.png", tmp_path / "figure4.pdf"
+
+    monkeypatch.setattr(render_publication, "save", inspect_and_close)
+    render_figure4(ROOT / "data/paper_aggregates", examples, tmp_path)
+
+
 def test_figure2_panel_d_axis_spacing(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

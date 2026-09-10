@@ -106,7 +106,7 @@ valid-time index before plotting. The four station examples are qualitative
 illustrations; the plotted means are not uncertainty bands. Member-resolved
 values remain available in the full Supplementary Data 1.
 
-Station-resolved KMA-derived inputs are excluded under the scope recorded in
-`DATA_REDISTRIBUTION_DECISION.md`. The release is not a raw-KMA-to-paper
+Station-resolved KMA-derived inputs are excluded under the
+[data policy](DATA_POLICY.md). The release is not a raw-KMA-to-paper
 reproduction package: constructing the CNN tuple cache remains an external
 authorized-input step, and valid-time readout training is not included.

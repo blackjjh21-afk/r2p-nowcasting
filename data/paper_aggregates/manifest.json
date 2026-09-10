@@ -219,8 +219,8 @@
       "kind": "aggregate_sheet",
       "name": "Field_instant_CSI",
       "path": "Field_instant_CSI.csv",
-      "rows": 294,
-      "sha256": "6855611def55a5bc37619450b4c5124f5d519df922b94e82382cc121bc344a7a"
+      "rows": 330,
+      "sha256": "49f7ee61a4b1288e6f15083e510d08cd9addb4863a0c1f11db72fda067b398e7"
     },
     {
       "columns": 3,
@@ -308,11 +308,11 @@
       "kind": "reference_rendering",
       "name": "table1_heldout_point_skill.png",
       "path": "figures/reference/table1_heldout_point_skill.png",
-      "sha256": "be22538cb568d64d6f571dca17577508e3b33aa7bfe7f40bdad4d6b35b67253f"
+      "sha256": "e699d016fedea93401467624cd63fc28e5aedf8270fe2faa99672831a053ff67"
     }
   ],
   "schema": "r2p-4km10min-public-paper-audit-layer-v1",
-  "source_reader_manifest_sha256": "70f722d8e13e08c6779c6c1157d1ec20e0011b33035172754e2af58274639452",
-  "source_supplementary_data_sha256": "f9752d28141a5185aed369bb481c8b0da4c1ec7a4c5144e11b9744b166d5ed65",
+  "source_reader_manifest_sha256": "fc77a805e0e361c566308a229f687e307c58bd7d349e1cdb2724b8642ebea3b8",
+  "source_supplementary_data_sha256": "a099e58c2ddced05e2e82607d203800ca1f9d12899d703bf87bb55da988e1426",
   "station_resolved_content_included": false
 }

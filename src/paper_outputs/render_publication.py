@@ -16,7 +16,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.colors import LogNorm
+from matplotlib.colors import LogNorm, to_rgba
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 import numpy as np
@@ -317,10 +317,24 @@ def render_figure4(data: Path, examples: Path, output: Path) -> tuple[Path, Path
             block = frame[np.isclose(frame.threshold_mm, threshold)].set_index("lead_min").loc[list(LEADS)]
             y = block[value].to_numpy(float)
             low, high = block.ci_low.to_numpy(float), block.ci_high.to_numpy(float)
-            ax.bar(x + (idx - 1.5) * width, y, width=width, color=THRESHOLD_COLORS[threshold],
-                   yerr=np.vstack((y - low, high - y)), error_kw={"ecolor": "0.65", "capsize": 2})
+            errors = np.vstack((y - low, high - y))
+            if panel == 0:
+                color = THRESHOLD_COLORS[threshold]
+                ax.errorbar(LEADS, y, yerr=errors, color=color, marker="o", ls="-",
+                            lw=1.8, markersize=4.5, ecolor=to_rgba(color, 0.45),
+                            elinewidth=0.9, capsize=2)
+            else:
+                ax.bar(x + (idx - 1.5) * width, y, width=width, color=THRESHOLD_COLORS[threshold],
+                       yerr=errors, error_kw={"ecolor": "0.65", "capsize": 2})
         ax.axhline(0, color="0.3", lw=0.8)
-        ax.set(xticks=x, xticklabels=LEADS, xlabel="Lead time (min)", ylabel="ΔCSI")
+        ax.set(xticks=LEADS if panel == 0 else x, xticklabels=LEADS,
+               xlabel="Lead time (min)", ylabel="ΔCSI")
+        if panel == 0:
+            ax.set(ylim=(-0.01, 0.01), yticks=np.linspace(-0.01, 0.01, 5),
+                   xlim=(LEADS[0] - 3, LEADS[-1] + 3))
+            peak = frame.loc[frame.lead_min.isin(LEADS) & frame.threshold_mm.isin(THRESHOLDS), value].abs().max()
+            ax.text(0.97, 0.075, f"max |ΔCSI| = {peak:.4f}", transform=ax.transAxes,
+                    ha="right", va="bottom", color="0.4", fontsize=10.5)
         ax.set_title(f"({chr(97 + panel)}) {label}", loc="left")
         ax.grid(axis="y", alpha=0.2)
         ax.spines[["top", "right"]].set_visible(False)
@@ -435,12 +449,31 @@ def render_figure_s1(data: Path, output: Path) -> tuple[Path, Path]:
     return save(figure, output)
 
 
+def instantaneous_csi_differences(instant: pd.DataFrame) -> dict[float, pd.Series]:
+    """Require a complete paired series for every displayed rain-rate threshold."""
+    differences = {}
+    expected_leads = np.arange(10, 181, 10)
+    for threshold in THRESHOLDS:
+        series = {}
+        for model in ("exPreCast", "pySTEPS"):
+            block = instant[instant.model.eq(model) & np.isclose(instant.threshold_mm_h, threshold)].sort_values("lead_min")
+            if not np.array_equal(block.lead_min.to_numpy(), expected_leads) or not np.isfinite(block.csi).all():
+                raise ValueError(
+                    f"Field_instant_CSI requires {model} at {threshold:g} mm h-1 "
+                    "for every +10,...,+180-min lead; do not interpolate missing thresholds"
+                )
+            series[model] = block.set_index("lead_min").csi
+        differences[threshold] = series["exPreCast"] - series["pySTEPS"]
+    return differences
+
+
 def render_figure_s4(data: Path, output: Path) -> tuple[Path, Path]:
     instant_m = read(data, "Field_instant_CSIM")
     instant = read(data, "Field_instant_CSI")
     rn_m = read(data, "Field_RN60_CSIM")
     rn = read(data, "Field_RN60_CSI")
     delta = read(data, "Field_RN60_CSI_delta_CI")
+    instant_differences = instantaneous_csi_differences(instant)
     figure, axes = plt.subplots(2, 2, figsize=(13.2, 8.2), label="figureS4_native_field_verification")
     ax = axes[0, 0]
     styles = {
@@ -459,10 +492,8 @@ def render_figure_s4(data: Path, output: Path) -> tuple[Path, Path]:
     ax = axes[0, 1]
     palette = {1.0: "#366DB2", 5.0: "#EE8420", 10.0: "#C63E4B", 20.0: "#7750AE"}
     for threshold in THRESHOLDS:
-        long = instant[instant.model.eq("exPreCast") & np.isclose(instant.threshold_mm_h, threshold)].set_index("lead_min")
-        py = instant[instant.model.eq("pySTEPS") & np.isclose(instant.threshold_mm_h, threshold)].set_index("lead_min")
-        common = long.index.intersection(py.index)
-        ax.plot(common, long.loc[common].csi - py.loc[common].csi, color=palette[threshold], marker="o", label=f"{threshold:g} mm h$^{{-1}}$")
+        difference = instant_differences[threshold]
+        ax.plot(difference.index, difference, color=palette[threshold], marker="o", label=f"{threshold:g} mm h$^{{-1}}$")
     ax.axhline(0, color="0.2", lw=0.8)
     ax.set(xlabel="Forecast lead (min)", ylabel="ΔCSI (exPreCast − pySTEPS)")
     ax.set_title("(b) Instantaneous CSI difference", fontweight="bold", fontsize=15, pad=9)

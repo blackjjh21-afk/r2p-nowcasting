@@ -61,9 +61,7 @@
     "truth_sha256": "3dd2ca0428595b54b5acf8c4b29750b1198655e1b1210575023a4d590345edc4"
   },
   "outputs": {
-    "data/examples/radar_only_csi_by_lead_threshold.csv": "d739a7e9a54f1b79fe7a2be24ed1af1f96cc09dfecf8b68ff6279249ea066479",
-    "figures/fig4a_radar_only_same_checkpoint_4km10min.png": "3a9207b6ac76beefc6396e3d3e37af1d0354bd46ae85b013e51c429e32d6a97c",
-    "figures/fig4a_radar_only_same_checkpoint_4km10min.pdf": "69f7f79fd34bc9385187caa2feea00686a46cdafcdc65f32081b862e68069c82"
+    "data/examples/radar_only_csi_by_lead_threshold.csv": "d739a7e9a54f1b79fe7a2be24ed1af1f96cc09dfecf8b68ff6279249ea066479"
   },
   "summary": {
     "cell_count": 20,

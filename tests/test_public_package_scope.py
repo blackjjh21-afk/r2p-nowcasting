@@ -1,10 +1,37 @@
 """The source distribution contains the supported manuscript workflows."""
 
+import hashlib
+import json
 from pathlib import Path
 import tomllib
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_obsolete_standalone_figures_are_not_bundled() -> None:
+    for stem in (
+        "fig4a_radar_only_same_checkpoint_4km10min",
+        "fig4b_station_dropout_training_ablation",
+    ):
+        for suffix in (".png", ".pdf"):
+            assert not (ROOT / "figures" / f"{stem}{suffix}").exists()
+    assert not (ROOT / "figures" / "main").exists()
+
+
+def test_example_audit_outputs_resolve_and_match_hashes() -> None:
+    for name in ("radar_only", "station_dropout"):
+        manifest = json.loads(
+            (ROOT / "data/examples" / f"{name}_audit_manifest.json").read_text()
+        )
+        outputs = manifest["outputs"]
+        assert outputs, name
+        for relative, expected_sha256 in outputs.items():
+            candidate = Path(relative)
+            assert not candidate.is_absolute() and ".." not in candidate.parts
+            path = ROOT / candidate
+            assert path.is_file(), relative
+            assert hashlib.sha256(path.read_bytes()).hexdigest() == expected_sha256, relative
 
 
 def test_author_release_preparation_is_not_distributed() -> None:
