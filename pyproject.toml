@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "direct-r2p-4km10min"
-version = "1.1.0"
+version = "1.2.0"
 description = "Reference implementations and audit workflows for 4-km/10-min gauge-referenced precipitation nowcasting"
 readme = "README.md"
 authors = [

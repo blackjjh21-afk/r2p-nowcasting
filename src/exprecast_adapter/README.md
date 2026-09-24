@@ -32,3 +32,8 @@ contains 18 forecast patches per issue and station. `WINDOW_INDICES` converts
 these to the 13 six-field sequences at `L-50,...,L` used to predict RN60 at
 `L=60,70,...,180` min. The adapter requires an exPreCast field export; it
 does not train or reproduce the field model itself.
+
+For the [patch-size sensitivity experiment](../cnn_readout/PATCH_SENSITIVITY.md),
+add `--patch-size 5` and use a separate output directory. The cache then contains
+`[issue,station,18,5,5]` patches; its centered `[:, :, :, 1:4, 1:4]` crop is the
+matching 3 × 3 input. Boundary checks use the requested patch radius.

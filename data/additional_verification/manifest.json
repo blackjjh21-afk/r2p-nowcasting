@@ -1,0 +1,166 @@
+{
+  "schema": "r2p-additional-verification-aggregates-v1",
+  "source_supplementary_data_sha256": "f65e316cb8425cd6f51d6f04084802b777df4ee1776565e97f05e00cf51f3f56",
+  "station_resolved_content_included": false,
+  "figure_mapping": {
+    "episode_peak_mae": "Figure 6",
+    "patch_skill_and_contrasts": "Supplementary Figure S4",
+    "episode_duration_histogram": "Supplementary Figure S5"
+  },
+  "records": [
+    {
+      "path": "episode_route_metrics.csv",
+      "rows": 45,
+      "columns": [
+        "period",
+        "route",
+        "lead_min",
+        "n_members",
+        "n_episodes",
+        "n_timing_episodes",
+        "observed_peak_mae_mm",
+        "observed_peak_mae_mm_member_sd",
+        "peak_mae_mm",
+        "peak_mae_mm_member_sd",
+        "timing_mae_min",
+        "timing_mae_min_member_sd",
+        "observed_peak_bias_mm",
+        "observed_peak_bias_mm_member_sd",
+        "peak_bias_mm",
+        "peak_bias_mm_member_sd",
+        "timing_bias_min",
+        "timing_bias_min_member_sd"
+      ],
+      "sha256": "86680244fe9b3d3511ae12134bef7c4c187a0d51151add38150cc371692dcba7"
+    },
+    {
+      "path": "episode_member_metrics.csv",
+      "rows": 135,
+      "columns": [
+        "period",
+        "route",
+        "member",
+        "seed",
+        "lead_min",
+        "n_episodes",
+        "n_timing_episodes",
+        "n_undefined_timing",
+        "observed_peak_mae_mm",
+        "peak_mae_mm",
+        "timing_mae_min",
+        "observed_peak_bias_mm",
+        "peak_bias_mm",
+        "timing_bias_min"
+      ],
+      "sha256": "d7dc403dbd20bd3d0b7635a45ea2c7711077056021fb58aaf6cc15f1754f7c30"
+    },
+    {
+      "path": "episode_counts.csv",
+      "rows": 8,
+      "columns": [
+        "year",
+        "status",
+        "timing_status",
+        "n_episodes",
+        "n_stations",
+        "n_cross_midnight"
+      ],
+      "sha256": "460506bfe0400d75a054a628c09a593d8de4dfd79f63b96e466f18682d3e2608"
+    },
+    {
+      "path": "episode_duration_statistics.csv",
+      "rows": 9,
+      "columns": [
+        "population",
+        "period",
+        "n_episodes",
+        "n_stations",
+        "n_cross_midnight",
+        "n_observed_peak_ties",
+        "min_duration_hours",
+        "mean_duration_hours",
+        "median_duration_hours",
+        "p25_duration_hours",
+        "p75_duration_hours",
+        "p90_duration_hours",
+        "p95_duration_hours",
+        "max_duration_hours"
+      ],
+      "sha256": "808ab44d451854ad37f1f0953bce5a5713eeec752979f67d4f337cf88574d91c"
+    },
+    {
+      "path": "patch_metrics_mean_of_members.csv",
+      "rows": 60,
+      "columns": [
+        "route",
+        "lead_min",
+        "threshold_mm",
+        "finite_pairs",
+        "CSI",
+        "POD",
+        "FAR",
+        "frequency_bias",
+        "MAE_mm",
+        "RMSE_mm",
+        "mean_error_mm"
+      ],
+      "sha256": "f2cca254b4c865e5cb1bf32b5567ad9d15e4131268a94995ae09709b599d63ef"
+    },
+    {
+      "path": "patch_metrics_per_member.csv",
+      "rows": 180,
+      "columns": [
+        "route",
+        "member",
+        "lead_min",
+        "threshold_mm",
+        "finite_pairs",
+        "CSI",
+        "POD",
+        "FAR",
+        "frequency_bias",
+        "MAE_mm",
+        "RMSE_mm",
+        "mean_error_mm"
+      ],
+      "sha256": "0775b1651231da40b117f52126a6ff1a41870f0f84b578235fd0bb749c0c26e8"
+    },
+    {
+      "path": "patch_paired_CSI_intervals.csv",
+      "rows": 60,
+      "columns": [
+        "contrast",
+        "lead_min",
+        "threshold_mm",
+        "CSI_difference",
+        "lower95",
+        "upper95"
+      ],
+      "sha256": "39f5a440677be8f39700df24adb0e92a69744859cc1a6568d58cc6ba03ef0830"
+    },
+    {
+      "path": "patch_epoch_selection.csv",
+      "rows": 50,
+      "columns": [
+        "epoch",
+        "macro_csi_13lead_4threshold",
+        "csi_1mm_mean_13lead",
+        "csi_5mm_mean_13lead",
+        "csi_10mm_mean_13lead",
+        "csi_20mm_mean_13lead",
+        "is_selected"
+      ],
+      "sha256": "ea6a8f4a857efdffa69c53734c27c4aea7e9217f408f74934d69dca4fa6f94b8"
+    },
+    {
+      "path": "episode_duration_histogram.csv",
+      "rows": 95,
+      "columns": [
+        "left_min",
+        "right_min",
+        "n_episodes"
+      ],
+      "sha256": "7c9a29c332f5a8c6d1ea9ae2614217b815857fd5148363ef00fecab8bc06d1d6"
+    }
+  ]
+}

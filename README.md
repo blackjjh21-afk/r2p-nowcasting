@@ -1,13 +1,18 @@
-# Where historical gauge supervision enters radar-based precipitation nowcasting for gauge-referenced point accumulation
+# Gauge-referenced hourly rainfall nowcasting: Comparing direct radar-to-point and field-first forecast routes
 
 Code and aggregate results for the 4-km/10-min radar-to-point nowcasting
 experiments. Experiment settings are recorded in
 [`configs/scientific_contract_4km10min.json`](configs/scientific_contract_4km10min.json)
 and route definitions in [`configs/route_registry.json`](configs/route_registry.json).
 
-Software version 1.1.0:
+Software version **1.2.0** includes rainfall-episode peak verification,
+exPreCast CNN patch-size sensitivity and their aggregate results.
+See [release information](RELEASE_STATUS.md) for this version's scope.
+
+Previous archived software version 1.1.0:
 [doi:10.5281/zenodo.22684438](https://doi.org/10.5281/zenodo.22684438).
 See [`CITATION.cff`](CITATION.cff) for citation metadata.
+That earlier archive does not include the additional episode and patch-size workflows.
 
 ## Scientific question
 
@@ -60,9 +65,12 @@ axes. They are compared as gauge RN60 at the same five reported leads.
 | Adapted exPreCast training, RN60 checkpoint selection and field generation | [Adapted exPreCast](src/exprecast_adapted/README.md) |
 | Adapted exPreCast export validation and station patches | [exPreCast adapter](src/exprecast_adapter/README.md) |
 | Radar-only and station-dropout comparisons with paired date-block intervals | [Evaluation](src/evaluation/README.md) |
+| Rainfall-episode peak-amount and maximum-timing verification | [Episode verification](src/evaluation/RAINFALL_EPISODES.md) |
+| exPreCast CNN 3 × 3 versus 5 × 5 sensitivity | [Patch sensitivity](src/cnn_readout/PATCH_SENSITIVITY.md) |
 | Provider-format KMA HSR conversion to the 4-km/10-min grid | [HSR preprocessing](docs/HSR_PREPROCESSING_4KM10MIN.md) |
 | Figure and table rendering | [Figure/table reproduction](docs/PAPER_OUTPUT_REPRODUCIBILITY.md) |
 | Aggregate CSV values and member-resolved summaries | [Aggregate data](data/paper_aggregates/README.md) |
+| Additional episode and patch-size results | [Additional verification data](data/additional_verification/README.md) |
 
 Shared metric, contract and bootstrap functions are in `src/common/`.
 
@@ -72,6 +80,11 @@ The bundled aggregates support rendering Figs. 2–6, S1/S4 and Table 1.
 Fig. 1 and S2/S3 require separately obtained station or radar data; the map
 renderers also require Natural Earth shapefiles. See the
 [figure/table guide](docs/PAPER_OUTPUT_REPRODUCIBILITY.md) for inputs and commands.
+
+The additional episode and patch-size figures can be reproduced without raw
+observations using `python -m paper_outputs.render_additional_verification`.
+The bundled CSVs cover the three episode errors, episode-duration histogram,
+patch-size skill and paired CSI intervals.
 
 Training and prediction require user-supplied KMA data. Raw observations,
 prepared archives, checkpoints and full prediction arrays are not bundled.

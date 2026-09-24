@@ -76,7 +76,7 @@ def test_distributed_packages_match_manuscript_workflows() -> None:
 
 def test_console_commands_match_supported_workflows() -> None:
     metadata = tomllib.loads((ROOT / "pyproject.toml").read_text())
-    assert metadata["project"]["version"] == "1.1.0"
+    assert metadata["project"]["version"] == "1.2.0"
     assert metadata["project"]["scripts"] == {
         "r2p-4km10min": "r2p_4km10min.run_vanilla_r2p:main",
         "r2p-radar-only": "evaluation.radar_only_comparison:main",

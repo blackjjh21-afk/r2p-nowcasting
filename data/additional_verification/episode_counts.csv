@@ -1,0 +1,9 @@
+year,status,timing_status,n_episodes,n_stations,n_cross_midnight
+2024,below_peak_threshold,not_in_amount_sample,3670,128,122
+2024,included,constant_forecast_in_any_route_member_or_lead,25,23,4
+2024,included,included,683,127,58
+2024,observation_censored,not_in_amount_sample,77,32,4
+2025,below_peak_threshold,not_in_amount_sample,3743,128,161
+2025,included,constant_forecast_in_any_route_member_or_lead,21,19,1
+2025,included,included,708,124,75
+2025,observation_censored,not_in_amount_sample,94,33,1

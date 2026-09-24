@@ -14,6 +14,9 @@ The repository supports three reproducibility levels:
 
 ## Reader-output matrix
 
+The following matrix uses the original manuscript numbering. The additional
+Journal of Hydrology outputs are listed separately below.
+
 | Reader output | Rendering code | Bundled numerical source | Scope |
 |---|---|---|---|
 | Figure 1 | `paper_outputs.render_restricted figure1` | No | Authorized radar footprint and frozen station split required; final coastline/border transform is implemented with caller-supplied Natural Earth data |
@@ -110,3 +113,27 @@ Station-resolved KMA-derived inputs are excluded under the
 [data policy](DATA_POLICY.md). The release is not a raw-KMA-to-paper
 reproduction package: constructing the CNN tuple cache remains an external
 authorized-input step, and valid-time readout training is not included.
+
+## Episode verification and patch-size sensitivity
+
+| JoH output | Public aggregate source |
+|---|---|
+| Fig. 6: three rainfall-episode errors | `data/additional_verification/episode_route_metrics.csv` |
+| Supplementary Fig. S4: patch-size skill and contrasts | `patch_metrics_mean_of_members.csv`, `patch_paired_CSI_intervals.csv` in the same directory |
+| Supplementary Fig. S5: duration histogram | `episode_duration_histogram.csv` in the same directory |
+
+```bash
+python -m paper_outputs.render_additional_verification \
+  --data-root data/additional_verification \
+  --output-dir outputs/additional_verification
+```
+
+This reads the checksum-verified CSVs and renders four PNG/PDF figure pairs.
+The episode amount panels use 1,437 episodes and the timing panel uses the
+common 1,391-episode non-constant-forecast subset. Duration bins are ten
+minutes wide, with hour ticks at bin boundaries. Scores are member-first
+means; patch-size contrast bands are paired date-bootstrap 95% intervals.
+
+Recomputation with user-supplied observations and prediction arrays is
+documented in [episode verification](../src/evaluation/RAINFALL_EPISODES.md)
+and [CNN patch sensitivity](../src/cnn_readout/PATCH_SENSITIVITY.md).

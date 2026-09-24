@@ -147,7 +147,9 @@ def inspect_hdf5(path: Path) -> dict[str, Any]:
         }
 
 
-def load_station_mapping(path: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+def load_station_mapping(path: Path, patch_size: int = 3) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    if patch_size not in (3, 5):
+        raise ValueError("patch_size must be 3 or 5")
     frame = pd.read_csv(path)
     aliases = (
         ("exprecast_y", "exprecast_x"),
@@ -168,7 +170,7 @@ def load_station_mapping(path: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray
     station_x = frame[x_column].to_numpy(dtype=np.int64)
     if len(np.unique(station_ids)) != len(station_ids):
         raise ValueError("station_id values must be unique")
-    margin = PATCH_SIZE // 2
+    margin = patch_size // 2
     if (
         np.any(station_y < margin)
         or np.any(station_y >= GRID_SHAPE[0] - margin)
@@ -180,38 +182,49 @@ def load_station_mapping(path: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray
 
 
 def patch_indices(
-    station_y: np.ndarray, station_x: np.ndarray
+    station_y: np.ndarray, station_x: np.ndarray, patch_size: int = 3
 ) -> tuple[np.ndarray, np.ndarray]:
+    if patch_size not in (3, 5):
+        raise ValueError("patch_size must be 3 or 5")
+    station_y, station_x = np.asarray(station_y), np.asarray(station_x)
+    radius = patch_size // 2
+    if (station_y.ndim != 1 or station_y.shape != station_x.shape
+            or not np.issubdtype(station_y.dtype, np.integer)
+            or not np.issubdtype(station_x.dtype, np.integer)):
+        raise ValueError("station coordinates must be matching integer vectors")
+    if (np.any(station_y < radius) or np.any(station_y >= GRID_SHAPE[0] - radius)
+            or np.any(station_x < radius) or np.any(station_x >= GRID_SHAPE[1] - radius)):
+        raise ValueError("a station patch crosses the 256 x 256 grid boundary")
     offset_y, offset_x = np.meshgrid(
-        np.arange(-1, 2), np.arange(-1, 2), indexing="ij"
+        np.arange(-radius, radius + 1), np.arange(-radius, radius + 1), indexing="ij"
     )
     return station_y[:, None, None] + offset_y, station_x[:, None, None] + offset_x
 
 
 def extract_station_patches(
-    fields: np.ndarray, station_y: np.ndarray, station_x: np.ndarray
+    fields: np.ndarray, station_y: np.ndarray, station_x: np.ndarray, patch_size: int = 3
 ) -> np.ndarray:
-    """Extract [issue,station,18,3,3] patches from normalized fields."""
+    """Extract [issue,station,18,P,P] normalized-field patches for P=3 or 5."""
 
     values = np.asarray(fields)
     if values.ndim != 4 or tuple(values.shape[1:]) != (18, 256, 256):
         raise ValueError(f"invalid field tensor: {values.shape}")
-    patch_y, patch_x = patch_indices(station_y, station_x)
+    patch_y, patch_x = patch_indices(station_y, station_x, patch_size)
     result = values[:, :, patch_y, patch_x].transpose(0, 2, 1, 3, 4)
-    expected = (len(values), len(station_y), 18, 3, 3)
+    expected = (len(values), len(station_y), 18, patch_size, patch_size)
     if result.shape != expected or not np.isfinite(result).all():
         raise ValueError(f"invalid station-patch tensor: {result.shape}")
     return np.ascontiguousarray(result)
 
 
 def gather_scene_windows(patches18: np.ndarray) -> np.ndarray:
-    """Return [issue,station,13,6,3,3] lead-aligned CNN inputs."""
+    """Return [issue,station,13,6,P,P] lead-aligned CNN inputs for P=3 or 5."""
 
     patches = np.asarray(patches18, dtype=np.float32)
-    if patches.ndim != 5 or tuple(patches.shape[2:]) != (18, 3, 3):
+    if patches.ndim != 5 or tuple(patches.shape[2:]) not in {(18, 3, 3), (18, 5, 5)}:
         raise ValueError(f"invalid 18-frame station-patch tensor: {patches.shape}")
     result = patches[:, :, WINDOW_INDICES]
-    expected = (len(patches), patches.shape[1], 13, 6, 3, 3)
+    expected = (len(patches), patches.shape[1], 13, 6, patches.shape[-2], patches.shape[-1])
     if result.shape != expected or not np.isfinite(result).all():
         raise ValueError(f"invalid lead-aligned patch tensor: {result.shape}")
     return np.ascontiguousarray(result)
@@ -224,9 +237,12 @@ def create_patch_cache(
     *,
     batch_size: int,
     overwrite: bool,
+    patch_size: int = 3,
 ) -> None:
+    if batch_size < 1:
+        raise ValueError("batch_size must be positive")
     audit = inspect_hdf5(field_path)
-    station_ids, station_y, station_x = load_station_mapping(mapping_csv)
+    station_ids, station_y, station_x = load_station_mapping(mapping_csv, patch_size)
     if output.exists():
         if not overwrite:
             raise FileExistsError(f"output exists; pass --overwrite: {output}")
@@ -244,12 +260,12 @@ def create_patch_cache(
                 temporary / "patches18_f16.npy",
                 mode="w+",
                 dtype=np.float16,
-                shape=(len(fields), len(station_ids), 18, 3, 3),
+                shape=(len(fields), len(station_ids), 18, patch_size, patch_size),
             )
             for start in range(0, len(fields), batch_size):
                 stop = min(start + batch_size, len(fields))
                 patches[start:stop] = extract_station_patches(
-                    fields[start:stop], station_y, station_x
+                    fields[start:stop], station_y, station_x, patch_size
                 ).astype(np.float16)
             patches.flush()
             del patches
@@ -262,8 +278,8 @@ def create_patch_cache(
             "source": audit,
             "mapping_csv_sha256": sha256_file(mapping_csv),
             "station_count": int(len(station_ids)),
-            "patch_shape": [3, 3],
-            "patches_shape": [len(issue_times), len(station_ids), 18, 3, 3],
+            "patch_shape": [patch_size, patch_size],
+            "patches_shape": [len(issue_times), len(station_ids), 18, patch_size, patch_size],
             "window_indices": WINDOW_INDICES.astype(int).tolist(),
             "window_contract": "six fields at L-50,...,L for RN60 ending at L",
             "patches_sha256": sha256_file(temporary / "patches18_f16.npy"),
@@ -293,6 +309,7 @@ def build_parser() -> argparse.ArgumentParser:
     extract.add_argument("--mapping-csv", type=Path, required=True)
     extract.add_argument("--output", type=Path, required=True)
     extract.add_argument("--batch-size", type=int, default=8)
+    extract.add_argument("--patch-size", type=int, choices=(3, 5), default=3)
     extract.add_argument("--overwrite", action="store_true")
     return parser
 
@@ -314,6 +331,7 @@ def main() -> None:
             args.output,
             batch_size=args.batch_size,
             overwrite=args.overwrite,
+            patch_size=args.patch_size,
         )
 
 

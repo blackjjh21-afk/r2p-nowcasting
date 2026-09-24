@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite the software release and the associated paper."
 type: software
-title: "Where historical gauge supervision enters radar-based precipitation nowcasting for gauge-referenced point accumulation"
+title: "Gauge-referenced hourly rainfall nowcasting: Comparing direct radar-to-point and field-first forecast routes"
 authors:
   - family-names: "Jung"
     given-names: "Jaehee"
@@ -13,7 +13,6 @@ authors:
     email: "neolegacy@gmail.com"
     orcid: "https://orcid.org/0000-0003-0337-4019"
 repository-code: "https://github.com/blackjjh21-afk/r2p-nowcasting"
-version: "1.1.0"
-date-released: "2026-09-10"
-doi: "10.5281/zenodo.22684438"
+version: "1.2.0"
+date-released: "2026-09-24"
 url: "https://github.com/blackjjh21-afk/r2p-nowcasting"
