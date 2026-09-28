@@ -9,7 +9,8 @@ history.  No model is retrained.
 
 The script validates the full array, axis, truth, metadata and checkpoint
 contracts; computes CSI on common finite support; performs a paired
-issuance-date block bootstrap; and renders the current manuscript Fig. 4a.
+issuance-date block bootstrap; and renders the manuscript Fig. 10a diagnostic
+(the standalone audit filename retains its original fig4a prefix).
 """
 
 from __future__ import annotations

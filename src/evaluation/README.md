@@ -22,13 +22,14 @@ python src/evaluation/radar_only_comparison.py \
   --figure-dir figures/radar_only
 ```
 
-The sensitivity rendering (**Fig. 4a**) is written as
-`fig4a_radar_only_same_checkpoint_4km10min`.
+The sensitivity rendering (**Fig. 10a**) retains the legacy audit filename
+`fig4a_radar_only_same_checkpoint_4km10min`. The final combined figure uses
+`r2p-paper-figures --item 10`.
 Full tensor hashes are computed by default; `--skip-source-hashes` is intended
-only for development runs. The route contrasts reported as Fig. 3e,f are a
+only for development runs. The route contrasts reported as Fig. 4e,f are a
 separate result and are not mixed into this ablation renderer.
 
-## Training-time station-dropout ablation (Fig. 4b)
+## Training-time station-dropout ablation (Fig. 10b)
 
 `station_dropout_comparison.py` compares the standard Direct R2P route with a
 separately trained control in which station dropout was disabled. It requires
@@ -52,4 +53,4 @@ python src/evaluation/station_dropout_comparison.py \
 The output is station-dropout Direct R2P minus the no-station-dropout control
 at 60, 90, 120, 150 and 180 min and RN60 thresholds of 1, 5, 10 and 20 mm.
 The same issuance-date bootstrap draws are applied to both routes. The
-standalone Fig. 4b renderer uses grouped bars without a plot title.
+standalone Fig. 10b audit renderer uses grouped bars without a plot title.

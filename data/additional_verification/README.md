@@ -2,7 +2,7 @@
 
 Aggregate results for rainfall-episode peak verification and the exPreCast
 CNN 3 × 3 versus 5 × 5 sensitivity experiment. These tables correspond to
-Fig. 6 and Supplementary Figs. S4–S5 in the Journal of Hydrology manuscript.
+Fig. 6 and Supplementary Figs. S2–S3 in the Journal of Hydrology manuscript.
 
 | Files | Contents |
 |---|---|
@@ -28,13 +28,18 @@ Histogram bins are left-closed and right-open, for example [50, 60) and
 episode values are provided separately in Supplementary Data 1; the software
 bundle contains only the aggregate tables above.
 
-To reproduce all four figures from these tables, run from the repository root:
+To reproduce the three final figures from these tables, run from the repository root:
 
 ```bash
 python -m paper_outputs.render_additional_verification \
   --data-root data/additional_verification \
   --output-dir outputs/additional_verification
 ```
+
+The default outputs are `Figure_6`, `Figure_S2` and `Figure_S3` PNG/PDF pairs.
+The CSI-difference plot is omitted from the submission. Its numerical
+differences and confidence intervals remain in `patch_paired_CSI_intervals.csv`;
+`--include-contrasts` optionally renders that audit plot.
 
 For recomputation from authorized observations and predictions, see
 [rainfall episodes](../../src/evaluation/RAINFALL_EPISODES.md) and

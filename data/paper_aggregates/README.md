@@ -2,12 +2,15 @@
 
 These CSV files contain station-anonymous results for the final 4-km/10-min
 paper. `manifest.json` binds each sheet and reference rendering to its frozen
-source Supplementary Data workbook and reader-asset manifest.
+source Supplementary Data workbook and reader-asset manifest. Frozen CSV
+filenames retain their original numbering so existing analysis consumers
+continue to work; `current_figure_mapping` in the manifest and the figure
+guide map those keys to the final manuscript.
 
 The bundle contains aggregate and seed-resolved counts, skill summaries,
 paired date-block intervals, valid-time readout values, All-station distance-
 group summaries, native-grid verification and Tables 1 and S1. Table S2 and
-the Fig. S2 case definitions contain station identifiers and are supplied only
+the Fig. 7 case definitions contain station identifiers and are supplied only
 in the authorized full Supplementary Data 1. This public subset does
 not contain station identifiers, station coordinates, station assignments,
 station-time observations, stationwise CSI or case-station time series. It is

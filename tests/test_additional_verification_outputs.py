@@ -80,7 +80,7 @@ def test_patch_member_first_metrics_and_selected_epoch():
     assert changes.max() == pytest.approx(.0065, abs=.00005)
 
 
-@pytest.mark.parametrize("renderer,number", [(render.render_episode, 2), (render.render_duration, 2), (render.render_patch, 4)])
+@pytest.mark.parametrize("renderer,number", [(render.render_episode, 2), (render.render_duration, 2), (render.render_patch, 2)])
 def test_render_aggregate_figures(tmp_path, renderer, number):
     paths = renderer(DATA, tmp_path)
     assert len(paths) == number
@@ -94,5 +94,11 @@ def test_plot_newly_computed_patch_comparison(tmp_path):
         (results / name).write_bytes((DATA / f"patch_{name}").read_bytes())
     output = tmp_path / "figures"
     render.main(["--item", "patch", "--patch-results", str(results), "--output-dir", str(output)])
-    assert len(list(output.glob("*.png"))) == 2
-    assert len(list(output.glob("*.pdf"))) == 2
+    assert {p.name for p in output.glob("*.png")} == {"Figure_S2.png"}
+    assert {p.name for p in output.glob("*.pdf")} == {"Figure_S2.pdf"}
+
+
+def test_optional_patch_contrast_plot_retains_audit_capability(tmp_path):
+    paths = render.render_patch(DATA, tmp_path, include_contrasts=True)
+    assert len(paths) == 4
+    assert (tmp_path / "patch_spatial_support_contrasts.png").is_file()

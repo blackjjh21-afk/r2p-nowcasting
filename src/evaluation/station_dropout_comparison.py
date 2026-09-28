@@ -5,7 +5,8 @@ Both routes must contain three complete held-out evaluation stores on exactly
 the same issue-time, station, lead and truth axes.  The scientific contracts
 must be identical except for the station-dropout configuration.  The script
 computes CSI for the three-member route means, estimates paired pointwise 95%
-intervals by resampling whole issuance dates, and renders manuscript Fig. 4b.
+intervals by resampling whole issuance dates, and renders manuscript Fig. 10b
+(the standalone audit filename retains its original fig4b prefix).
 """
 
 from __future__ import annotations

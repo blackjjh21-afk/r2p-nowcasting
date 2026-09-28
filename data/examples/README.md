@@ -19,7 +19,8 @@ at the same five leads and four RN60 thresholds.
 
 `station_dropout_audit_manifest.json` records the two training contracts,
 selected epochs and checkpoint hashes, exact truth and axis checks,
-paired-bootstrap settings, and hashes of the public Fig. 4b outputs.
+paired-bootstrap settings, and hashes of the public Fig. 10b audit outputs
+(their stable filenames retain the original `fig4b` prefix).
 
 Both examples and their manifests omit station identifiers, coordinates,
 station-time observations and private file locations.

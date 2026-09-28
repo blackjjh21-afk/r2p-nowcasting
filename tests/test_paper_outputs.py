@@ -12,9 +12,9 @@ from paper_outputs.render_publication import (
     render_figure3,
     render_figure4,
     render_figure5,
-    render_figure6,
+    render_figure9,
+    render_figure10,
     render_figure_s1,
-    render_figure_s4,
     render_table1,
 )
 from paper_outputs import render_publication, render_restricted
@@ -46,8 +46,8 @@ def test_public_aggregate_manifest_has_no_station_resolved_sheets() -> None:
         assert normalized.isdisjoint(forbidden)
 
 
-def test_code_native_figure6_smoke(tmp_path: Path) -> None:
-    png, pdf = render_figure6(tmp_path)
+def test_architecture_figure2_smoke(tmp_path: Path) -> None:
+    png, pdf = render_figure2(tmp_path)
     assert png.is_file() and png.stat().st_size > 10_000
     assert pdf.is_file() and pdf.stat().st_size > 1_000
 
@@ -101,13 +101,14 @@ def test_table1_numeric_source_preserves_display_precision(
     def inspect_and_close(figure, _output):
         table = figure.axes[0].tables[0]
         assert [table[(1, column)].get_text().get_text() for column in range(10)] == expected
-        assert [table[(0, column)].get_text().get_text() for column in range(10)] == columns
+        assert [table[(0, column)].get_text().get_text() for column in range(10)] == [*columns[:-1], "Pearson r"]
         render_publication.plt.close(figure)
         return output / "table1.png", output / "table1.pdf"
 
     monkeypatch.setattr(render_publication, "save", inspect_and_close)
     render_table1(data, output)
     display = pd.read_csv(output / "table1_heldout_point_skill.csv", dtype=str)
+    assert display.columns[-1] == "Pearson r"
     assert display.iloc[0].tolist() == expected
     markdown_rows = [
         [cell.strip() for cell in line.strip().strip("|").split("|")]
@@ -117,7 +118,7 @@ def test_table1_numeric_source_preserves_display_precision(
     assert source_path.read_bytes() == source_bytes
 
 
-def test_figure2_panel_d_uses_merged_readout_summary(
+def test_figure3_panel_d_uses_merged_readout_summary(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     route_order = ("fixed_mp", "center_mlp", "patch_cnn")
@@ -175,11 +176,11 @@ def test_figure2_panel_d_uses_merged_readout_summary(
                 segments = np.asarray(container.lines[2][0].get_segments(), dtype=float)
                 np.testing.assert_allclose(segments[:, :, 1], np.column_stack((mean - sd, mean + sd)))
         render_publication.plt.close(figure)
-        return tmp_path / "figure2.png", tmp_path / "figure2.pdf"
+        return tmp_path / "figure3.png", tmp_path / "figure3.pdf"
 
     monkeypatch.setattr(render_publication, "read", read_frame)
     monkeypatch.setattr(render_publication, "save", inspect_and_close)
-    render_figure2(tmp_path, tmp_path)
+    render_figure3(tmp_path, tmp_path)
     assert requested == list(frames)
 
 
@@ -187,12 +188,12 @@ def test_all_public_aggregate_renderers(tmp_path: Path) -> None:
     data = ROOT / "data/paper_aggregates"
     examples = ROOT / "data/examples"
     renderers = (
-        lambda: render_figure2(data, tmp_path),
         lambda: render_figure3(data, tmp_path),
-        lambda: render_figure4(data, examples, tmp_path),
+        lambda: render_figure4(data, tmp_path),
         lambda: render_figure5(data, tmp_path),
+        lambda: render_figure9(data, tmp_path),
+        lambda: render_figure10(data, examples, tmp_path),
         lambda: render_figure_s1(data, tmp_path),
-        lambda: render_figure_s4(data, tmp_path),
         lambda: render_table1(data, tmp_path),
     )
     for renderer in renderers:
@@ -201,7 +202,7 @@ def test_all_public_aggregate_renderers(tmp_path: Path) -> None:
         assert pdf.is_file() and pdf.stat().st_size > 1_000
 
 
-def test_figure4_masking_lines_and_dropout_bars_preserve_values_and_intervals(
+def test_figure10_masking_lines_and_dropout_bars_preserve_values_and_intervals(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     from matplotlib.container import BarContainer, ErrorbarContainer
@@ -212,6 +213,11 @@ def test_figure4_masking_lines_and_dropout_bars_preserve_values_and_intervals(
 
     def inspect_and_close(figure, _output):
         left, right = figure.axes
+        assert figure.get_label() == "figure10_r2p_ablations"
+        assert list(figure.get_size_inches()) == [12.2, 5.2]
+        assert left._left_title.get_fontsize() == 15 and left._left_title.get_fontweight() == "bold"
+        assert left.xaxis.label.get_fontsize() == 14
+        assert right._left_title.get_text() == "(b) Station-dropout − No-station-dropout"
         assert not left.patches
         assert not any(isinstance(c, BarContainer) for c in left.containers)
         lines = [c for c in left.containers if isinstance(c, ErrorbarContainer)]
@@ -235,13 +241,13 @@ def test_figure4_masking_lines_and_dropout_bars_preserve_values_and_intervals(
         assert left.get_ylim() == (-0.01, 0.01)
         assert any(t.get_text() == "max |ΔCSI| = 0.0029" for t in left.texts)
         render_publication.plt.close(figure)
-        return tmp_path / "figure4.png", tmp_path / "figure4.pdf"
+        return tmp_path / "figure10.png", tmp_path / "figure10.pdf"
 
     monkeypatch.setattr(render_publication, "save", inspect_and_close)
-    render_figure4(ROOT / "data/paper_aggregates", examples, tmp_path)
+    render_figure10(ROOT / "data/paper_aggregates", examples, tmp_path)
 
 
-def test_figure2_panel_d_axis_spacing(
+def test_figure3_panel_d_axis_spacing(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     def inspect_and_close(figure, _output):
@@ -257,13 +263,18 @@ def test_figure2_panel_d_axis_spacing(
         assert csi_axis.get_ylim() == (0.0, 1.625)
         assert 1.0 / csi_axis.get_ylim()[1] == pytest.approx(0.8 / 1.3)
         render_publication.plt.close(figure)
-        return tmp_path / "figure2.png", tmp_path / "figure2.pdf"
+        assert figure.axes[0].get_ylabel() == "4-km HSR fixed-readout\nRN60 (mm)"
+        assert figure.get_label() == "figure3_valid_time_readout"
+        for panel in figure.axes[:4]:
+            title = panel.title if panel.get_title() else panel._left_title
+            assert title.get_fontweight() == "bold"
+        return tmp_path / "figure3.png", tmp_path / "figure3.pdf"
 
     monkeypatch.setattr(render_publication, "save", inspect_and_close)
-    render_figure2(ROOT / "data/paper_aggregates", tmp_path)
+    render_figure3(ROOT / "data/paper_aggregates", tmp_path)
 
 
-def test_figure_s4_compact_threshold_legend(
+def test_figure_s1_compact_threshold_legend(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     def inspect_and_close(figure, _output):
@@ -274,10 +285,101 @@ def test_figure_s4_compact_threshold_legend(
         figure.canvas.draw()
         assert legend.get_window_extent().x0 > axis.get_window_extent().x0
         render_publication.plt.close(figure)
-        return tmp_path / "figureS4.png", tmp_path / "figureS4.pdf"
+        assert figure.get_label() == "figureS1_native_field_verification"
+        return tmp_path / "figureS1.png", tmp_path / "figureS1.pdf"
 
     monkeypatch.setattr(render_publication, "save", inspect_and_close)
-    render_figure_s4(ROOT / "data/paper_aggregates", tmp_path)
+    render_figure_s1(ROOT / "data/paper_aggregates", tmp_path)
+
+
+def test_figure4_current_headings_preserve_all_bar_values_and_intervals(tmp_path, monkeypatch):
+    from matplotlib.container import BarContainer, ErrorbarContainer
+
+    data = ROOT / "data/paper_aggregates"
+    absolute = render_publication.read(data, "Categorical_mean_sd")
+    contrasts = render_publication.read(data, "Fig3ef_route_contrasts")
+
+    def inspect(figure, _output):
+        assert figure.get_label() == "figure4_route_skill_and_contrasts"
+        assert list(figure.get_size_inches()) == [11.8, 10.9]
+        assert figure.axes[0].get_subplotspec().get_gridspec().hspace == .84
+        for panel, (axis, threshold) in enumerate(zip(figure.axes[:4], render_publication.THRESHOLDS)):
+            heading = axis.texts[0]
+            assert heading.get_text() == f"({chr(97+panel)}) RN60 ≥ {threshold:g} mm"
+            assert heading.get_fontweight() == "bold" and heading.get_ha() == "center"
+            assert heading.get_position() == (.5, 1.045) and heading.get_bbox_patch() is None
+            bars = [c for c in axis.containers if isinstance(c, BarContainer)]
+            for route, container in zip(render_publication.ROUTES, bars):
+                expected = absolute.loc[absolute.route_key.eq(route) & absolute.threshold_mm.eq(threshold)].set_index("lead_min").loc[list(render_publication.LEADS)]
+                np.testing.assert_array_equal([bar.get_height() for bar in container], expected.csi_mean)
+        for axis, name, heading in zip(figure.axes[4:], ("exprecast_minus_pysteps", "direct_minus_exprecast"),
+                                      ("(e) exPreCast + CNN\n− pySTEPS + CNN", "(f) Direct R2P\n− exPreCast + CNN")):
+            assert axis.texts[0].get_text() == heading
+            assert axis.texts[0].get_fontweight() == "bold"
+            bars = [c for c in axis.containers if isinstance(c, BarContainer)]
+            errors = [c for c in axis.containers if isinstance(c, ErrorbarContainer)]
+            for threshold, container, error in zip(render_publication.THRESHOLDS, bars, errors):
+                expected = contrasts.loc[contrasts.contrast.eq(name) & contrasts.threshold_mm.eq(threshold)].set_index("lead_min").loc[list(render_publication.LEADS)]
+                np.testing.assert_array_equal([bar.get_height() for bar in container], expected.delta_csi)
+                np.testing.assert_allclose(np.asarray(error.lines[2][0].get_segments())[:, :, 1],
+                                           np.column_stack((expected.ci_low, expected.ci_high)), atol=1e-17)
+        render_publication.plt.close(figure)
+        return tmp_path / "figure4.png", tmp_path / "figure4.pdf"
+
+    monkeypatch.setattr(render_publication, "save", inspect)
+    render_figure4(data, tmp_path)
+
+
+def test_figure5_current_large_type_and_both_row_leads_preserve_curves(tmp_path, monkeypatch):
+    data = ROOT / "data/paper_aggregates"
+    source = render_publication.read(data, "Fig5_plot_source")
+
+    def inspect(figure, _output):
+        assert list(figure.get_size_inches()) == [18., 10.5]
+        assert figure.legends[0]._ncols == 2
+        assert figure.axes[0].get_ylabel() == "Gauge-conditioned\namount bias (mm)"
+        for row, metric in enumerate(("conditional_mean_error", "frequency_bias")):
+            for col, lead in enumerate((60, 120, 180)):
+                axis = figure.axes[row*3+col]
+                assert axis.get_title() == f"{lead}-min lead"
+                assert axis.title.get_fontweight() == "bold"
+                assert axis.xaxis.label.get_fontsize() == 21.75
+                assert axis.texts[0].get_text() == f"({chr(97+row*3+col)})"
+                for line, route in zip(axis.lines[:4], ("observed_hsr", *render_publication.ROUTES)):
+                    expected = source.loc[source.route.eq(route) & source.metric.eq(metric) & source.lead_min.eq(lead)].sort_values("x_index")
+                    np.testing.assert_array_equal(line.get_ydata(), expected.estimate)
+        render_publication.plt.close(figure)
+        return tmp_path / "figure5.png", tmp_path / "figure5.pdf"
+
+    monkeypatch.setattr(render_publication, "save", inspect)
+    render_figure5(data, tmp_path)
+
+
+def test_figure9_sequential_lead_colors_preserve_eighty_values_and_intervals(tmp_path, monkeypatch):
+    from matplotlib.colors import to_rgba
+    from matplotlib.container import BarContainer, ErrorbarContainer
+
+    data = ROOT / "data/paper_aggregates"
+    source = render_publication.read(data, "FigS1_distance_cells")
+    assert tuple(render_publication.LEAD_COLORS.values()) == ("#A6CEE3", "#6BAED6", "#2C7FB8", "#1F5A99", "#163B65")
+
+    def inspect(figure, _output):
+        assert figure.get_label() == "figure9_allstation_distance"
+        for axis, threshold in zip(figure.axes, render_publication.THRESHOLDS):
+            assert axis._left_title.get_fontweight() == "bold"
+            bars = [c for c in axis.containers if isinstance(c, BarContainer)]
+            errors = [c for c in axis.containers if isinstance(c, ErrorbarContainer)]
+            for lead, container, error in zip(render_publication.LEADS, bars, errors):
+                expected = source.loc[source["Lead (min)"].eq(lead) & source["RN60 threshold (mm)"].eq(threshold)].sort_values("Distance group")
+                np.testing.assert_array_equal([bar.get_height() for bar in container], expected["ΔCSI (All-station − Direct)"])
+                assert all(bar.get_facecolor() == to_rgba(render_publication.LEAD_COLORS[lead], .92) for bar in container)
+                np.testing.assert_allclose(np.asarray(error.lines[2][0].get_segments())[:, :, 1],
+                                           expected[["95% CI low", "95% CI high"]], atol=1e-17)
+        render_publication.plt.close(figure)
+        return tmp_path / "figure9.png", tmp_path / "figure9.pdf"
+
+    monkeypatch.setattr(render_publication, "save", inspect)
+    render_figure9(data, tmp_path)
 
 
 def _station_split() -> pd.DataFrame:
@@ -297,7 +399,7 @@ def _station_split() -> pd.DataFrame:
 def test_restricted_figure1_display_transform(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    cartopy = pytest.importorskip("cartopy")
+    pytest.importorskip("cartopy")
     import cartopy.crs as ccrs
     import cartopy.feature as cfeature
 
@@ -305,21 +407,43 @@ def test_restricted_figure1_display_transform(
     # replaces the Natural Earth layer, whose files are intentionally not
     # bundled, with a network-free extent-only base map.
     monkeypatch.setattr(render_restricted, "configure_cartopy", lambda _: (ccrs, cfeature))
-    monkeypatch.setattr(
-        render_restricted,
-        "add_base_map",
-        lambda ax, _ccrs, _cfeature, *, extent: ax.set_extent(extent, crs=ccrs.PlateCarree()),
-    )
+    def synthetic_terrain(ax, _ccrs, _cfeature, *, extent, lon, lat, elevation):
+        ax.set_extent(extent, crs=ccrs.PlateCarree())
+        cmap, norm = render_restricted.elevation_colour_scale()
+        return ax.pcolormesh(lon, lat, np.ma.masked_less(elevation, 0),
+                            cmap=cmap, norm=norm, transform=ccrs.PlateCarree())
+
+    monkeypatch.setattr(render_restricted, "add_terrain_map", synthetic_terrain)
     lon_axis = np.linspace(124.0, 131.0, 50)
     lat_axis = np.linspace(33.0, 39.0, 45)
     lon, lat = np.meshgrid(lon_axis, lat_axis)
     footprint = ((lon - 127.5) ** 2 / 10 + (lat - 36.0) ** 2 / 7) <= 1
     archive = tmp_path / "coverage.npz"
-    np.savez_compressed(archive, lon=lon, lat=lat, footprint=footprint)
+    np.savez_compressed(archive, lon=lon, lat=lat, footprint=footprint,
+                        extent=[124, 131, 32.8, 41])
+    terrain = tmp_path / "terrain.npz"
+    elevation = np.linspace(-100, 1500, 20 * 30).reshape(20, 30)
+    np.savez_compressed(terrain, lon=np.linspace(123, 132, 30),
+                        lat=np.linspace(32, 41, 20), elevation_m=elevation)
     stations = tmp_path / "stations.csv"
     _station_split().to_csv(stations, index=False)
-    render_restricted.render_figure1(archive, stations, tmp_path, tmp_path)
-    assert (tmp_path / "figure1_study_design.png").stat().st_size > 5_000
+    original_save = render_restricted.save
+
+    def inspect_and_save(figure, *args):
+        axis = figure.axes[0]
+        assert figure.get_size_inches().tolist() == [8.8, 8.0]
+        np.testing.assert_allclose(axis.get_extent(), [124, 131, 32.8, 40.4])
+        shown = axis.collections[0]
+        np.testing.assert_array_equal(shown.get_array().compressed(), elevation[elevation >= 0])
+        assert shown.norm.vmin == 100 and shown.norm.vmax == 1000
+        assert figure.axes[1].get_ylabel() == "Elevation (m)"
+        assert len(axis.get_legend().get_texts()) == 3
+        return original_save(figure, *args)
+
+    monkeypatch.setattr(render_restricted, "save", inspect_and_save)
+    render_restricted.render_figure1(archive, stations, tmp_path, tmp_path, terrain_file=terrain)
+    for extension in ("png", "pdf", "svg"):
+        assert (tmp_path / f"figure1_study_domain.{extension}").stat().st_size > 1_000
 
 
 def _synthetic_s2_frames() -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -366,11 +490,16 @@ def test_restricted_s2_display_transform(tmp_path: Path, monkeypatch: pytest.Mon
 
     def inspect_and_save(figure, *args):
         assert len(figure.axes) == 4
+        assert figure.get_size_inches().tolist() == [13.2, 8.7]
+        assert len(figure.legends) == 1 and len(figure.legends[0].get_texts()) == 4
         for axis, case in zip(figure.axes, cases.itertuples(index=False)):
             assert len(axis.lines) == 4
             assert not axis.collections and not axis.patches  # no shading or CSI bars
             assert axis.get_ylabel() == "RN60 (mm)"
             assert axis.get_title().startswith(f"({case.panel})")
+            assert "+60 min" not in axis.get_title()
+            assert axis.title.get_fontweight() == "bold" and axis.title.get_fontsize() == 16
+            assert axis.get_legend() is None
             assert axis.lines[0].get_color() == "black"
             for route, line in zip(render_restricted.ROUTE_ORDER, axis.lines):
                 expected = series.loc[series.case_rank.eq(case.case_rank) & series.route.eq(route), "value_mean_mm"]
@@ -380,8 +509,8 @@ def test_restricted_s2_display_transform(tmp_path: Path, monkeypatch: pytest.Mon
 
     monkeypatch.setattr(render_restricted, "save", inspect_and_save)
     render_restricted.render_s2(source_data, tmp_path)
-    assert (tmp_path / "figureS2_case_analysis.png").stat().st_size > 5_000
-    assert (tmp_path / "figureS2_case_analysis.pdf").stat().st_size > 1_000
+    assert (tmp_path / "figure7_case_timeseries.png").stat().st_size > 5_000
+    assert (tmp_path / "figure7_case_timeseries.pdf").stat().st_size > 1_000
 
 
 @pytest.mark.parametrize("defect", ("missing_time", "wrong_station", "wrong_lead", "wrong_panel", "missing_schema", "infinite_value"))
@@ -403,7 +532,7 @@ def test_restricted_s2_rejects_misaligned_cases(tmp_path: Path, defect: str) -> 
     _write_s2_source_data(source_data, series, cases)
     with pytest.raises(ValueError):
         render_restricted.render_s2(source_data, tmp_path)
-    assert not (tmp_path / "figureS2_case_analysis.png").exists()
+    assert not (tmp_path / "figure7_case_timeseries.png").exists()
 
 
 def test_restricted_s3_display_transform(
@@ -443,17 +572,30 @@ def test_restricted_s3_display_transform(
     original_save = render_restricted.save
 
     def inspect_labels_and_save(figure, *args, **kwargs):
-        expected = {f"({letter})" for letter in "abcdefghijkl"}
-        labels = [text for axis in figure.axes for text in axis.texts if text.get_text() in expected]
-        assert {text.get_text() for text in labels} == expected
-        assert len(labels) == 12
-        for text in labels:
-            x, y = text.get_position()
-            assert x < 0 and y > 1
-            assert not text.get_clip_on()
-            assert text.get_fontsize() >= 15
+        assert figure.get_size_inches().tolist() == [12.8, 13.2]
+        assert figure.subplotpars.hspace == .20
+        assert len(figure.axes) == 12
+        for letter, axis in zip("abcdefghijkl", figure.axes):
+            assert axis.get_title().startswith(f"({letter}) ")
+            assert axis.title.get_fontweight() == "bold"
+            annotations = [text for text in axis.texts if text.get_text().startswith("mean station CSI = ")]
+            assert len(annotations) == 1
+            annotation = annotations[0]
+            assert annotation.get_position() == (.5, -.055)
+            assert annotation.get_fontweight() == "normal"
+            assert annotation.get_fontsize() == 14.5
+            route = render_restricted.ROUTE_ORDER[1:][(ord(letter) - ord("a")) % 3]
+            threshold = render_restricted.THRESHOLDS[(ord(letter) - ord("a")) // 3]
+            expected = pd.read_csv(source_data / "FigS3_station_CSI.csv").query(
+                "route == @route and threshold_mm == @threshold")
+            np.testing.assert_array_equal(axis.collections[-1].get_array(), expected.csi_mean)
+            np.testing.assert_array_equal(axis.collections[-1].get_offsets(), expected[["lon", "lat"]])
+            assert annotation.get_text() == f"mean station CSI = {expected.csi_mean.mean():.3f}"
+        colorbar_axes = [child for axis in figure.axes for child in axis.child_axes]
+        assert len(colorbar_axes) == 4
+        assert all(axis.get_ylabel() == "CSI" for axis in colorbar_axes)
         return original_save(figure, *args, **kwargs)
 
     monkeypatch.setattr(render_restricted, "save", inspect_labels_and_save)
     render_restricted.render_s3(source_data, stations, tmp_path, tmp_path)
-    assert (tmp_path / "figureS3_stationwise_CSI.png").stat().st_size > 5_000
+    assert (tmp_path / "figure8_stationwise_csi.png").stat().st_size > 5_000

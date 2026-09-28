@@ -116,9 +116,9 @@ python src/evaluation/radar_only_comparison.py \
   --figure-dir figures/radar_only
 ```
 
-The radar-only comparison is **Fig. 4a**. Render the complete figure from the
+The radar-only comparison is **Fig. 10a**. Render the complete figure from the
 bundled aggregates with
-`r2p-paper-figures --item 4 --output-dir outputs/paper_figures`.
+`r2p-paper-figures --item 10 --output-dir outputs/paper_figures`.
 
 ### Matched no-station-dropout training command
 

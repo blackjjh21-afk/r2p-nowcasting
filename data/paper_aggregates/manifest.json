@@ -1,8 +1,8 @@
 {
   "excluded_reader_assets": [
     "Figure 1 (station coordinates and radar footprint)",
-    "Supplementary Figure S2 (station time series)",
-    "Supplementary Figure S3 (stationwise map)",
+    "Figure 7 (station time series)",
+    "Figure 8 (stationwise map)",
     "Supplementary Table S2 and case definitions (held-out station identifiers)"
   ],
   "records": [
@@ -12,7 +12,8 @@
       "name": "Table1_main",
       "path": "Table1_main.csv",
       "rows": 15,
-      "sha256": "86e7f347a14fe90be0465cfbbc64092464b25479435bc756c89bf366f24e74c2"
+      "sha256": "86e7f347a14fe90be0465cfbbc64092464b25479435bc756c89bf366f24e74c2",
+      "current_workbook_sheet": "Table1_main"
     },
     {
       "columns": 17,
@@ -20,7 +21,8 @@
       "name": "Table1_seed_numeric",
       "path": "Table1_seed_numeric.csv",
       "rows": 45,
-      "sha256": "474f33ed3343c97fce1b4e7ea9665cf8a01729a75ab9b9f6c80595d0baa75a74"
+      "sha256": "474f33ed3343c97fce1b4e7ea9665cf8a01729a75ab9b9f6c80595d0baa75a74",
+      "current_workbook_sheet": "Table1_seed_numeric"
     },
     {
       "columns": 5,
@@ -28,7 +30,8 @@
       "name": "Fig2a_summary",
       "path": "Fig2a_summary.csv",
       "rows": 1,
-      "sha256": "b395d5be85a82c0107c25d216ebe4569bd4de19b35d70052e9deea67055ec50c"
+      "sha256": "b395d5be85a82c0107c25d216ebe4569bd4de19b35d70052e9deea67055ec50c",
+      "current_workbook_sheet": "Fig3a_summary"
     },
     {
       "columns": 3,
@@ -36,7 +39,8 @@
       "name": "Fig2a_density",
       "path": "Fig2a_density.csv",
       "rows": 3098,
-      "sha256": "4e9ca68fc5bcfdd13d9b438c7f33fa8dd9a8b25551b2ffd9776cb35896b8f573"
+      "sha256": "4e9ca68fc5bcfdd13d9b438c7f33fa8dd9a8b25551b2ffd9776cb35896b8f573",
+      "current_workbook_sheet": "Fig3a_density"
     },
     {
       "columns": 4,
@@ -44,7 +48,8 @@
       "name": "Fig2b_amount_bins",
       "path": "Fig2b_amount_bins.csv",
       "rows": 4,
-      "sha256": "4167f49170818d64eaa952c351b4a19bb85225186e04b655c8b901cdce11f203"
+      "sha256": "4167f49170818d64eaa952c351b4a19bb85225186e04b655c8b901cdce11f203",
+      "current_workbook_sheet": "Fig3b_amount_bins"
     },
     {
       "columns": 7,
@@ -52,7 +57,8 @@
       "name": "Fig2c_fixed_metrics",
       "path": "Fig2c_fixed_metrics.csv",
       "rows": 4,
-      "sha256": "f0054eafc50158780fc2992c57060cf448fe29294bb8f9badfd9c55517380881"
+      "sha256": "f0054eafc50158780fc2992c57060cf448fe29294bb8f9badfd9c55517380881",
+      "current_workbook_sheet": "Fig3c_fixed_metrics"
     },
     {
       "columns": 7,
@@ -60,7 +66,8 @@
       "name": "Fig2d_readout_summary",
       "path": "Fig2d_readout_summary.csv",
       "rows": 12,
-      "sha256": "57398a6149d265a35a7417ddd5b37cd1587bbbee82539359318121d17ffceaa3"
+      "sha256": "57398a6149d265a35a7417ddd5b37cd1587bbbee82539359318121d17ffceaa3",
+      "current_workbook_sheet": "Fig3d_readout_summary"
     },
     {
       "columns": 10,
@@ -68,7 +75,8 @@
       "name": "Fig2d_readout_members",
       "path": "Fig2d_readout_members.csv",
       "rows": 28,
-      "sha256": "d456888c7961d35a2971ff8b740a250077e432f5b7ad57e0c72e23fab68b171d"
+      "sha256": "d456888c7961d35a2971ff8b740a250077e432f5b7ad57e0c72e23fab68b171d",
+      "current_workbook_sheet": "Fig3d_readout_members"
     },
     {
       "columns": 10,
@@ -76,7 +84,8 @@
       "name": "Fig2d_delta_CI",
       "path": "Fig2d_delta_CI.csv",
       "rows": 8,
-      "sha256": "3559ffa832dce96407ebae16645a3dd22a97b954a1a300c063425c768185cb26"
+      "sha256": "3559ffa832dce96407ebae16645a3dd22a97b954a1a300c063425c768185cb26",
+      "current_workbook_sheet": "Fig3d_delta_CI"
     },
     {
       "columns": 13,
@@ -84,7 +93,8 @@
       "name": "Categorical_mean_sd",
       "path": "Categorical_mean_sd.csv",
       "rows": 156,
-      "sha256": "c04734c4b610af6b1b50b2e99e98ceb810c7850a6e5821c0bc8dcd6ea4c7315f"
+      "sha256": "c04734c4b610af6b1b50b2e99e98ceb810c7850a6e5821c0bc8dcd6ea4c7315f",
+      "current_workbook_sheet": "Categorical_mean_sd"
     },
     {
       "columns": 16,
@@ -92,7 +102,8 @@
       "name": "Categorical_per_rep",
       "path": "Categorical_per_rep.csv",
       "rows": 468,
-      "sha256": "c52f13be4166d3fa144ced2dc11deadfe4d16f934623520e0ec278eda800e08e"
+      "sha256": "c52f13be4166d3fa144ced2dc11deadfe4d16f934623520e0ec278eda800e08e",
+      "current_workbook_sheet": "Categorical_per_rep"
     },
     {
       "columns": 14,
@@ -100,7 +111,8 @@
       "name": "Continuous_mean_sd",
       "path": "Continuous_mean_sd.csv",
       "rows": 39,
-      "sha256": "a14cc25884cd907614bd49d2ca6ca85df0ec6ab8133ccdf821a5f70491abc1b3"
+      "sha256": "a14cc25884cd907614bd49d2ca6ca85df0ec6ab8133ccdf821a5f70491abc1b3",
+      "current_workbook_sheet": "Continuous_mean_sd"
     },
     {
       "columns": 12,
@@ -108,7 +120,8 @@
       "name": "Continuous_per_rep",
       "path": "Continuous_per_rep.csv",
       "rows": 117,
-      "sha256": "f24a842ee540b8ab5fcd22092096471503703544f49ed2281382a29bda6e126f"
+      "sha256": "f24a842ee540b8ab5fcd22092096471503703544f49ed2281382a29bda6e126f",
+      "current_workbook_sheet": "Continuous_per_rep"
     },
     {
       "columns": 12,
@@ -116,7 +129,8 @@
       "name": "Fig3ef_route_contrasts",
       "path": "Fig3ef_route_contrasts.csv",
       "rows": 104,
-      "sha256": "5a27824dbb00b1b5a06ac570a3e90c43c30a48f3a05c9818ffa566ef43358726"
+      "sha256": "5a27824dbb00b1b5a06ac570a3e90c43c30a48f3a05c9818ffa566ef43358726",
+      "current_workbook_sheet": "Fig4ef_route_contrasts"
     },
     {
       "columns": 11,
@@ -124,7 +138,8 @@
       "name": "Fig3_macro_contrasts",
       "path": "Fig3_macro_contrasts.csv",
       "rows": 2,
-      "sha256": "186c4c288132705d565541552b7c869c1f03ba73c8bf650541b3edb8698e4514"
+      "sha256": "186c4c288132705d565541552b7c869c1f03ba73c8bf650541b3edb8698e4514",
+      "current_workbook_sheet": "Fig4_macro_contrasts"
     },
     {
       "columns": 15,
@@ -132,7 +147,8 @@
       "name": "Fig4a_radar_only",
       "path": "Fig4a_radar_only.csv",
       "rows": 20,
-      "sha256": "4401418ba5b515a1433cebab75084596016aa241e8a50ca854982f9ede8e2d76"
+      "sha256": "4401418ba5b515a1433cebab75084596016aa241e8a50ca854982f9ede8e2d76",
+      "current_workbook_sheet": "Fig10a_radar_only"
     },
     {
       "columns": 17,
@@ -140,7 +156,8 @@
       "name": "Fig4b_no_dropout",
       "path": "Fig4b_no_dropout.csv",
       "rows": 20,
-      "sha256": "bd23088e6c69f80c4ab9ce50e690f71243c6d712f8d92bd0dbf4e8b1c6aaaa34"
+      "sha256": "bd23088e6c69f80c4ab9ce50e690f71243c6d712f8d92bd0dbf4e8b1c6aaaa34",
+      "current_workbook_sheet": "Fig10b_no_dropout"
     },
     {
       "columns": 16,
@@ -148,7 +165,8 @@
       "name": "Fig5_plot_source",
       "path": "Fig5_plot_source.csv",
       "rows": 96,
-      "sha256": "aa6753fca852d0fa7aab8040fc3be42ef623cb93ef758b9a1f5901e90cdb93fb"
+      "sha256": "aa6753fca852d0fa7aab8040fc3be42ef623cb93ef758b9a1f5901e90cdb93fb",
+      "current_workbook_sheet": "Fig5_plot_source"
     },
     {
       "columns": 7,
@@ -156,7 +174,8 @@
       "name": "Fig5_amount",
       "path": "Fig5_amount.csv",
       "rows": 156,
-      "sha256": "32212f4bd720eef04d2c2c3fa0195ac21c60c577f22dccedbe21d3f646d68680"
+      "sha256": "32212f4bd720eef04d2c2c3fa0195ac21c60c577f22dccedbe21d3f646d68680",
+      "current_workbook_sheet": "Fig5_amount"
     },
     {
       "columns": 7,
@@ -164,7 +183,8 @@
       "name": "Fig5_frequency",
       "path": "Fig5_frequency.csv",
       "rows": 156,
-      "sha256": "a407f0cfc5436f45596437562fcb21e3c91ba334fda4cd2cbefe95df9cac6b14"
+      "sha256": "a407f0cfc5436f45596437562fcb21e3c91ba334fda4cd2cbefe95df9cac6b14",
+      "current_workbook_sheet": "Fig5_frequency"
     },
     {
       "columns": 9,
@@ -172,7 +192,8 @@
       "name": "FigS1_distance_summary",
       "path": "FigS1_distance_summary.csv",
       "rows": 40,
-      "sha256": "b630d06d9914bd7453dbb93fbd6f3b73a5907f7b749ea1f5dd6f7f0902db1036"
+      "sha256": "b630d06d9914bd7453dbb93fbd6f3b73a5907f7b749ea1f5dd6f7f0902db1036",
+      "current_workbook_sheet": "Fig9_distance_summary"
     },
     {
       "columns": 11,
@@ -180,7 +201,8 @@
       "name": "FigS1_distance_cells",
       "path": "FigS1_distance_cells.csv",
       "rows": 80,
-      "sha256": "c6f32ff5bcc8caad03509745a6cd93b288653391de3552da1a2ca886fd33607d"
+      "sha256": "c6f32ff5bcc8caad03509745a6cd93b288653391de3552da1a2ca886fd33607d",
+      "current_workbook_sheet": "Fig9_distance_cells"
     },
     {
       "columns": 14,
@@ -188,7 +210,8 @@
       "name": "Allstation_overall",
       "path": "Allstation_overall.csv",
       "rows": 20,
-      "sha256": "9448c864f3d56641b1febdc3685c1f9494d44590f0ea70c8e6924780fec3e2dc"
+      "sha256": "9448c864f3d56641b1febdc3685c1f9494d44590f0ea70c8e6924780fec3e2dc",
+      "current_workbook_sheet": "Allstation_overall"
     },
     {
       "columns": 14,
@@ -196,7 +219,8 @@
       "name": "Allstation_seedwise",
       "path": "Allstation_seedwise.csv",
       "rows": 60,
-      "sha256": "084c0034dfa23991d80d6d1c719e36266444dce309d290de2d48dc081c00f52c"
+      "sha256": "084c0034dfa23991d80d6d1c719e36266444dce309d290de2d48dc081c00f52c",
+      "current_workbook_sheet": "Allstation_seedwise"
     },
     {
       "columns": 8,
@@ -204,7 +228,8 @@
       "name": "FigS3_pairwise_counts",
       "path": "FigS3_pairwise_counts.csv",
       "rows": 8,
-      "sha256": "694acd8acef51243ad807c6c98ce53a5e10874312d8f720b51c462c36344ba88"
+      "sha256": "694acd8acef51243ad807c6c98ce53a5e10874312d8f720b51c462c36344ba88",
+      "current_workbook_sheet": "Fig8_pairwise_counts"
     },
     {
       "columns": 3,
@@ -212,7 +237,8 @@
       "name": "Field_instant_CSIM",
       "path": "Field_instant_CSIM.csv",
       "rows": 42,
-      "sha256": "e7b85e48116af38a7587e0d8818968c537aab39b9a7765dca21762d05b119bc1"
+      "sha256": "e7b85e48116af38a7587e0d8818968c537aab39b9a7765dca21762d05b119bc1",
+      "current_workbook_sheet": "Field_instant_CSIM"
     },
     {
       "columns": 4,
@@ -220,7 +246,8 @@
       "name": "Field_instant_CSI",
       "path": "Field_instant_CSI.csv",
       "rows": 330,
-      "sha256": "49f7ee61a4b1288e6f15083e510d08cd9addb4863a0c1f11db72fda067b398e7"
+      "sha256": "49f7ee61a4b1288e6f15083e510d08cd9addb4863a0c1f11db72fda067b398e7",
+      "current_workbook_sheet": "Field_instant_CSI"
     },
     {
       "columns": 3,
@@ -228,7 +255,8 @@
       "name": "Field_RN60_CSIM",
       "path": "Field_RN60_CSIM.csv",
       "rows": 10,
-      "sha256": "25da123e1d4de34992618d0f636da6b1ba95a3b94207250e08b1cca30b4200b3"
+      "sha256": "25da123e1d4de34992618d0f636da6b1ba95a3b94207250e08b1cca30b4200b3",
+      "current_workbook_sheet": "Field_RN60_CSIM"
     },
     {
       "columns": 4,
@@ -236,7 +264,8 @@
       "name": "Field_RN60_CSI",
       "path": "Field_RN60_CSI.csv",
       "rows": 40,
-      "sha256": "e20befac99619f868ab4f362370e3932a8ecd57a122c60d0adc4dd4a75187f54"
+      "sha256": "e20befac99619f868ab4f362370e3932a8ecd57a122c60d0adc4dd4a75187f54",
+      "current_workbook_sheet": "Field_RN60_CSI"
     },
     {
       "columns": 10,
@@ -244,7 +273,8 @@
       "name": "Field_RN60_CSI_delta_CI",
       "path": "Field_RN60_CSI_delta_CI.csv",
       "rows": 20,
-      "sha256": "9f300586dc6423a1aceb3b14e0c5fd8b6b1ca4318e298966e8d83c94041da2f6"
+      "sha256": "9f300586dc6423a1aceb3b14e0c5fd8b6b1ca4318e298966e8d83c94041da2f6",
+      "current_workbook_sheet": "Field_RN60_CSI_delta_CI"
     },
     {
       "columns": 5,
@@ -252,7 +282,8 @@
       "name": "TableS1_training",
       "path": "TableS1_training.csv",
       "rows": 9,
-      "sha256": "d1fbf4d83104ad53e41ae9846890203c4188dba64b365a23e2b23e136f5655b4"
+      "sha256": "d1fbf4d83104ad53e41ae9846890203c4188dba64b365a23e2b23e136f5655b4",
+      "current_workbook_sheet": "TableS1_training"
     },
     {
       "columns": 6,
@@ -260,59 +291,94 @@
       "name": "Gauge_contract_matrix",
       "path": "Gauge_contract_matrix.csv",
       "rows": 9,
-      "sha256": "c8bd734d052b1a33c55323ef4c2175f6b11ce9a13a99251d96b3a15f2fb520d7"
-    },
-    {
-      "kind": "reference_rendering",
-      "name": "figure2_valid_time_readout.png",
-      "path": "figures/reference/figure2_valid_time_readout.png",
-      "sha256": "a1500a5026f3357414ee01f2861342391255dcd71dfb297668391b9ddaa76a0b"
-    },
-    {
-      "kind": "reference_rendering",
-      "name": "figure3_route_skill_and_contrasts.png",
-      "path": "figures/reference/figure3_route_skill_and_contrasts.png",
-      "sha256": "237ea8efc8f65f14388f0230a8d0e0301793b87dc21503d384d8d5fe84b9bd42"
-    },
-    {
-      "kind": "reference_rendering",
-      "name": "figure4_r2p_ablations.png",
-      "path": "figures/reference/figure4_r2p_ablations.png",
-      "sha256": "0a7a7746dbcc299d6cac6c4f250a28def338b04a9f8b6b2680aef1434f9430b0"
-    },
-    {
-      "kind": "reference_rendering",
-      "name": "figure5_heavy_rain_attenuation.png",
-      "path": "figures/reference/figure5_heavy_rain_attenuation.png",
-      "sha256": "6e1c4d1428570d8430a4a57f9ca68a5760974c62ab8b703e9b49be5767278409"
-    },
-    {
-      "kind": "reference_rendering",
-      "name": "figure6_route_architecture.png",
-      "path": "figures/reference/figure6_route_architecture.png",
-      "sha256": "7a1f24a4f532ef3754a6fe727e0cd9b799f470b280e7147787e225312955d551"
-    },
-    {
-      "kind": "reference_rendering",
-      "name": "figureS1_allstation_distance_diagnostic.png",
-      "path": "figures/reference/figureS1_allstation_distance_diagnostic.png",
-      "sha256": "96533ba444c06082b2832c73e1045f395fd7c24a09c9c49b21a4090f439bfb9a"
-    },
-    {
-      "kind": "reference_rendering",
-      "name": "figureS4_native_field_verification.png",
-      "path": "figures/reference/figureS4_native_field_verification.png",
-      "sha256": "ee436896540d98b456c0dfacba73aadd572b98601c8561a9f777de02fc309f0d"
+      "sha256": "c8bd734d052b1a33c55323ef4c2175f6b11ce9a13a99251d96b3a15f2fb520d7",
+      "current_workbook_sheet": "Gauge_contract_matrix"
     },
     {
       "kind": "reference_rendering",
       "name": "table1_heldout_point_skill.png",
       "path": "figures/reference/table1_heldout_point_skill.png",
-      "sha256": "e699d016fedea93401467624cd63fc28e5aedf8270fe2faa99672831a053ff67"
+      "sha256": "8f968b164c4c156dc816d62e26264e734787e559258c2b6e72551c3c16fb7426"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "Figure_2.png",
+      "path": "figures/reference/Figure_2.png",
+      "sha256": "586f5eb09ffec98950a7e6939616a47acf7c76ec3d6b0907d7a2366632bdff4f"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "Figure_2.pdf",
+      "path": "figures/reference/Figure_2.pdf",
+      "sha256": "727eea2f8d22cdb431f59a7b159a0d965630f5c331bf16b087802cdf5b352633"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "Figure_3.png",
+      "path": "figures/reference/Figure_3.png",
+      "sha256": "44f45328c571f1ff997ce78ac50b63e6c11101b66b0c671c724ee037b20f020a"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "Figure_4.png",
+      "path": "figures/reference/Figure_4.png",
+      "sha256": "3f30cf259af3a4f32ba39e0ae47695c7c1f5b6dffe1f769f77980e945567863b"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "Figure_5.png",
+      "path": "figures/reference/Figure_5.png",
+      "sha256": "b85fe4050e525e3f95229392070a63c687acc989eaead59d93d8057d67109286"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "Figure_6.png",
+      "path": "figures/reference/Figure_6.png",
+      "sha256": "d44f3f2960158fb905752ef57daa446b9143c68a057ec28546a738a55e103b07"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "Figure_9.png",
+      "path": "figures/reference/Figure_9.png",
+      "sha256": "d318d74bf9e810753751582ad1fe84bfd3146b0b070a3fdab627e0ea00575e18"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "Figure_10.png",
+      "path": "figures/reference/Figure_10.png",
+      "sha256": "658f84945ca3c65ff2d5b7b5172f2e10b28ceffe3dd03f721dc68b60da245470"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "Figure_S1.png",
+      "path": "figures/reference/Figure_S1.png",
+      "sha256": "ee436896540d98b456c0dfacba73aadd572b98601c8561a9f777de02fc309f0d"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "Figure_S2.png",
+      "path": "figures/reference/Figure_S2.png",
+      "sha256": "69c4e769fd2e3b7e5a31068660c506c7299d5c23f1495224c67471972a1e044c"
+    },
+    {
+      "kind": "reference_rendering",
+      "name": "Figure_S3.png",
+      "path": "figures/reference/Figure_S3.png",
+      "sha256": "ef231479322e5bea89ed9eb13125d8f1d862d724e05bc7ce2bb0549c60666e00"
     }
   ],
   "schema": "r2p-4km10min-public-paper-audit-layer-v1",
   "source_reader_manifest_sha256": "fc77a805e0e361c566308a229f687e307c58bd7d349e1cdb2724b8642ebea3b8",
   "source_supplementary_data_sha256": "a099e58c2ddced05e2e82607d203800ca1f9d12899d703bf87bb55da988e1426",
-  "station_resolved_content_included": false
+  "station_resolved_content_included": false,
+  "verified_current_supplementary_data_sha256": "0116b21a234b04bb7b9f371590b41c7706e49eaebd53faf9ba73f62e22c95ce6",
+  "current_figure_mapping": {
+    "Fig2*": "Figure 3",
+    "Fig3*": "Figure 4",
+    "Fig4*": "Figure 10",
+    "Fig5*": "Figure 5",
+    "FigS1*": "Figure 9",
+    "FigS3_pairwise_counts": "Figure 8 (aggregate station counts only)",
+    "Field_*": "Supplementary Figure S1"
+  }
 }

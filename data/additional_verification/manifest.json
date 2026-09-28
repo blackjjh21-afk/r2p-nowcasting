@@ -1,11 +1,11 @@
 {
   "schema": "r2p-additional-verification-aggregates-v1",
-  "source_supplementary_data_sha256": "f65e316cb8425cd6f51d6f04084802b777df4ee1776565e97f05e00cf51f3f56",
+  "source_supplementary_data_sha256": "0116b21a234b04bb7b9f371590b41c7706e49eaebd53faf9ba73f62e22c95ce6",
   "station_resolved_content_included": false,
   "figure_mapping": {
     "episode_peak_mae": "Figure 6",
-    "patch_skill_and_contrasts": "Supplementary Figure S4",
-    "episode_duration_histogram": "Supplementary Figure S5"
+    "patch_skill": "Supplementary Figure S2",
+    "episode_duration_histogram": "Supplementary Figure S3"
   },
   "records": [
     {
@@ -31,7 +31,8 @@
         "timing_bias_min",
         "timing_bias_min_member_sd"
       ],
-      "sha256": "86680244fe9b3d3511ae12134bef7c4c187a0d51151add38150cc371692dcba7"
+      "sha256": "86680244fe9b3d3511ae12134bef7c4c187a0d51151add38150cc371692dcba7",
+      "current_workbook_sheet": "Fig6_route_metrics"
     },
     {
       "path": "episode_member_metrics.csv",
@@ -52,7 +53,8 @@
         "peak_bias_mm",
         "timing_bias_min"
       ],
-      "sha256": "d7dc403dbd20bd3d0b7635a45ea2c7711077056021fb58aaf6cc15f1754f7c30"
+      "sha256": "d7dc403dbd20bd3d0b7635a45ea2c7711077056021fb58aaf6cc15f1754f7c30",
+      "current_workbook_sheet": "Fig6_member_metrics"
     },
     {
       "path": "episode_counts.csv",
@@ -65,7 +67,8 @@
         "n_stations",
         "n_cross_midnight"
       ],
-      "sha256": "460506bfe0400d75a054a628c09a593d8de4dfd79f63b96e466f18682d3e2608"
+      "sha256": "460506bfe0400d75a054a628c09a593d8de4dfd79f63b96e466f18682d3e2608",
+      "current_workbook_sheet": "Fig6_counts"
     },
     {
       "path": "episode_duration_statistics.csv",
@@ -86,7 +89,8 @@
         "p95_duration_hours",
         "max_duration_hours"
       ],
-      "sha256": "808ab44d451854ad37f1f0953bce5a5713eeec752979f67d4f337cf88574d91c"
+      "sha256": "808ab44d451854ad37f1f0953bce5a5713eeec752979f67d4f337cf88574d91c",
+      "current_workbook_sheet": "Fig6_duration_stats"
     },
     {
       "path": "patch_metrics_mean_of_members.csv",
@@ -104,7 +108,8 @@
         "RMSE_mm",
         "mean_error_mm"
       ],
-      "sha256": "f2cca254b4c865e5cb1bf32b5567ad9d15e4131268a94995ae09709b599d63ef"
+      "sha256": "f2cca254b4c865e5cb1bf32b5567ad9d15e4131268a94995ae09709b599d63ef",
+      "current_workbook_sheet": "FigS2_metrics"
     },
     {
       "path": "patch_metrics_per_member.csv",
@@ -123,7 +128,8 @@
         "RMSE_mm",
         "mean_error_mm"
       ],
-      "sha256": "0775b1651231da40b117f52126a6ff1a41870f0f84b578235fd0bb749c0c26e8"
+      "sha256": "0775b1651231da40b117f52126a6ff1a41870f0f84b578235fd0bb749c0c26e8",
+      "current_workbook_sheet": "FigS2_member_metrics"
     },
     {
       "path": "patch_paired_CSI_intervals.csv",
@@ -136,7 +142,8 @@
         "lower95",
         "upper95"
       ],
-      "sha256": "39f5a440677be8f39700df24adb0e92a69744859cc1a6568d58cc6ba03ef0830"
+      "sha256": "39f5a440677be8f39700df24adb0e92a69744859cc1a6568d58cc6ba03ef0830",
+      "current_workbook_sheet": "FigS2_paired_CI"
     },
     {
       "path": "patch_epoch_selection.csv",
@@ -150,7 +157,8 @@
         "csi_20mm_mean_13lead",
         "is_selected"
       ],
-      "sha256": "ea6a8f4a857efdffa69c53734c27c4aea7e9217f408f74934d69dca4fa6f94b8"
+      "sha256": "ea6a8f4a857efdffa69c53734c27c4aea7e9217f408f74934d69dca4fa6f94b8",
+      "current_workbook_sheet": "FigS2_epoch_selection"
     },
     {
       "path": "episode_duration_histogram.csv",
@@ -160,7 +168,8 @@
         "right_min",
         "n_episodes"
       ],
-      "sha256": "7c9a29c332f5a8c6d1ea9ae2614217b815857fd5148363ef00fecab8bc06d1d6"
+      "sha256": "7c9a29c332f5a8c6d1ea9ae2614217b815857fd5148363ef00fecab8bc06d1d6",
+      "current_workbook_sheet": "Fig6_episode_metrics (unique episode durations)"
     }
   ]
 }

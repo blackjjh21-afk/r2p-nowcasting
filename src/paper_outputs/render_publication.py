@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Render the aggregate manuscript figures and Table 1 from public sources.
 
-The bundled tables are sufficient for Figs. 2--6, Supplementary Figs. S1/S4
-and Table 1.  Figure 4 uses the two separately audited aggregate files under
-``data/examples``.  Figure 1 and Supplementary Figs. S2/S3 require authorized
-station-resolved inputs and are handled by ``paper_outputs.render_restricted``.
+The bundled tables support Figs. 3--5, 9--10, Supplementary Fig. S1 and
+Table 1; Figure 2 uses the bundled author-provided architecture artwork.
+Figure 10 uses the two audited aggregate files under ``data/examples``.
+Figures 1, 7 and 8 require authorized station-resolved inputs and are handled
+by ``paper_outputs.render_restricted``. Historical CSV names stay stable even
+when the corresponding manuscript figures have been renumbered.
 """
 
 from __future__ import annotations
@@ -35,6 +37,7 @@ ROUTE_LABELS = {
 }
 ROUTE_COLORS = {"pysteps": "#2C7FB8", "exprecast": "#009E73", "r2p": "#D62728"}
 THRESHOLD_COLORS = {1.0: "#366DB2", 5.0: "#EE8420", 10.0: "#C63E4B", 20.0: "#7750AE"}
+LEAD_COLORS = dict(zip(LEADS, ("#A6CEE3", "#6BAED6", "#2C7FB8", "#1F5A99", "#163B65")))
 
 
 class PaperOutputError(RuntimeError):
@@ -51,6 +54,10 @@ def configure(
 ) -> None:
     plt.rcParams.update(
         {
+            "font.family": "DejaVu Sans",
+            "font.weight": "normal",
+            "axes.labelweight": "normal",
+            "axes.titleweight": "bold",
             "font.size": font_size,
             "axes.labelsize": axes_labelsize,
             "axes.titlesize": axes_titlesize,
@@ -115,7 +122,7 @@ def audit_grid(frame: pd.DataFrame, *, routes: set[str] | None = None) -> None:
         raise PaperOutputError("route grid changed")
 
 
-def render_figure2(data: Path, output: Path) -> tuple[Path, Path]:
+def render_figure3(data: Path, output: Path) -> tuple[Path, Path]:
     configure(
         font_size=14.0,
         axes_labelsize=15.0,
@@ -128,7 +135,7 @@ def render_figure2(data: Path, output: Path) -> tuple[Path, Path]:
     amount = read(data, "Fig2b_amount_bins")
     fixed = read(data, "Fig2c_fixed_metrics")
     readout = read(data, "Fig2d_readout_summary")
-    figure, axes = plt.subplots(2, 2, figsize=(13.4, 10.2), label="figure2_valid_time_readout")
+    figure, axes = plt.subplots(2, 2, figsize=(13.4, 10.2), label="figure3_valid_time_readout")
 
     ax = axes[0, 0]
     positive = density.pair_count.to_numpy(float) > 0
@@ -143,7 +150,7 @@ def render_figure2(data: Path, output: Path) -> tuple[Path, Path]:
     ax.plot([0, limit], [0, limit], "--", color="#E74C3C", lw=1)
     ax.set(xlim=(0, limit), ylim=(0, limit), xticks=ticks, yticks=ticks,
            xticklabels=[f"{v:g}" for v in ticks_mm], yticklabels=[f"{v:g}" for v in ticks_mm],
-           xlabel="Gauge RN60 (mm)", ylabel="4-km HSR fixed-readout RN60 (mm)")
+           xlabel="Gauge RN60 (mm)", ylabel="4-km HSR fixed-readout\nRN60 (mm)")
     ax.text(0.04, 0.95, f"Pearson $r$ = {float(summary.pearson_r):.3f}",
             transform=ax.transAxes, ha="left", va="top")
     figure.colorbar(artist, ax=ax, label="Pair count (log scale)")
@@ -219,7 +226,7 @@ def render_figure2(data: Path, output: Path) -> tuple[Path, Path]:
     return outputs
 
 
-def render_figure3(data: Path, output: Path) -> tuple[Path, Path]:
+def render_figure4(data: Path, output: Path) -> tuple[Path, Path]:
     configure(
         font_size=15.0,
         axes_labelsize=16.0,
@@ -233,10 +240,12 @@ def render_figure3(data: Path, output: Path) -> tuple[Path, Path]:
     contrasts = read(data, "Fig3ef_route_contrasts")
     fixed = read(data, "Fig2d_readout_summary")
     fixed = fixed[fixed.route.eq("fixed_mp")].set_index("threshold_mm")
-    figure = plt.figure(figsize=(11.7, 10.3), label="figure3_route_skill_and_contrasts")
-    grid = figure.add_gridspec(3, 2, height_ratios=(1, 1, 0.82), hspace=0.62, wspace=0.19)
+    figure = plt.figure(figsize=(11.8, 10.9), label="figure4_route_skill_and_contrasts")
+    grid = figure.add_gridspec(3, 2, height_ratios=(1, 1, 0.86), hspace=0.84, wspace=0.19,
+                              left=.075, right=.985, bottom=.130, top=.850)
     axes = [figure.add_subplot(grid[i // 2, i % 2]) for i in range(4)]
-    contrast_axes = [figure.add_subplot(grid[2, 0]), figure.add_subplot(grid[2, 1], sharey=None)]
+    contrast_grid = grid[2, :].subgridspec(1, 2, wspace=.14)
+    contrast_axes = [figure.add_subplot(contrast_grid[0, 0]), figure.add_subplot(contrast_grid[0, 1])]
     x = np.arange(5)
     width = 0.22
     for panel, threshold in enumerate(THRESHOLDS):
@@ -247,14 +256,17 @@ def render_figure3(data: Path, output: Path) -> tuple[Path, Path]:
                    yerr=block.csi_sd, capsize=1.5, alpha=0.96)
         ax.axhline(float(fixed.loc[threshold, "csi_mean"]), color="0.25", ls="--", lw=1.5)
         ax.set(xticks=x, xticklabels=LEADS, xlabel="Lead time (min)", ylabel="CSI" if panel % 2 == 0 else None)
-        ax.text(-0.04, 1.06, f"({chr(97 + panel)})", transform=ax.transAxes, fontweight="bold")
-        ax.text(0.98, 1.02, f"RN60 ≥ {threshold:g} mm", transform=ax.transAxes, ha="right",
-                bbox={"facecolor": "white", "edgecolor": "0.65", "pad": 2})
+        upper = {1.: .72, 5.: .62, 10.: .52, 20.: .42}[threshold]
+        ax.set(ylim=(0, upper), yticks=np.arange(0., upper + 1e-9, .1))
+        ax.text(0.5, 1.045, f"({chr(97 + panel)}) RN60 ≥ {threshold:g} mm",
+                transform=ax.transAxes, ha="center", va="bottom", fontweight="bold")
         ax.grid(axis="y", alpha=0.2)
         ax.spines[["top", "right"]].set_visible(False)
     contrast_names = ("exprecast_minus_pysteps", "direct_minus_exprecast")
     titles = ("exPreCast + CNN\n− pySTEPS + CNN", "Direct R2P\n− exPreCast + CNN")
     t_width = 0.18
+    extent = contrasts[["ci_low", "ci_high"]].to_numpy(float)
+    contrast_limits = (min(-.02, float(np.nanmin(extent))-.006), max(.02, float(np.nanmax(extent))+.010))
     for panel, (ax, name, title) in enumerate(zip(contrast_axes, contrast_names, titles, strict=True), start=4):
         for idx, threshold in enumerate(THRESHOLDS):
             block = contrasts[contrasts.contrast.eq(name) & np.isclose(contrasts.threshold_mm, threshold)].set_index("lead_min").loc[list(LEADS)]
@@ -263,19 +275,22 @@ def render_figure3(data: Path, output: Path) -> tuple[Path, Path]:
             ax.bar(x + (idx - 1.5) * t_width, y, width=t_width, color=THRESHOLD_COLORS[threshold],
                    yerr=np.vstack((y - low, high - y)), error_kw={"ecolor": "0.65", "capsize": 2})
         ax.axhline(0, color="0.3", lw=0.8)
-        ax.set(xticks=x, xticklabels=LEADS, xlabel="Lead time (min)", ylabel="ΔCSI" if panel == 4 else None)
-        ax.set_title(title, fontweight="bold", fontsize=15.0)
-        ax.text(-0.04, 1.08, f"({chr(97 + panel)})", transform=ax.transAxes, fontweight="bold")
+        ax.set(xticks=x, xticklabels=LEADS, xlabel="Lead time (min)", ylabel="ΔCSI" if panel == 4 else None,
+               ylim=contrast_limits)
+        ax.text(0.5, 1.045, f"({chr(97 + panel)}) {title}", transform=ax.transAxes,
+                ha="center", va="bottom", multialignment="center", fontweight="bold", fontsize=15.0)
+        if panel == 5:
+            ax.tick_params(labelleft=False)
         ax.grid(axis="y", alpha=0.2)
         ax.spines[["top", "right"]].set_visible(False)
     route_handles = [Patch(facecolor=ROUTE_COLORS[r], label=ROUTE_LABELS[r]) for r in ROUTES]
-    route_handles.append(Line2D([], [], color="0.25", ls="--", label="Fixed M–P (valid-time reference)"))
+    route_handles.append(Line2D([], [], color="0.25", ls="--", label="Observed HSR + Fixed M-P (valid-time reference)"))
     figure.legend(
         handles=route_handles,
         loc="upper center",
         ncol=2,
         frameon=False,
-        bbox_to_anchor=(0.5, 0.995),
+        bbox_to_anchor=(0.5, 0.985),
         fontsize=15.0,
     )
     threshold_handles = [Patch(facecolor=THRESHOLD_COLORS[t], label=f"≥{t:g} mm") for t in THRESHOLDS]
@@ -295,20 +310,20 @@ def render_figure3(data: Path, output: Path) -> tuple[Path, Path]:
     return outputs
 
 
-def render_figure4(data: Path, examples: Path, output: Path) -> tuple[Path, Path]:
+def render_figure10(data: Path, examples: Path, output: Path) -> tuple[Path, Path]:
     configure(
-        font_size=10.5,
-        axes_labelsize=11.5,
-        axes_titlesize=12.5,
-        legend_fontsize=10.5,
-        tick_labelsize=10.5,
+        font_size=14.0,
+        axes_labelsize=14.0,
+        axes_titlesize=15.0,
+        legend_fontsize=14.0,
+        tick_labelsize=14.0,
     )
     radar = pd.read_csv(examples / "radar_only_csi_by_lead_threshold.csv")
     dropout = pd.read_csv(examples / "station_dropout_csi_by_lead_threshold.csv")
-    figure, axes = plt.subplots(1, 2, figsize=(12.2, 4.7), sharey=False, label="figure4_r2p_ablations")
+    figure, axes = plt.subplots(1, 2, figsize=(12.2, 5.2), sharey=False, label="figure10_r2p_ablations")
     specifications = (
         (radar, "delta_csi_radar_only_minus_standard", "Radar-only − Direct R2P"),
-        (dropout, "delta_csi_station_dropout_minus_no_station_dropout", "Direct R2P − no-station-dropout"),
+        (dropout, "delta_csi_station_dropout_minus_no_station_dropout", "Station-dropout − No-station-dropout"),
     )
     x = np.arange(5)
     width = 0.18
@@ -321,11 +336,12 @@ def render_figure4(data: Path, examples: Path, output: Path) -> tuple[Path, Path
             if panel == 0:
                 color = THRESHOLD_COLORS[threshold]
                 ax.errorbar(LEADS, y, yerr=errors, color=color, marker="o", ls="-",
-                            lw=1.8, markersize=4.5, ecolor=to_rgba(color, 0.45),
-                            elinewidth=0.9, capsize=2)
+                            lw=1.6, markersize=4., ecolor=to_rgba(color, 0.45),
+                            elinewidth=0.8, capsize=2)
             else:
                 ax.bar(x + (idx - 1.5) * width, y, width=width, color=THRESHOLD_COLORS[threshold],
-                       yerr=errors, error_kw={"ecolor": "0.65", "capsize": 2})
+                       alpha=.92, edgecolor="#444444", linewidth=.38, yerr=errors,
+                       error_kw={"ecolor": "#9a9a9a", "elinewidth": .8, "capsize": 2., "capthick": .8}, zorder=3)
         ax.axhline(0, color="0.3", lw=0.8)
         ax.set(xticks=LEADS if panel == 0 else x, xticklabels=LEADS,
                xlabel="Lead time (min)", ylabel="ΔCSI")
@@ -334,8 +350,11 @@ def render_figure4(data: Path, examples: Path, output: Path) -> tuple[Path, Path
                    xlim=(LEADS[0] - 3, LEADS[-1] + 3))
             peak = frame.loc[frame.lead_min.isin(LEADS) & frame.threshold_mm.isin(THRESHOLDS), value].abs().max()
             ax.text(0.97, 0.075, f"max |ΔCSI| = {peak:.4f}", transform=ax.transAxes,
-                    ha="right", va="bottom", color="0.4", fontsize=10.5)
-        ax.set_title(f"({chr(97 + panel)}) {label}", loc="left")
+                    ha="right", va="bottom", color="0.35", fontsize=14.0)
+        else:
+            extent = frame[["ci_low", "ci_high"]].to_numpy(float)
+            ax.set_ylim(min(-.01, float(extent.min())-.006), max(.01, float(extent.max())+.008))
+        ax.set_title(f"({chr(97 + panel)}) {label}", loc="left", fontweight="bold", pad=9)
         ax.grid(axis="y", alpha=0.2)
         ax.spines[["top", "right"]].set_visible(False)
     handles = [Patch(facecolor=THRESHOLD_COLORS[t], label=f"≥{t:g} mm") for t in THRESHOLDS]
@@ -345,10 +364,13 @@ def render_figure4(data: Path, examples: Path, output: Path) -> tuple[Path, Path
         loc="upper center",
         ncol=4,
         frameon=False,
-        fontsize=10.5,
-        title_fontsize=11.0,
+        fontsize=14.0,
+        title_fontsize=14.5,
+        bbox_to_anchor=(.5, .995),
+        columnspacing=1.2,
+        handletextpad=.45,
     )
-    figure.subplots_adjust(top=0.78, wspace=0.22)
+    figure.subplots_adjust(left=.09, right=.985, bottom=.175, top=.765, wspace=.34)
     outputs = save(figure, output)
     configure()
     return outputs
@@ -356,47 +378,62 @@ def render_figure4(data: Path, examples: Path, output: Path) -> tuple[Path, Path
 
 def render_figure5(data: Path, output: Path) -> tuple[Path, Path]:
     configure(
-        font_size=14.0,
-        axes_labelsize=15.0,
-        axes_titlesize=16.0,
-        legend_fontsize=14.0,
-        tick_labelsize=13.5,
+        font_size=20.3,
+        axes_labelsize=21.75,
+        axes_titlesize=23.2,
+        legend_fontsize=20.3,
+        tick_labelsize=19.575,
     )
     frame = read(data, "Fig5_plot_source")
-    figure, axes = plt.subplots(2, 3, figsize=(14.2, 7.5), sharey="row", label="figure5_heavy_rain_attenuation")
+    figure, axes = plt.subplots(2, 3, figsize=(18., 10.5), sharey="row", label="figure5_heavy_rain_attenuation")
     route_order = ("observed_hsr", "pysteps", "exprecast", "r2p")
     labels = dict(frame[["route", "route_label"]].drop_duplicates().itertuples(index=False, name=None))
-    colors = {"observed_hsr": "#3C3C3C", "pysteps": "#2C7FB8", "exprecast": "#009E73", "r2p": "#D62728"}
+    colors = {"observed_hsr": "#333333", **ROUTE_COLORS}
     markers = {"observed_hsr": "D", "pysteps": "^", "exprecast": "s", "r2p": "o"}
+    widths = {"observed_hsr": 1.8, "pysteps": 1.9, "exprecast": 2., "r2p": 2.5}
+    limits = {}
+    for metric, step, reference in (("conditional_mean_error", 5., 0.), ("frequency_bias", .25, 1.)):
+        selected = frame.loc[frame.metric.eq(metric)]
+        low, high = min(float(selected.ci_low.min()), reference), max(float(selected.ci_high.max()), reference)
+        span = max(high-low, step)
+        low, high = np.floor((low-.06*span)/step)*step, np.ceil((high+.06*span)/step)*step
+        limits[metric] = (max(0., low) if metric == "frequency_bias" else low, high)
     for col, lead in enumerate((60, 120, 180)):
         for row, metric in enumerate(("conditional_mean_error", "frequency_bias")):
             ax = axes[row, col]
             for route in route_order:
                 block = frame[frame.route.eq(route) & frame.metric.eq(metric) & frame.lead_min.eq(lead)].sort_values("x_index")
-                ax.plot(np.arange(4), block.estimate, color=colors[route], marker=markers[route], lw=1.8,
+                ax.plot(np.arange(4), block.estimate, color=colors[route], marker=markers[route], lw=widths[route],
+                        markersize=5.2, markeredgewidth=.7, alpha=.98,
                         ls=":" if route == "observed_hsr" else "-", label=labels[route])
             ax.axhline(0 if row == 0 else 1, color="0.35", ls="--", lw=0.8)
-            ax.set(xticks=np.arange(4), xticklabels=block.x_label, xlabel="Gauge amount bin (mm)" if row == 0 else "Threshold (mm)")
-            ax.set_ylabel("Gauge-conditioned amount bias (mm)" if row == 0 and col == 0 else "Frequency bias" if row == 1 and col == 0 else None)
+            ax.set(xticks=np.arange(4), xticklabels=block.x_label, xlabel="Gauge amount bin (mm)" if row == 0 else "Threshold (mm)", ylim=limits[metric])
+            ax.set_ylabel("Gauge-conditioned\namount bias (mm)" if row == 0 and col == 0 else "Frequency bias" if row == 1 and col == 0 else None)
+            ax.set_title(f"{lead}-min lead", fontweight="bold", pad=6)
+            ax.text(0., 1.018, f"({chr(97 + row*3 + col)})", transform=ax.transAxes,
+                    ha="left", va="bottom", fontweight="bold", clip_on=False)
+            ax.xaxis.labelpad = 10
+            ax.yaxis.labelpad = 12
             if row == 0:
-                ax.set_title(f"({chr(97 + col)}) {lead}-min lead")
-            else:
-                ax.text(0.0, 1.04, f"({chr(100 + col)})", transform=ax.transAxes, fontweight="bold")
+                ax.set_xticks(np.arange(4), block.x_label, rotation=24, ha="right")
+                ax.set_yticks(np.arange(-30, 6, 5))
             ax.grid(axis="y", alpha=0.2)
             ax.spines[["top", "right"]].set_visible(False)
     handles, labels_out = axes[0, 0].get_legend_handles_labels()
-    figure.legend(handles, labels_out, loc="upper center", ncol=4, frameon=False)
-    figure.subplots_adjust(top=0.86, hspace=0.40, wspace=0.16)
+    figure.legend(handles, labels_out, loc="upper center", bbox_to_anchor=(.53, .985),
+                  ncol=2, frameon=False, fontsize=20.3, handlelength=2.1, columnspacing=1.6, labelspacing=.55)
+    figure.subplots_adjust(left=.105, right=.985, bottom=.125, top=.82, hspace=.83, wspace=.20)
     outputs = save(figure, output)
     configure()
     return outputs
 
 
-def render_figure_s1(data: Path, output: Path) -> tuple[Path, Path]:
+def render_figure9(data: Path, output: Path) -> tuple[Path, Path]:
+    configure(font_size=15., axes_labelsize=16., axes_titlesize=17., legend_fontsize=14.5, tick_labelsize=14.5)
     cells = read(data, "FigS1_distance_cells")
-    figure, axes = plt.subplots(2, 2, figsize=(14.2, 9.4), sharey=True, label="figureS1_allstation_distance_diagnostic")
+    figure, axes = plt.subplots(2, 2, figsize=(14.2, 9.4), sharey=True, label="figure9_allstation_distance")
     leads = LEADS
-    colors = {60: "#447CBD", 90: "#36A497", 120: "#F18424", 150: "#CA4654", 180: "#8059B3"}
+    colors = LEAD_COLORS
     width = 0.145
     groups = sorted(cells["Distance group"].astype(int).unique())
     labels = []
@@ -413,7 +450,8 @@ def render_figure_s1(data: Path, output: Path) -> tuple[Path, Path]:
             y = block["ΔCSI (All-station − Direct)"].to_numpy(float)
             low, high = block["95% CI low"].to_numpy(float), block["95% CI high"].to_numpy(float)
             ax.bar(x + (idx - 2) * width, y, width=width, color=colors[lead],
-                   yerr=np.vstack((y - low, high - y)), error_kw={"ecolor": "0.65", "capsize": 2})
+                   alpha=.92, yerr=np.vstack((y - low, high - y)),
+                   error_kw={"ecolor": "#a3a3a3", "elinewidth": .8, "capsize": 1.8, "capthick": .8})
         ax.axhline(0, color="0.35", lw=0.8)
         ax.set(xticks=x, xticklabels=labels, xlabel="Distance to nearest fitting station (km)",
                ylabel="ΔCSI" if panel % 2 == 0 else None, ylim=(-0.065, 0.065))
@@ -437,6 +475,7 @@ def render_figure_s1(data: Path, output: Path) -> tuple[Path, Path]:
         loc="upper center",
         ncol=5,
         frameon=False,
+        bbox_to_anchor=(.5, .985),
     )
     figure.subplots_adjust(
         left=0.090,
@@ -467,14 +506,14 @@ def instantaneous_csi_differences(instant: pd.DataFrame) -> dict[float, pd.Serie
     return differences
 
 
-def render_figure_s4(data: Path, output: Path) -> tuple[Path, Path]:
+def render_figure_s1(data: Path, output: Path) -> tuple[Path, Path]:
     instant_m = read(data, "Field_instant_CSIM")
     instant = read(data, "Field_instant_CSI")
     rn_m = read(data, "Field_RN60_CSIM")
     rn = read(data, "Field_RN60_CSI")
     delta = read(data, "Field_RN60_CSI_delta_CI")
     instant_differences = instantaneous_csi_differences(instant)
-    figure, axes = plt.subplots(2, 2, figsize=(13.2, 8.2), label="figureS4_native_field_verification")
+    figure, axes = plt.subplots(2, 2, figsize=(13.2, 8.2), label="figureS1_native_field_verification")
     ax = axes[0, 0]
     styles = {
         "Public exPreCast": ("#7B52A1", "o", "--"),
@@ -535,14 +574,14 @@ def render_figure_s4(data: Path, output: Path) -> tuple[Path, Path]:
     return save(figure, output)
 
 
-def render_figure6(output: Path) -> tuple[Path, Path]:
-    """Render the fixed manuscript architecture without Office dependencies."""
-    return render_architecture(output)
+def render_figure2(output: Path, reference_root: Path | None = None) -> tuple[Path, Path]:
+    """Render the current manuscript architecture without Office dependencies."""
+    return render_architecture(output, reference_root)
 
 
 def format_table1(frame: pd.DataFrame) -> pd.DataFrame:
     """Format the full-precision source values for the published Table 1."""
-    display = frame.copy()
+    display = frame.rename(columns={"Correlation": "Pearson r"}).copy()
     display["Lead (min)"] = display["Lead (min)"].map(lambda value: f"{float(value):.0f}")
     for column in display.columns[2:]:
         places = 4 if "CSI" in column else 3
@@ -569,11 +608,11 @@ def render_table1(data: Path, output: Path) -> tuple[Path, Path]:
 
 
 RENDERERS = {
-    "2": render_figure2,
     "3": render_figure3,
+    "4": render_figure4,
     "5": render_figure5,
+    "9": render_figure9,
     "s1": render_figure_s1,
-    "s4": render_figure_s4,
     "table1": render_table1,
 }
 
@@ -584,9 +623,11 @@ def parser() -> argparse.ArgumentParser:
     # pass --data-root and --examples-root explicitly.
     package_root = Path.cwd()
     result = argparse.ArgumentParser(description=__doc__)
-    result.add_argument("--item", choices=["all", "2", "3", "4", "5", "6", "s1", "s4", "table1"], default="all")
+    result.add_argument("--item", choices=["all", "2", "3", "4", "5", "6", "9", "10", "s1", "s2", "s3", "table1"], default="all")
     result.add_argument("--data-root", type=Path, default=package_root / "data" / "paper_aggregates")
     result.add_argument("--examples-root", type=Path, default=package_root / "data" / "examples")
+    result.add_argument("--additional-data-root", type=Path, default=package_root / "data/additional_verification")
+    result.add_argument("--reference-root", type=Path, default=package_root / "figures/reference")
     result.add_argument("--output-dir", type=Path, default=package_root / "figures" / "regenerated")
     return result
 
@@ -594,12 +635,18 @@ def parser() -> argparse.ArgumentParser:
 def main() -> None:
     args = parser().parse_args()
     configure()
-    selected = list(RENDERERS) + ["4", "6"] if args.item == "all" else [args.item]
+    from . import render_additional_verification as additional
+    selected = ["2", "3", "4", "5", "6", "9", "10", "s1", "s2", "s3", "table1"] if args.item == "all" else [args.item]
+    if set(selected) & {"6", "s2", "s3"}:
+        additional.validate_data(args.additional_data_root)
     for item in selected:
-        if item == "4":
-            outputs = render_figure4(args.data_root, args.examples_root, args.output_dir)
-        elif item == "6":
-            outputs = render_figure6(args.output_dir)
+        if item == "10":
+            outputs = render_figure10(args.data_root, args.examples_root, args.output_dir)
+        elif item == "2":
+            outputs = render_figure2(args.output_dir, args.reference_root)
+        elif item in ("6", "s2", "s3"):
+            renderer = {"6": additional.render_episode, "s2": additional.render_patch, "s3": additional.render_duration}[item]
+            outputs = renderer(args.additional_data_root, args.output_dir)
         else:
             outputs = RENDERERS[item](args.data_root, args.output_dir)
         print("rendered", item, *outputs)

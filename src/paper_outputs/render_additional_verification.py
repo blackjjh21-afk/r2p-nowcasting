@@ -45,6 +45,7 @@ def save(fig, output: Path, name: str) -> list[Path]:
     return paths
 
 
+@plt.rc_context({"font.size": 15, "axes.labelsize": 16, "xtick.labelsize": 15, "ytick.labelsize": 15})
 def render_episode(data: Path, output: Path) -> list[Path]:
     frame = pd.read_csv(data / "episode_route_metrics.csv").query("period == 'pooled'")
     expected = {(route, lead) for route in ROUTES for lead in LEADS}
@@ -57,18 +58,19 @@ def render_episode(data: Path, output: Path) -> list[Path]:
     titles = ("Amount at observed peak", "Episode maximum amount", "Episode maximum timing")
     amount_top = float(np.ceil(frame[list(metrics[:2])].max().max() / 5) * 5 + 5)
     time_top = float(np.ceil(frame[metrics[2]].max() / 5) * 5 + 5)
-    fig, axes = plt.subplots(1, 3, figsize=(13, 4.1), constrained_layout=True)
+    fig, axes = plt.subplots(1, 3, figsize=(13, 4.8), constrained_layout=True)
     for idx, (ax, metric, title) in enumerate(zip(axes, metrics, titles)):
         for route, (label, color) in ROUTES.items():
             part = frame.loc[frame.route.eq(route)].sort_values("lead_min")
             ax.plot(part.lead_min, part[metric], "o-", label=label, color=color)
-        ax.set_title(f"({chr(97 + idx)}) {title}", loc="left", fontsize=11, pad=12)
+        ax.set_title(f"({chr(97 + idx)}) {title}", loc="left", fontsize=16, fontweight="bold", pad=12)
         ax.set(xlabel="Lead time (min)", ylabel="MAE (min)" if idx == 2 else "MAE (mm)", xticks=LEADS, ylim=(0, time_top if idx == 2 else amount_top))
         ax.grid(axis="y", alpha=.2)
-    axes[0].legend(frameon=False, fontsize=9, loc="lower right")
-    return save(fig, output, "episode_peak_mae")
+    axes[0].legend(frameon=False, fontsize=15, loc="lower right")
+    return save(fig, output, "Figure_6")
 
 
+@plt.rc_context({"font.size": 12.5, "axes.labelsize": 12.5, "xtick.labelsize": 12.5, "ytick.labelsize": 12.5})
 def render_duration(data: Path, output: Path) -> list[Path]:
     frame = pd.read_csv(data / "episode_duration_histogram.csv")
     if not np.all(frame.right_min - frame.left_min == 10) or not np.array_equal(frame.right_min[:-1], frame.left_min[1:]):
@@ -78,13 +80,13 @@ def render_duration(data: Path, output: Path) -> list[Path]:
     ax.stairs(frame.n_episodes, edges_hours, fill=True, facecolor="#BBCBD7", edgecolor="#204F78", linewidth=1.3)
     ax.text(.98, .96, f"n = {int(frame.n_episodes.sum()):,} station-episodes", transform=ax.transAxes, ha="right", va="top")
     end = int(np.ceil(frame.right_min.max() / 60))
-    ax.set(xlabel="Episode duration (h; 10-min bins)", ylabel="Number of station-episodes", title="Observed RN60 ≥5 mm episodes with maximum ≥20 mm", xticks=np.arange(0, end + 1), xlim=(0, end), ylim=(0, None))
+    ax.set(xlabel="Episode duration (h; 10-min bins)", ylabel="Number of station-episodes", xticks=np.arange(0, end + 1), xlim=(0, end), ylim=(0, None))
     ax.grid(axis="y", alpha=.2)
     ax.set_axisbelow(True)
-    return save(fig, output, "episode_duration_histogram")
+    return save(fig, output, "Figure_S3")
 
 
-def render_patch(data: Path, output: Path, *, computed_results: bool = False) -> list[Path]:
+def render_patch(data: Path, output: Path, *, computed_results: bool = False, include_contrasts: bool = False) -> list[Path]:
     prefix = "" if computed_results else "patch_"
     mean = pd.read_csv(data / f"{prefix}metrics_mean_of_members.csv")
     contrasts = pd.read_csv(data / f"{prefix}paired_CSI_intervals.csv")
@@ -100,8 +102,8 @@ def render_patch(data: Path, output: Path, *, computed_results: bool = False) ->
         if len(rows) != 20 or set(zip(rows.lead_min, rows.threshold_mm)) != {(lead, threshold) for lead in LEADS for threshold in THRESHOLDS}:
             raise ValueError(f"Expected all 20 comparisons for {contrast}")
     files = []
-    for mode in ("skill", "contrasts"):
-        fig, axes = plt.subplots(2, 2, figsize=(7.4, 5.6), sharex=True)
+    for mode in (("skill", "contrasts") if include_contrasts else ("skill",)):
+        fig, axes = plt.subplots(2, 2, figsize=(7.4, 6.2), sharex=True)
         for ax, threshold, letter in zip(axes.flat, THRESHOLDS, "abcd"):
             if mode == "skill":
                 for route, label, color, marker in styles:
@@ -115,14 +117,14 @@ def render_patch(data: Path, output: Path, *, computed_results: bool = False) ->
                     ax.fill_between(part.lead_min.to_numpy(), part.lower95.to_numpy(), part.upper95.to_numpy(), color=color, alpha=.16)
                 ax.axhline(0, color=".4", linewidth=.8, linestyle="--")
                 ax.set_ylabel("CSI difference")
-            ax.set_title(f"({letter}) RN60 ≥ {threshold:g} mm", loc="left")
+            ax.set_title(f"({letter}) RN60 ≥ {threshold:g} mm", loc="left", fontsize=12, fontweight="bold")
             ax.set_xticks(LEADS)
-            ax.grid(alpha=.2)
-        for ax in axes[-1]:
+            ax.tick_params(labelbottom=True)
             ax.set_xlabel("Lead time (min)")
+            ax.grid(alpha=.2)
         fig.legend(*axes[0, 0].get_legend_handles_labels(), loc="upper center", ncol=3 if mode == "skill" else 2, frameon=False)
-        fig.tight_layout(rect=(0, 0, 1, .91))
-        files.extend(save(fig, output, f"patch_spatial_support_{mode}"))
+        fig.tight_layout(rect=(0, 0, 1, .91), h_pad=2.0)
+        files.extend(save(fig, output, "Figure_S2" if mode == "skill" else "patch_spatial_support_contrasts"))
     return files
 
 
@@ -132,19 +134,21 @@ def main(argv=None):
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/additional_verification"))
     parser.add_argument("--item", choices=("all", "episode", "duration", "patch"), default="all")
     parser.add_argument("--patch-results", type=Path, help="Render a newly computed patch-sensitivity comparison directory; requires --item patch")
+    parser.add_argument("--include-contrasts", action="store_true", help="Optional audit plot only; not part of the final supplementary figures. Paired contrast CSVs are always retained.")
     args = parser.parse_args(argv)
     if args.patch_results:
         if args.item != "patch":
             parser.error("--patch-results requires --item patch")
         with plt.rc_context({"font.family": "DejaVu Sans", "font.size": 10, "axes.spines.top": False, "axes.spines.right": False, "pdf.fonttype": 42}):
-            for path in render_patch(args.patch_results, args.output_dir, computed_results=True):
+            for path in render_patch(args.patch_results, args.output_dir, computed_results=True, include_contrasts=args.include_contrasts):
                 print(path)
         return
     validate_data(args.data_root)
     with plt.rc_context({"font.family": "DejaVu Sans", "font.size": 10, "axes.spines.top": False, "axes.spines.right": False, "pdf.fonttype": 42}):
         for name, renderer in (("episode", render_episode), ("duration", render_duration), ("patch", render_patch)):
             if args.item in ("all", name):
-                for path in renderer(args.data_root, args.output_dir):
+                kwargs = {"include_contrasts": args.include_contrasts} if name == "patch" else {}
+                for path in renderer(args.data_root, args.output_dir, **kwargs):
                     print(path)
 
 

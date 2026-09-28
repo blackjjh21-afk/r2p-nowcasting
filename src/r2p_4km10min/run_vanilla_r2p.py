@@ -876,7 +876,7 @@ def run_evaluate(args: argparse.Namespace) -> None:
     dataset = prepare_evaluation_data(paths, archive, stations, scaler)
     evaluation_mode = "target_masked"
     if args.mask_all_context_gauges:
-        # Same-checkpoint radar-only sensitivity experiment used by Fig. 4a.
+        # Same-checkpoint radar-only sensitivity experiment used by Fig. 10a.
         # Keep station coordinates and the complete radar input unchanged, but
         # replace every issuance-time gauge history (including fitting514) by
         # the explicit missing-observation representation.  The held-out128

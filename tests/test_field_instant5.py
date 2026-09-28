@@ -1,4 +1,4 @@
-"""Fig. S4b must plot genuine, complete native-grid 5-mm/h scores."""
+"""Fig. S1b must plot genuine, complete native-grid 5-mm/h scores."""
 
 from pathlib import Path
 
@@ -47,7 +47,7 @@ def test_instantaneous_panel_rejects_incomplete_series(defect):
         renderer.instantaneous_csi_differences(frame)
 
 
-def test_figure_s4_panel_b_has_four_eighteen_point_curves(tmp_path, monkeypatch):
+def test_figure_s1_panel_b_has_four_eighteen_point_curves(tmp_path, monkeypatch):
     def inspect(figure, _output):
         lines = [line for line in figure.axes[1].lines if not line.get_label().startswith("_")]
         assert len(lines) == 4
@@ -57,7 +57,7 @@ def test_figure_s4_panel_b_has_four_eighteen_point_curves(tmp_path, monkeypatch)
         assert lines[1].get_label().startswith("5 mm")
         assert lines[1].get_color() == "#EE8420"
         renderer.plt.close(figure)
-        return tmp_path / "figureS4.png", tmp_path / "figureS4.pdf"
+        return tmp_path / "figureS1.png", tmp_path / "figureS1.pdf"
 
     monkeypatch.setattr(renderer, "save", inspect)
-    renderer.render_figure_s4(DATA, tmp_path)
+    renderer.render_figure_s1(DATA, tmp_path)

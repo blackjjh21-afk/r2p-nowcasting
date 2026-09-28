@@ -18,7 +18,7 @@ That earlier archive does not include the additional episode and patch-size work
 
 The valid-time diagnostic uses observed HSR to measure how much of the fixed
 field-to-point readout deficit can be recovered by gauge-supervised center-cell
-MLP and local-patch CNN readouts (Fig. 2). The forecast comparison evaluates
+MLP and local-patch CNN readouts (Fig. 3). The forecast comparison evaluates
 three complete routes at the same held-out stations, issue times, gauge truth
 and reported leads:
 
@@ -76,9 +76,11 @@ Shared metric, contract and bootstrap functions are in `src/common/`.
 
 ## Data and reproducibility
 
-The bundled aggregates support rendering Figs. 2–6, S1/S4 and Table 1.
-Fig. 1 and S2/S3 require separately obtained station or radar data; the map
-renderers also require Natural Earth shapefiles. See the
+The bundled aggregates support rendering Figs. 3–6, 9–10, S1–S3 and Table 1.
+Fig. 2 is the author's final edited image, copied without layout changes.
+Figs. 1, 7 and 8 require separately obtained station or radar data; the map
+renderers also require Natural Earth shapefiles, and Fig. 1 requires an
+elevation grid. See the
 [figure/table guide](docs/PAPER_OUTPUT_REPRODUCIBILITY.md) for inputs and commands.
 
 The additional episode and patch-size figures can be reproduced without raw
@@ -94,7 +96,7 @@ generation are included and require separately obtained upstream source.
 Upstream checkpoint
 identities are recorded in
 [`configs/upstream_artifact_provenance.json`](configs/upstream_artifact_provenance.json).
-The valid-time MLP and CNN in Fig. 2 are provided as results and renderings,
+The valid-time MLP and CNN in Fig. 3 are provided as results and renderings,
 not training workflows. This is therefore not a complete raw-data-to-results
 package. Data access and redistribution details are in
 [`docs/DATA_POLICY.md`](docs/DATA_POLICY.md).
