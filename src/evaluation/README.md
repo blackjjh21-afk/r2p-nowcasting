@@ -43,7 +43,7 @@ Pass both result roots and both evaluation-store names explicitly:
 ```bash
 python src/evaluation/station_dropout_comparison.py \
   --direct-root outputs/direct_r2p \
-  --no-dropout-root outputs/no_station_dropout \
+  --no-dropout-root outputs/direct_r2p_no_station_dropout \
   --direct-store target_masked_heldout128_predictions_raw_macro_csi_v1 \
   --no-dropout-store target_masked_heldout128_predictions_raw_macro_csi_v1 \
   --output-dir outputs/station_dropout_comparison \

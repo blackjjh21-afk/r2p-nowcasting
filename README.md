@@ -120,6 +120,17 @@ wheel installation is also supported.
 GPU-specific PyTorch installation may need to be adjusted for the target CUDA
 driver while retaining the recorded major software versions.
 
+After installation, run from the repository root to reproduce the bundled
+figures and Table 1:
+
+```bash
+r2p-paper-figures --item all --output-dir outputs/paper_figures
+```
+
+This command excludes Figs. 1, 7 and 8, which require separate inputs. For
+those figures or execution outside the repository root, see the
+[figure/table guide](docs/PAPER_OUTPUT_REPRODUCIBILITY.md).
+
 ## Tests
 
 The test suite checks model and data contracts, prepared-input validation,

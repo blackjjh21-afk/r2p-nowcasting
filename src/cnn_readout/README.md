@@ -1,4 +1,4 @@
-# CNN
+# Forecast-field CNN readouts
 
 This package contains the field-to-point readout used after the frozen
 pySTEPS and exPreCast field forecasters. For RN60 ending at lead `L`, the

@@ -37,9 +37,9 @@ python -m paper_outputs.render_additional_verification \
 ```
 
 The default outputs are `Figure_6`, `Figure_S2` and `Figure_S3` PNG/PDF pairs.
-The CSI-difference plot is omitted from the submission. Its numerical
-differences and confidence intervals remain in `patch_paired_CSI_intervals.csv`;
-`--include-contrasts` optionally renders that audit plot.
+Paired CSI differences and their 95% confidence intervals are provided in
+`patch_paired_CSI_intervals.csv`. Add `--include-contrasts` to render these
+comparisons as an additional plot.
 
 For recomputation from authorized observations and predictions, see
 [rainfall episodes](../../src/evaluation/RAINFALL_EPISODES.md) and

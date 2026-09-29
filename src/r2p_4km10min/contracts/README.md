@@ -29,9 +29,12 @@ cells.
 | `station_id`, `name` | Station key and label |
 | `target_col` | Name of this station's RN60 column in the gauge CSV |
 | `rn15m_col` | Name of this station's RN15 column in the gauge CSV |
-| `iy`, `ix` | Zero-based indices in the original project grid used by the frozen station-attention geometry |
+| `iy`, `ix` | Zero-based row and column in the original 2-km R2P coordinate frame used by the frozen station-attention geometry |
 | `lat`, `lon` | Station latitude and longitude in degrees |
 | `split` | `train` or `test`; must agree with `split.csv` |
+
+Station attention uses `(x, y) = (2 * ix, 2 * iy)` km; radar sampling separately
+uses `exprecast_y`, `exprecast_x` on the prepared 4-km TIFF grid.
 
 ### `split.csv`
 

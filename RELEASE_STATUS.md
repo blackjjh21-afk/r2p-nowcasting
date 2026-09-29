@@ -15,7 +15,7 @@ Software version: **1.2.1** (2026-09-29).
 These corrections affect reusable helpers in `src/common/`. The manuscript
 comparison workflows use separate implementations with common finite support
 and undefined-ratio handling. Aggregate CSV values and figure assets are
-unchanged from 1.2.0. The existing 1.2.0 Git tag is preserved.
+unchanged from 1.2.0.
 
 ## Workflows included since 1.2.0
 
@@ -25,7 +25,7 @@ unchanged from 1.2.0. The existing 1.2.0 Git tag is preserved.
 - Final JoH figure numbering (Figs. 1–10 and S1–S3), typography and palettes.
 - The author-edited final Figure 2 PNG and its raster-wrapped PDF.
 - Patch-size CSI contrast data remain available; the contrast plot is no longer a default figure.
-- Verification against the current, figure-ordered Supplementary Data 1 workbook and clarified separate data-release scope.
+- Aggregate-table provenance and checksums are recorded in the manifests; the complete Supplementary Data 1 workbook is distributed separately.
 - Reader-facing exPreCast column names for native-grid RN60 contrasts, with the numerical rows unchanged.
 
 Amount errors use 1,437 station-episodes. Timing errors use the common subset
