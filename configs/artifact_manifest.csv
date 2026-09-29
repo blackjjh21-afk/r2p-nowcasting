@@ -1,6 +1,6 @@
 path,sha256,role
 .gitignore,5d9f7014da67bf9d9cfce9be3ee786929047f75a49bcabfbb37f060dd8db3b18,"public software, documentation, tests or anonymous figure artifact"
-CITATION.cff,35a97858ea7db593e875d7af508052da55e65e59b5cf416ccdb8141b8d3593ee,"public software, documentation, tests or anonymous figure artifact"
+CITATION.cff,35cf34433ee7e3dcf5bca45d998c7a5c0ea91ce52688eead21d6d2cb710d98b2,"public software, documentation, tests or anonymous figure artifact"
 LICENSE,7ca8bb986b2339fbf84b4f91baed4d94e79c1e152287c57d69991b8ae2697769,"public software, documentation, tests or anonymous figure artifact"
 README.md,049b6e7063a340cd84667372d8b0ba9ef917dc6aa8c8e2a458f15239f51455fa,"public software, documentation, tests or anonymous figure artifact"
 RELEASE_STATUS.md,685bc8f8ba5d535ffcf9b35d778d2a87fc3735745577c4e2dbc87f8ecb90b984,"public software, documentation, tests or anonymous figure artifact"
@@ -100,7 +100,7 @@ figures/regenerated/table1_heldout_point_skill.csv,babf7444b984f2566972cd0c4ef74
 figures/regenerated/table1_heldout_point_skill.md,d1e7e7bef45c27a9738ad6261853d171e8db877d158f4f90374aee290267d582,"public software, documentation, tests or anonymous figure artifact"
 figures/regenerated/table1_heldout_point_skill.pdf,d2aa21faf569de29e4523160f802db3b5ce7bd8da91498c4cafe0fbd9b0e5164,registered manuscript figure artifact: table1_heldout_point_skill.pdf
 figures/regenerated/table1_heldout_point_skill.png,8f968b164c4c156dc816d62e26264e734787e559258c2b6e72551c3c16fb7426,registered manuscript figure artifact: table1_heldout_point_skill.png
-pyproject.toml,63754e42025c416837aea8dcef30b95ba9c43e3343041cf35cdb349e60d2a86b,"public software, documentation, tests or anonymous figure artifact"
+pyproject.toml,cf67fa4a31bd2cbe18c7e90de4412b60e15dc44001695f5ab85f46edee0498f1,"public software, documentation, tests or anonymous figure artifact"
 src/cnn_readout/PATCH_SENSITIVITY.md,d408035291c27de74cdf23a8992153bcf852d76e9dd039ac02d26bb902c03077,CNN patch-size sensitivity usage and input schema
 src/cnn_readout/README.md,95c31b1cfd03f01172e70f1315ad122cd3fb5103d571f9fda6e25999e05a6e73,"public software, documentation, tests or anonymous figure artifact"
 src/cnn_readout/__init__.py,0256ca5b829c35f3dfb66871d889628b0e450ff97604add601de42156364540b,"public software, documentation, tests or anonymous figure artifact"

@@ -9,7 +9,7 @@ description = "Reference implementations and audit workflows for 4-km/10-min gau
 readme = "README.md"
 authors = [
   { name = "Jaehee Jung" },
-  { name = "Joon-Woo Roh", email = "neolegacy@gmail.com" },
+  { name = "Joon-Woo Roh", email = "neo@earthntech.co.kr" },
 ]
 requires-python = ">=3.12"
 dependencies = [
