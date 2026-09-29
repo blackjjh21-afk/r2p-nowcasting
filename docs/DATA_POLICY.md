@@ -38,8 +38,11 @@ The public source repository excludes:
 - stationwise metrics, maps, case totals or time series;
 - exact issue-time lists if joined to station-resolved outcomes.
 
-Station-resolved derived verification tables are provided separately in
-Supplementary Data 1; they are not bundled with the source repository.
+Station-resolved derived verification tables and selected gauge observations
+used in the Figure 7 case time series are provided separately in Supplementary
+Data 1; they are not bundled with the source repository. The complete raw KMA
+radar and gauge archives are not redistributed and can be obtained from KMA
+subject to the provider's access terms.
 
 Source-product attribution, official access links and applicable third-party
 terms are summarized in [Third-party notices](../THIRD_PARTY_NOTICES.md).

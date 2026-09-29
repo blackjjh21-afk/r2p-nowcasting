@@ -1,5 +1,6 @@
 """Regression checks for the final JoH figure-number and data-release boundary."""
 from pathlib import Path
+import csv
 import hashlib
 import json
 
@@ -10,6 +11,26 @@ from paper_outputs import render_additional_verification as additional
 from paper_outputs import render_architecture, render_publication
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_data_policy_distinguishes_repository_and_supplementary_observations():
+    policy = " ".join((ROOT / "docs/DATA_POLICY.md").read_text().split())
+    assert "selected gauge observations used in the Figure 7 case time series" in policy
+    assert "they are not bundled with the source repository" in policy
+    assert "The complete raw KMA radar and gauge archives are not redistributed" in policy
+
+
+def test_public_csv_data_have_no_station_resolved_observation_columns():
+    forbidden = {
+        "station_id", "station_name", "held_out_station", "held-out_station",
+        "display_station_id", "lat", "lon", "latitude", "longitude",
+        "valid_time_kst", "issue_time_kst", "observed_peak_time",
+    }
+    for path in (ROOT / "data").rglob("*.csv"):
+        with path.open(newline="", encoding="utf-8-sig") as stream:
+            columns = next(csv.reader(stream))
+        normalized = {column.strip().lower().replace(" ", "_") for column in columns}
+        assert normalized.isdisjoint(forbidden), path.relative_to(ROOT)
 
 
 def test_author_edited_figure2_is_not_redrawn(tmp_path):

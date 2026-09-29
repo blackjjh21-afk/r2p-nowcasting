@@ -1,6 +1,6 @@
 {
   "schema": "r2p-additional-verification-aggregates-v1",
-  "source_supplementary_data_sha256": "0116b21a234b04bb7b9f371590b41c7706e49eaebd53faf9ba73f62e22c95ce6",
+  "source_supplementary_data_sha256": "597d75e0c9ebeff75dd712e84eecc0298eb306fdac5432e5a929a6193fe0b8ba",
   "station_resolved_content_included": false,
   "figure_mapping": {
     "episode_peak_mae": "Figure 6",

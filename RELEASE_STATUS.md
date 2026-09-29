@@ -1,6 +1,6 @@
 # Release information
 
-Prepared software version: **1.2.0** (2026-09-28).
+Prepared software version: **1.2.0** (2026-09-29).
 
 This release adds:
 
@@ -10,6 +10,7 @@ This release adds:
 - Final JoH figure numbering (Figs. 1–10 and S1–S3), typography and palettes.
 - The author-edited final Figure 2 PNG and its raster-wrapped PDF.
 - Patch-size CSI contrast data remain available; the contrast plot is no longer a default figure.
+- Verification against the current, figure-ordered Supplementary Data 1 workbook and clarified separate data-release scope.
 
 Amount errors use 1,437 station-episodes. Timing errors use the common subset
 of 1,391 episodes with non-constant forecasts across all routes, members and leads.

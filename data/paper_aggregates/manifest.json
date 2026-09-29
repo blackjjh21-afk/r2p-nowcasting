@@ -371,7 +371,7 @@
   "source_reader_manifest_sha256": "fc77a805e0e361c566308a229f687e307c58bd7d349e1cdb2724b8642ebea3b8",
   "source_supplementary_data_sha256": "a099e58c2ddced05e2e82607d203800ca1f9d12899d703bf87bb55da988e1426",
   "station_resolved_content_included": false,
-  "verified_current_supplementary_data_sha256": "0116b21a234b04bb7b9f371590b41c7706e49eaebd53faf9ba73f62e22c95ce6",
+  "verified_current_supplementary_data_sha256": "597d75e0c9ebeff75dd712e84eecc0298eb306fdac5432e5a929a6193fe0b8ba",
   "current_figure_mapping": {
     "Fig2*": "Figure 3",
     "Fig3*": "Figure 4",
