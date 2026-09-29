@@ -25,7 +25,7 @@ is dense over issue time, station and lead:
 |---|---|---|
 | `schema` | scalar string | exactly `cnn_readout_prepared_npz_v1` |
 | `patches` | float32 `[N,S,L,6,3,3]` | six normalized-reflectivity forecast patches per tuple |
-| `issue_times_ns` | int64 `[N]` | strictly increasing issue times in Unix nanoseconds; use the study's local issue-time convention consistently |
+| `issue_times_ns` | int64 `[N]` | strictly increasing issuance timestamps encoded as KST-naive integer nanoseconds, not UTC Unix timestamps |
 | `station_ids` | int64 `[S]` | unique nonnegative station identifiers |
 | `station_folds` | int8 `[S]` | fixed station folds `0`, `1`, or `2` |
 | `lead_minutes` | int16 `[13]` | exactly `+60,+70,...,+180` min, the RN60 target-lead axis |
@@ -48,6 +48,10 @@ tuples directly. It uses `patches [T,6,3,3]`, `issue_time_ns [T]`,
 Flat inputs may contain any subset of the same `+60,...,+180` min target-lead
 axis. Leads below 60 min are invalid because a tuple already represents the
 six-field window ending at its RN60 target lead.
+
+Both `issue_times_ns` and the flat-schema `issue_time_ns` encode KST wall-clock
+components as NumPy `datetime64[ns]` integers. Do not apply an additional
+UTC-to-KST conversion to these stored values.
 
 ## Validate, select, fit, and predict
 

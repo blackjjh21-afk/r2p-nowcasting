@@ -5,7 +5,7 @@ model, selects its checkpoint and exports forecasts. This adapter validates
 that HDF5 output and extracts station patches. The expected export contains:
 
 - `forecast_normalized_dbz`: `[issue,18,256,256]`, finite values in `[0,1]`;
-- `issue_time_ns`: increasing issue times as Unix nanoseconds;
+- `issue_time_ns`: increasing issuance times encoded as KST-naive int64 nanoseconds;
 - `lead_minutes`: `10,20,...,180`;
 - optional `completed`: one true value per issue;
 - optional `contract_json` attribute containing `checkpoint_sha256`.

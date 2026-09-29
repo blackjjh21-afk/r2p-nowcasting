@@ -36,10 +36,10 @@ def _daily_counts(
     day_index: np.ndarray,
     n_days: int,
     thresholds: np.ndarray,
+    finite: np.ndarray,
 ) -> np.ndarray:
     n_leads = prediction.shape[-1]
     counts = np.zeros((n_days, n_leads, len(thresholds), 3), dtype=np.int64)
-    finite = np.isfinite(prediction) & np.isfinite(truth)
     for threshold_index, threshold in enumerate(thresholds):
         predicted_event = finite & (prediction >= threshold)
         observed_event = finite & (truth >= threshold)
@@ -62,7 +62,7 @@ def _csi_from_counts(counts: np.ndarray) -> np.ndarray:
     return np.divide(
         counts[..., 0],
         denominator,
-        out=np.zeros_like(denominator, dtype=np.float64),
+        out=np.full_like(denominator, np.nan, dtype=np.float64),
         where=denominator > 0,
     )
 
@@ -80,9 +80,18 @@ def paired_date_block_csi_difference(
 ) -> dict[str, Any]:
     """Estimate ``CSI(route A) - CSI(route B)`` with paired date blocks.
 
-    The same multinomial date weights are applied to both routes in every
-    replicate.  This preserves route pairing and avoids treating strongly
-    autocorrelated five- or ten-minute issuance anchors as independent.
+    Counts use the intersection of finite route-A, route-B and truth values
+    for each issue/station/lead cell. The same multinomial date weights are
+    applied to both routes in every replicate, retaining all stations and
+    leads within each date block.
+
+    CSI is undefined when its event-union denominator is zero. A bootstrap
+    difference is included in the percentile interval only when both route
+    scores are finite, separately for each lead/threshold cell. The returned
+    ``n_valid_resamples`` records that effective sample size; cells with no
+    valid differences have NaN interval bounds. Undefined draws remain NaN
+    in ``bootstrap_delta``. Inputs must already use the intended local
+    issuance-date convention.
     """
 
     prediction_a, prediction_b, truth, issue_times = _validate_arrays(
@@ -91,6 +100,8 @@ def paired_date_block_csi_difference(
     thresholds_array = np.asarray(thresholds, dtype=np.float64)
     if thresholds_array.ndim != 1 or len(thresholds_array) == 0:
         raise ValueError("thresholds must be a non-empty one-dimensional sequence")
+    if not np.isfinite(thresholds_array).all():
+        raise ValueError("thresholds must be finite")
     if n_resamples <= 0:
         raise ValueError("n_resamples must be positive")
     if not (0.0 < confidence < 1.0):
@@ -99,11 +110,12 @@ def paired_date_block_csi_difference(
     days, day_index = np.unique(issue_times.astype("datetime64[D]"), return_inverse=True)
     if len(days) < 2:
         raise ValueError("date-block bootstrap requires at least two issuance dates")
+    common_finite = np.isfinite(prediction_a) & np.isfinite(prediction_b) & np.isfinite(truth)
     counts_a = _daily_counts(
-        prediction_a, truth, day_index, len(days), thresholds_array
+        prediction_a, truth, day_index, len(days), thresholds_array, common_finite
     )
     counts_b = _daily_counts(
-        prediction_b, truth, day_index, len(days), thresholds_array
+        prediction_b, truth, day_index, len(days), thresholds_array, common_finite
     )
 
     point_a = _csi_from_counts(counts_a.sum(axis=0))
@@ -118,11 +130,22 @@ def paired_date_block_csi_difference(
     bootstrap_b = _csi_from_counts(np.einsum("rd,dltc->rltc", weights, counts_b))
     bootstrap_delta = bootstrap_a - bootstrap_b
     alpha = (1.0 - confidence) / 2.0
+    valid = np.isfinite(bootstrap_delta)
+    n_valid_resamples = valid.sum(axis=0)
+    ci_low = np.full(point_a.shape, np.nan, dtype=np.float64)
+    ci_high = np.full(point_a.shape, np.nan, dtype=np.float64)
+    for lead, threshold in np.ndindex(point_a.shape):
+        values = bootstrap_delta[valid[:, lead, threshold], lead, threshold]
+        if values.size:
+            ci_low[lead, threshold], ci_high[lead, threshold] = np.quantile(
+                values, (alpha, 1.0 - alpha)
+            )
     return {
         "delta_csi": point_a - point_b,
-        "ci_low": np.quantile(bootstrap_delta, alpha, axis=0),
-        "ci_high": np.quantile(bootstrap_delta, 1.0 - alpha, axis=0),
+        "ci_low": ci_low,
+        "ci_high": ci_high,
         "bootstrap_delta": bootstrap_delta,
+        "n_valid_resamples": n_valid_resamples,
         "dates": days,
         "thresholds": thresholds_array,
         "n_resamples": int(n_resamples),

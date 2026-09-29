@@ -424,7 +424,7 @@ def load_requested_anchor_times(path: Path, key: str) -> np.ndarray:
     elif np.issubdtype(values.dtype, np.integer):
         values = values.astype(np.int64, copy=False)
         if len(values) and np.max(np.abs(values)) < 10**17:
-            raise ValueError("integer anchor times must be Unix nanoseconds")
+            raise ValueError("integer anchor times must be int64 nanoseconds")
     else:
         raise TypeError(f"unsupported anchor-time dtype {values.dtype}: {path}")
     if len(np.unique(values)) != len(values):
@@ -1248,4 +1248,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

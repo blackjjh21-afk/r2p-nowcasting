@@ -5,8 +5,10 @@ experiments. Experiment settings are recorded in
 [`configs/scientific_contract_4km10min.json`](configs/scientific_contract_4km10min.json)
 and route definitions in [`configs/route_registry.json`](configs/route_registry.json).
 
-Software version **1.2.0** includes rainfall-episode peak verification,
-exPreCast CNN patch-size sensitivity and their aggregate results.
+Software version **1.2.1** includes rainfall-episode peak verification,
+exPreCast CNN patch-size sensitivity and their aggregate results. It corrects
+common verification helpers and clarifies time conventions; the published
+aggregate values and figure assets are unchanged from version 1.2.0.
 See [release information](RELEASE_STATUS.md) for this version's scope.
 
 Previous archived software version 1.1.0:
@@ -125,15 +127,21 @@ evaluation routines and figure/table renderers using synthetic inputs.
 
 ## Evaluation conventions
 
-- All timestamps are issue times; date blocks are defined from those issue
-  times in the frozen project timezone.
+- Forecast-array time axes identify issuance times in Korea Standard Time
+  (KST, UTC+9). Valid times are obtained by adding the corresponding forecast
+  lead. The valid-time readout diagnostic uses valid-time dates for resampling;
+  forecast-route contrasts use issuance-date blocks. Episode outputs also
+  include observed and forecast peak valid times.
 - The standard and radar-only Direct R2P results must have identical truth,
   station, issue-time and lead axes and must reference the same checkpoint hash
   within each seed.
 - CSI is `hit / (hit + miss + false alarm)` and is undefined when the
   denominator is zero.
-- Confidence intervals are paired: competing routes are differenced within the
-  same resampled issuance-date blocks.
+- Confidence intervals are paired: both routes use the same finite
+  observation–prediction pairs and the same sampled date blocks. In the common
+  bootstrap helper, a replicate contributes to a cell's interval only when
+  both CSI values are defined; `n_valid_resamples` reports that count. A cell
+  with no defined replicate differences has an undefined interval.
 - Test-period values must not be used for checkpoint or hyperparameter
   selection.
 

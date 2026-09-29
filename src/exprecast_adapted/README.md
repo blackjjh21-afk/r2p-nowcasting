@@ -95,8 +95,8 @@ python -m exprecast_adapted.workflow export \
 
 For verification, use `--export-years 2024,2025` with the exact common 35,088
 issuance times and `--expected-export-anchors 35088`. The timestamp file is a
-one-dimensional NumPy datetime or Unix-nanosecond axis (NPY, or NPZ with
-`anchor_times`). Keep stride 1 when supplying exact times, and check the
+one-dimensional KST-naive NumPy datetime axis or its int64 nanosecond encoding
+(NPY, or NPZ with `anchor_times`). Keep stride 1 when supplying exact times, and check the
 reported matches. The exports need substantial disk space: the default 10-GiB
 limit requires explicit `--allow-large-export` for the full verification set.
 

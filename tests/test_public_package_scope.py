@@ -9,6 +9,26 @@ import tomllib
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_release_metadata_and_scientific_contract_are_consistent() -> None:
+    metadata = tomllib.loads((ROOT / "pyproject.toml").read_text())
+    version = metadata["project"]["version"]
+    assert f'version: "{version}"' in (ROOT / "CITATION.cff").read_text()
+    assert version in (ROOT / "RELEASE_STATUS.md").read_text()
+    contract = json.loads((ROOT / "configs/scientific_contract_4km10min.json").read_text())
+    assert contract["status"] == "frozen"
+
+
+def test_time_documentation_distinguishes_encoding_and_resampling() -> None:
+    readme = " ".join((ROOT / "README.md").read_text().split())
+    assert "valid-time dates for resampling" in readme
+    assert "forecast-route contrasts use issuance-date blocks" in readme
+    assert "All timestamps are issue times" not in readme
+    for module in ("cnn_readout", "pysteps_adapter", "exprecast_adapter", "exprecast_adapted"):
+        text = (ROOT / "src" / module / "README.md").read_text()
+        assert "KST-naive" in text
+        assert "Unix nanoseconds" not in text and "Unix-nanosecond axis" not in text
+
+
 def test_obsolete_standalone_figures_are_not_bundled() -> None:
     for stem in (
         "fig4a_radar_only_same_checkpoint_4km10min",
@@ -76,7 +96,7 @@ def test_distributed_packages_match_manuscript_workflows() -> None:
 
 def test_console_commands_match_supported_workflows() -> None:
     metadata = tomllib.loads((ROOT / "pyproject.toml").read_text())
-    assert metadata["project"]["version"] == "1.2.0"
+    assert metadata["project"]["version"] == "1.2.1"
     assert metadata["project"]["scripts"] == {
         "r2p-4km10min": "r2p_4km10min.run_vanilla_r2p:main",
         "r2p-radar-only": "evaluation.radar_only_comparison:main",

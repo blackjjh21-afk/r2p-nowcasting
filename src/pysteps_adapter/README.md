@@ -67,7 +67,7 @@ patch, the canonical output is normalized reflectivity with keys:
 
 - `patches`: `[N, S, L, 6, 3, 3]`, where N is issue time, S is station, and
   L is the 13 RN60 leads from +60 through +180 min;
-- `issue_times_ns`: `[N]` Unix timestamps in nanoseconds;
+- `issue_times_ns`: `[N]` int64 nanoseconds encoding KST-naive issuance times;
 - `station_ids`: `[S]`;
 - `lead_minutes`: `[L]`.
 

@@ -24,11 +24,12 @@ class Contingency:
 
     @property
     def csi(self) -> np.ndarray:
+        """Return CSI, with NaN for an empty event union."""
         denominator = self.hit + self.miss + self.false_alarm
         return np.divide(
             self.hit,
             denominator,
-            out=np.zeros_like(denominator, dtype=np.float64),
+            out=np.full_like(denominator, np.nan, dtype=np.float64),
             where=denominator > 0,
         )
 
@@ -79,8 +80,10 @@ def csi_by_lead(
 ) -> np.ndarray:
     """Compute CSI with output shape ``[lead, threshold]``.
 
-    Every non-lead dimension is pooled into the contingency counts.  Empty
-    event unions return zero, matching the study's dense-grid CSI convention.
+    Every non-lead dimension is pooled into the contingency counts. Empty
+    event unions are undefined and return NaN, including cells with no finite
+    prediction/truth pairs. Other evaluation conventions must be applied
+    explicitly by their callers.
     """
 
     prediction, truth, _ = _paired_finite(prediction, truth)
