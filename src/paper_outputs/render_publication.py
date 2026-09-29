@@ -549,7 +549,7 @@ def render_figure_s1(data: Path, output: Path) -> tuple[Path, Path]:
     ax = axes[1, 1]
     for threshold in THRESHOLDS:
         block = delta[np.isclose(delta.threshold_mm, threshold)].sort_values("lead_min")
-        y = block.delta_long_minus_pysteps.to_numpy(float)
+        y = block.delta_exprecast_minus_pysteps.to_numpy(float)
         low, high = block.ci95_lower.to_numpy(float), block.ci95_upper.to_numpy(float)
         ax.errorbar(block.lead_min, y, yerr=np.vstack((y - low, high - y)), color=palette[threshold], marker="o", capsize=2, label=f"{threshold:g} mm")
     ax.axhline(0, color="0.2", lw=0.8)

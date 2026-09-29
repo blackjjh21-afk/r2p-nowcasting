@@ -6,11 +6,35 @@ import json
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 from paper_outputs import render_additional_verification as additional
 from paper_outputs import render_architecture, render_publication
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_native_grid_rn60_contrast_uses_exprecast_headers_and_unchanged_scores():
+    data = ROOT / "data/paper_aggregates"
+    contrast = pd.read_csv(data / "Field_RN60_CSI_delta_CI.csv", float_precision="round_trip")
+    scores = pd.read_csv(data / "Field_RN60_CSI.csv", float_precision="round_trip")
+    assert list(contrast.columns) == [
+        "lead_min", "threshold_mm", "exprecast_csi", "pysteps_csi",
+        "delta_exprecast_minus_pysteps", "bootstrap_mean_delta", "ci95_lower",
+        "ci95_upper", "probability_delta_gt_zero", "ci_excludes_zero",
+    ]
+    keys = ["lead_min", "threshold_mm"]
+    contrast = contrast.set_index(keys).sort_index()
+    assert len(contrast) == 20 and not contrast.index.has_duplicates
+    for model, column in (("exPreCast", "exprecast_csi"), ("pySTEPS", "pysteps_csi")):
+        expected = scores.loc[scores.model.eq(model)].set_index(keys).sort_index()
+        assert expected.index.equals(contrast.index)
+        np.testing.assert_array_equal(contrast[column], expected.csi)
+    np.testing.assert_allclose(
+        contrast.delta_exprecast_minus_pysteps,
+        contrast.exprecast_csi - contrast.pysteps_csi,
+        rtol=0, atol=1e-12,
+    )
 
 
 def test_data_policy_distinguishes_repository_and_supplementary_observations():

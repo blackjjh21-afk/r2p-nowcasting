@@ -11,6 +11,7 @@ This release adds:
 - The author-edited final Figure 2 PNG and its raster-wrapped PDF.
 - Patch-size CSI contrast data remain available; the contrast plot is no longer a default figure.
 - Verification against the current, figure-ordered Supplementary Data 1 workbook and clarified separate data-release scope.
+- Reader-facing exPreCast column names for native-grid RN60 contrasts, with the numerical rows unchanged.
 
 Amount errors use 1,437 station-episodes. Timing errors use the common subset
 of 1,391 episodes with non-constant forecasts across all routes, members and leads.

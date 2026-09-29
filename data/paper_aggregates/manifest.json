@@ -273,8 +273,15 @@
       "name": "Field_RN60_CSI_delta_CI",
       "path": "Field_RN60_CSI_delta_CI.csv",
       "rows": 20,
-      "sha256": "9f300586dc6423a1aceb3b14e0c5fd8b6b1ca4318e298966e8d83c94041da2f6",
-      "current_workbook_sheet": "Field_RN60_CSI_delta_CI"
+      "sha256": "f10da5ae3312e4739a829e241f5b684aa7a9084a5bacf6c276b7c2320218d87b",
+      "current_workbook_sheet": "Field_RN60_CSI_delta_CI",
+      "header_normalization": {
+        "long_csi": "exprecast_csi",
+        "delta_long_minus_pysteps": "delta_exprecast_minus_pysteps"
+      },
+      "header_normalization_note": "Reader-facing header names only; original CSV data rows retained byte-for-byte.",
+      "original_csv_sha256": "9f300586dc6423a1aceb3b14e0c5fd8b6b1ca4318e298966e8d83c94041da2f6",
+      "unchanged_data_rows_sha256": "7a8d90afd7128e5270badc7f1af1aed3c0f632926686d94cb6f238a4dcb6a63c"
     },
     {
       "columns": 5,
@@ -371,7 +378,7 @@
   "source_reader_manifest_sha256": "fc77a805e0e361c566308a229f687e307c58bd7d349e1cdb2724b8642ebea3b8",
   "source_supplementary_data_sha256": "a099e58c2ddced05e2e82607d203800ca1f9d12899d703bf87bb55da988e1426",
   "station_resolved_content_included": false,
-  "verified_current_supplementary_data_sha256": "597d75e0c9ebeff75dd712e84eecc0298eb306fdac5432e5a929a6193fe0b8ba",
+  "verified_current_supplementary_data_sha256": "b69d4398d703f683d1b19976d60e61b8ee55e361a9c470a5ca3a79144dd8eea7",
   "current_figure_mapping": {
     "Fig2*": "Figure 3",
     "Fig3*": "Figure 4",
